@@ -3,13 +3,13 @@
 
 
 
-#define SUPER_SAMPLE_LEVEL 4 //Each pixel will be split into a grid of SUPER_SAMPLE_LEVEL x SUPER_SAMPLE_LEVEL
+#define SUPER_SAMPLE_LEVEL 1 //Each pixel will be split into a grid of SUPER_SAMPLE_LEVEL x SUPER_SAMPLE_LEVEL
 #define NUM_THREADS 8
 
-#define USE_SOFT_SHADOWS true
+#define USE_SOFT_SHADOWS false
 #define SHADOW_SAMPLES 10
 
-#define USE_GLOSSY_REFLECTIONS true
+#define USE_GLOSSY_REFLECTIONS false
 #define GLOSSY_SAMPLES 25
 
 

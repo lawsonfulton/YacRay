@@ -29,3 +29,10 @@
 
 # Mine
 *.png
+*.aux
+*.log
+*.gz
+*.sublime-workspace
+*.sublime-project
+*.d
+rt

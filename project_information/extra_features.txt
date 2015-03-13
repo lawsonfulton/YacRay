@@ -1,0 +1,8 @@
+- Plane primitive
+- c++ obj reader
+
+- Depth of Field
+- Perlin Noise
+- Global Illumination? (Radiosity, Pathtracing, Photon Mapping, Ambient Occlusion)
+- Animation?
+- HDR map (sky map)
