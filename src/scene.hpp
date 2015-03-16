@@ -4,12 +4,12 @@
 #include <list>
 #include "algebra.hpp"
 #include "primitive.hpp"
-#include "material.hpp"
 
 struct Intersection;
 class Primitive;
 class Ray;
 class GeometryNode;
+class Material; 
 
 class SceneNode {
 public:
@@ -107,7 +107,9 @@ public:
 
   virtual bool is_geometry() const;
 
-  bool computeIntersection(const Ray &ray, Intersection &i);
+  bool isLight() const { return m_primitive->isLight(); }
+
+  bool computeIntersection(const Ray &ray, Intersection &i) const;
 
   virtual std::list<GeometryNode> getFlattened() const;
 

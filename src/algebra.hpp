@@ -51,30 +51,21 @@ string toString(const QVector3D &vec);
 string toString(const QVector2D &vec);
 string toString(const Matrix4x4 &mat);
 
-inline std::ostream& operator <<(std::ostream& os, const QVector3D& v)
-{
-    return os << toString(v);
-}
+ostream& operator <<(std::ostream& os, const QVector3D& v);
 
 /*      \|/
  * --------------
  *
  */
-inline Vector3D reflect(const Vector3D &dir, const Vector3D &normal) {
-  return 2.0 * dot(dir, normal) * normal - dir;
-}
+Vector3D reflect(const Vector3D &dir, const Vector3D &normal);
 
 //t is parameter in [0,1] and 
 //f(a,b,t) -> a + t(b-a)
 template<typename T>
-inline T lin_interpolate(const T &a, const T &b, const double &t) {
-  return a + t * (b - a);
-}
+T lin_interpolate(const T &a, const T &b, const double &t);
 
 template <typename T>
-inline T clamp(const T& n, const T& lower, const T& upper) {
-  return std::max(lower, std::min(n, upper));
-}
+T clamp(const T& n, const T& lower, const T& upper);
 
 Vector3D vectorMax(const Vector3D &a, const Vector3D &b);
 Vector3D vectorMin(const Vector3D &a, const Vector3D &b);
@@ -82,8 +73,10 @@ Vector3D vectorMin(const Vector3D &a, const Vector3D &b);
 #include <random>
 static std::default_random_engine generator;
 static std::uniform_real_distribution<double> uniformUnitDist(-1.0, 1.0);
+static std::uniform_real_distribution<double> uniformRandDist(0.0, 1.0);
 static std::uniform_real_distribution<double> uniformAngleDist(0.0, M_PI * 2.0);
 static auto uniformUnitVal = std::bind (uniformUnitDist, generator); //[-1, 1]
+static auto uniformRand = std::bind (uniformRandDist, generator); //[0, 1]
 static auto uniformAngleVal = std::bind (uniformAngleDist, generator); //[0, 2pi]
 
 Vector3D uniformRandomUnitVec();

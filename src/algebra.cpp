@@ -43,6 +43,31 @@ string toString(const Matrix4x4 &mat) {
     return oss.str();
 }
 
+std::ostream& operator <<(std::ostream& os, const QVector3D& v)
+{
+    return os << toString(v);
+}
+
+/*      \|/
+ * --------------
+ *
+ */
+Vector3D reflect(const Vector3D &dir, const Vector3D &normal) {
+  return 2.0 * dot(dir, normal) * normal - dir;
+}
+
+//t is parameter in [0,1] and 
+//f(a,b,t) -> a + t(b-a)
+template<typename T>
+T lin_interpolate(const T &a, const T &b, const double &t) {
+  return a + t * (b - a);
+}
+
+template <typename T>
+T clamp(const T& n, const T& lower, const T& upper) {
+  return std::max(lower, std::min(n, upper));
+}
+
 Vector3D vectorMax(const Vector3D &a, const Vector3D &b) {
   return Vector3D(max(a.x(),b.x()), max(a.y(),b.y()), max(a.z(),b.z()));
 }

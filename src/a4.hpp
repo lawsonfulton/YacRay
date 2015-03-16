@@ -2,7 +2,6 @@
 #define CS488_A4_HPP
 
 #include <string>
-#include "algebra.hpp"
 #include "scene.hpp"
 #include "light.hpp"
 
@@ -12,6 +11,7 @@ void a4_render(// What to render
                const std::string& filename,
                // Image size
                int width, int height,
+               int ss_level,
                // Viewing parameters
                const Point3D& eye, const Vector3D& view,
                const Vector3D& up, double fov,

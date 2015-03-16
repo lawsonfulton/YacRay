@@ -11,6 +11,7 @@ class Primitive {
 public:
   virtual ~Primitive();
   virtual bool rayIntersection(const Ray &ray, double &t, Vector3D &normal, Point3D &point);
+  virtual bool isLight() { return false; }
 };
 
 class Sphere : public Primitive {

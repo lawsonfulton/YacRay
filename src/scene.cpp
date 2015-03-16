@@ -131,7 +131,7 @@ GeometryNode::~GeometryNode()
 {
 }
  
-bool GeometryNode::computeIntersection(const Ray &ray, Intersection &i) {
+bool GeometryNode::computeIntersection(const Ray &ray, Intersection &i) const{
   double t = DBL_INF;
   Vector3D normal;
   Point3D point;

@@ -1,4 +1,5 @@
 #include "a4.hpp"
+#include "camera.hpp"
 #include "renderer.hpp"
 
 #include <chrono>
@@ -12,6 +13,7 @@ void a4_render(// What to render
                const std::string& filename,
                // Image size
                int width, int height,
+               int ss_level,
                // Viewing parameters
                const Point3D& eye, const Vector3D& view,
                const Vector3D& up, double fov,
@@ -26,7 +28,7 @@ void a4_render(// What to render
   cout << "Camera Location: " << toString(eye) << " Look at: " << toString(view) << " Up: " << toString(up) << " FOV: " << fov << endl; 
 
   Camera camera(eye, view, up, fov, width, height);
-  Renderer renderer(camera, root, lights, ambient); 
+  Renderer renderer(&camera, root, lights, ambient, ss_level); 
 
   renderer.renderImage(filename);
 

@@ -12,7 +12,7 @@ stone = gr.material({0.8, 0.7, 0.7}, {0.0, 0.0, 0.0}, 0)
 grass = gr.material({0.1, 0.0, 0.3}, {0.0, 0.0, 0.0}, 0)
 ground = gr.material({0.3, 0.3, 0.3}, {0.0, 0.0, 0.0}, 0)
 hide = gr.material({0.84, 0.6, 0.53}, {0.3, 0.3, 0.3}, 20)
-mirror = gr.fancy_material({0,0,0}, {0.9, 0.9, 0.9}, 50, 1.0, 1.0, 0.0, 0.0)
+mirror = gr.fancy_material({0,0,0}, {1, 1, 1}, 50, 1.0, 1.0, 0.0, 0.0)
 --glass = gr.fancy_material({1.0,1.0,1.0}, {0.1, 0.1, 0.1}, 50, 0.2, 2.92, 1)
 shirt = gr.material({0.9,0.9,0.9}, {0, 0, 0}, 2)
 pants = gr.material({0.2,0.3,0.9}, {0, 0, 0}, 2)
@@ -92,9 +92,13 @@ scene:add_child(cornell_box)
 light_color = {0.780131, 0.780409, 0.775833}
 light_color_2 = {0.780131/2, 0.780409/2, 0.775833/2}
 -- on ceiling
-light1 = gr.light({0, box_height - 3.0, -3}, light_color_2, {1, 0, 0})
+--light1 = gr.light({0, box_height - 3.0, -3}, light_color_2, {1, 0, 0})
 -- by camera
-light2 = gr.light({-2.0, box_height - 3.0, -3}, light_color_2, {1, 0, 0})
+--light2 = gr.light({-2.0, box_height - 3.0, -3}, light_color_2, {1, 0, 0})
+
+
+sqlight = gr.rect_light({0, box_height - 2.01, -2}, 3, 3, light_color, {1,0,0}, 20)
+
 
 --far
 -- gr.render(scene,
@@ -108,9 +112,9 @@ light2 = gr.light({-2.0, box_height - 3.0, -3}, light_color_2, {1, 0, 0})
 -- 	  {-2, 4, -10}, {2, -2, 10}, {0, 1, 0}, 50,
 -- 	  {0.2, 0.2, 0.2}, {light1, light2})
 gr.render(scene,
-	  'reflect.png', 700, 700,
+	  'reflect.png', 700, 700, 4,
 	  {0, box_height/2.0, -box_length/2.0}, {0, -box_height/2.0, 30}, {0, 1, 0}, 50,
-	  {0.2,0.2,0.2}, {light1, light2})
+	  {0.2,0.2,0.2}, {sqlight})
 
 --top
 --close

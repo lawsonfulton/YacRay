@@ -1,3 +1,12 @@
 Project TODO
--Change coordinate system
--use  look_at instead of view direction
+- refactor materials
+- make light sources primitives?
+- use look_at instead of view direction
+- implement new mesh type
+- adaptive aliasing
+- 
+
+
+Done 
+- Added square light (soft shadows by monte carlo estimation)
+- control ss level from render command
