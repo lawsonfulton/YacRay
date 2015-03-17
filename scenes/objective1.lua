@@ -30,10 +30,10 @@ scene = gr.node('scene')
 
 
 sphere = gr.sphere('s')
-radius = 1.5
-sphere:translate(-2,radius - 1,0)
+radius = 2
+sphere:translate(-1.5,radius - 1,0)
 sphere:scale(radius, radius, radius)
-sphere:set_material(glass)
+sphere:set_material(mirror)
 scene:add_child(sphere)
 
 box = gr.cube('c')
@@ -97,7 +97,7 @@ light_color_2 = {0.780131/2, 0.780409/2, 0.775833/2}
 --light2 = gr.light({-2.0, box_height - 3.0, -3}, light_color_2, {1, 0, 0})
 
 
-sqlight = gr.rect_light({0, box_height - 2.01, -2}, 3, 3, light_color, {1,0,0}, 10)
+sqlight = gr.rect_light({0, box_height - 2.01, -2}, 3, 3, light_color, {1,0,0}, 30)
 
 
 --far
@@ -112,7 +112,7 @@ sqlight = gr.rect_light({0, box_height - 2.01, -2}, 3, 3, light_color, {1,0,0}, 
 -- 	  {-2, 4, -10}, {2, -2, 10}, {0, 1, 0}, 50,
 -- 	  {0.2, 0.2, 0.2}, {light1, light2})
 gr.render(scene,
-	  'reflect.png', 700, 700, 1,
+	  'objective1.png', 750, 750, 4,
 	  {0, box_height/2.0, -box_length/2.0}, {0, -box_height/2.0, 30}, {0, 1, 0}, 50,
 	  {0.2,0.2,0.2}, {sqlight})
 

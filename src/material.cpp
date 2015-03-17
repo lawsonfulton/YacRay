@@ -39,7 +39,7 @@ Colour PhongMaterial::computeColour(const Intersection &i, const Renderer *rend)
 			lightContribution += computeLightContribution(i, light, rend);	
 		}
 
-		finalColour += lightContribution / (double)(light->num_samples) * (1.0 -m_reflectivity); //TODO should I do this?
+		finalColour += lightContribution / (double)(light->num_samples) * (1.0 -m_reflectivity) * (1.0 -m_transparency); //TODO should I do this?
 	}
 
 	//Reflection and refractions components

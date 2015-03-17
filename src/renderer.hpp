@@ -31,8 +31,7 @@ public:
 private:
     void renderSlicesThread(Image &img, int totalSlices, atomic_int &currentSlice, atomic_int &pixelCounter);
     void renderSlice(Image &img, int slice, int totalSlices, atomic_int &pixelCounter);
-    Intersection findClosestIntersection(const Ray &ray) const;
-    Intersection findClosestIntersectionNoLights(const Ray &ray) const;
+    Intersection findClosestIntersection(const Ray &ray, bool includeLights = true) const;
     Colour computeColour(const Intersection &intersection) const;
     Colour backGroundColour(const Vector3D &u) const;
 

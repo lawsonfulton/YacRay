@@ -116,31 +116,13 @@ Colour Renderer::traceRay(const Ray &ray, int depth, const Material *sourceMater
 	return computeColour(closest);
 }
 
-Intersection Renderer::findClosestIntersection(const Ray &ray) const {
+
+Intersection Renderer::findClosestIntersection(const Ray &ray, bool includeLights) const {
 	Intersection closestI;
 	closestI.ray = &ray;
 
 	for (auto nodeIt = mGeometryList.begin(); nodeIt != mGeometryList.end(); ++nodeIt) {
-		Intersection newI;
-		bool intersects = nodeIt->computeIntersection(ray, newI); //TODO should I perturb here? //ray.perturbed(MY_EPSILON)
-
-		if(intersects) {
-			if(newI.t < closestI.t && newI.t > MIN_INTERSECT_DIST) {
-				closestI = newI;
-			}
-		}
-	}
-
-	return closestI;
-}
-
-//HACK HACK HACK
-Intersection Renderer::findClosestIntersectionNoLights(const Ray &ray) const {
-	Intersection closestI;
-	closestI.ray = &ray;
-
-	for (auto nodeIt = mGeometryList.begin(); nodeIt != mGeometryList.end(); ++nodeIt) {
-		if(!(*nodeIt).isLight()) {
+		if(includeLights || !(*nodeIt).isLight()) {
 			Intersection newI;
 			bool intersects = nodeIt->computeIntersection(ray, newI); //TODO should I perturb here? //ray.perturbed(MY_EPSILON)
 
@@ -190,7 +172,7 @@ bool Renderer::checkVisibility(const Point3D &a, const Point3D &b) const {
 	double dist = (b-a).length();
 
 	Ray shadowRay(a, (b-a)/dist);
-	Intersection i = findClosestIntersectionNoLights(shadowRay.perturbed(0.01)); //TODO this perturbment is a bit of a hack, should really be doing proer calculation of t in world space
+	Intersection i = findClosestIntersection(shadowRay.perturbed(0.01), false); //TODO this perturbment is a bit of a hack, should really be doing proer calculation of t in world space
 
 	if(i.t == DBL_INF) {
 		return true;

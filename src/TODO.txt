@@ -1,6 +1,4 @@
 Project TODO
-- refactor materials
-- make light sources primitives?
 - use look_at instead of view direction
 - implement new mesh type
 - adaptive aliasing
