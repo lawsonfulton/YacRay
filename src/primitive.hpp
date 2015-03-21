@@ -10,7 +10,7 @@ class Ray;
 class Primitive {
 public:
   virtual ~Primitive();
-  virtual bool rayIntersection(const Ray &ray, double &t, Vector3D &normal, Point3D &point);
+  virtual bool rayIntersection(const Ray &ray, double &t, Vector3D &normal, Point3D &point, Point2D &uv);
   virtual bool isLight() { return false; }
 };
 
@@ -18,14 +18,14 @@ class Sphere : public Primitive {
 public:
   virtual ~Sphere();
 
-  virtual bool rayIntersection(const Ray &ray, double &t, Vector3D &normal, Point3D &point);
+  virtual bool rayIntersection(const Ray &ray, double &t, Vector3D &normal, Point3D &point, Point2D &uv);
 };
 
 class Cube : public Primitive {
 public:
   virtual ~Cube();
 
-  virtual bool rayIntersection(const Ray &ray, double &t, Vector3D &normal, Point3D &point);
+  virtual bool rayIntersection(const Ray &ray, double &t, Vector3D &normal, Point3D &point, Point2D &uv);
 };
 
 class NonhierSphere : public Primitive {
@@ -36,7 +36,7 @@ public:
   }
   virtual ~NonhierSphere();
 
-  virtual bool rayIntersection(const Ray &ray, double &t, Vector3D &normal, Point3D &point);
+  virtual bool rayIntersection(const Ray &ray, double &t, Vector3D &normal, Point3D &point, Point2D &uv);
 
 private:
   Point3D m_pos;
@@ -52,7 +52,7 @@ public:
   
   virtual ~NonhierBox();
 
-  virtual bool rayIntersection(const Ray &ray, double &t, Vector3D &normal, Point3D &point);
+  virtual bool rayIntersection(const Ray &ray, double &t, Vector3D &normal, Point3D &point, Point2D &uv);
 
 private:
   Point3D m_pos;
@@ -63,7 +63,7 @@ class Torus : public Primitive {
 public:
   virtual ~Torus();
 
-  virtual bool rayIntersection(const Ray &ray, double &t, Vector3D &normal, Point3D &point);
+  virtual bool rayIntersection(const Ray &ray, double &t, Vector3D &normal, Point3D &point, Point2D &uv);
 };
 
 #endif

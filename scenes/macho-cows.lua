@@ -44,7 +44,8 @@ s:scale(4, 0.6, 0.6)
 -- Read in the cow model from a separate file.
 -- #############################################
 
-cow_poly = gr.mesh('cow', readobj('cow.obj'))
+--cow_poly = gr.mesh('cow', readobj('meshes/cow.obj'))
+cow_poly = gr.obj_mesh('cow', 'meshes/cow.obj')
 factor = 2.0/(2.76+3.637)
 
 cow_poly:set_material(hide)
@@ -113,6 +114,6 @@ for i = 1, 6 do
 end
 
 gr.render(scene,
-	  'macho_cows.png', 256, 256,
+	  'macho-cows.png', 512, 512, 1,
 	  {0, 2, 30}, {0, 0, -1}, {0, 1, 0}, 50,
 	  {0.4, 0.4, 0.4}, {gr.light({200, 202, 430}, {0.8, 0.8, 0.8}, {1, 0, 0})})

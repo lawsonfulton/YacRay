@@ -8,3 +8,13 @@ Project TODO
 Done 
 - Added square light (soft shadows by monte carlo estimation)
 - control ss level from render command
+- set_texture_map
+- changed it to look_at
+
+Final Scene Idea
+- Desk with pointer (normal) and foam apple.. something else? golf ball, chair, projector
+
+
+normal source:
+Consistent Normal Interpolation
+Alexander Reshetov Alexei Soupikov William R. Mark

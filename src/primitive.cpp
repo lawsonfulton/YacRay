@@ -6,7 +6,7 @@ Primitive::~Primitive()
 {
 }
 
-bool Primitive::rayIntersection(const Ray &ray, double &t, Vector3D &normal, Point3D &point) {
+bool Primitive::rayIntersection(const Ray &ray, double &t, Vector3D &normal, Point3D &point, Point2D &uv) {
 	return false;
 }
 
@@ -14,7 +14,7 @@ Sphere::~Sphere()
 {
 }
 
-bool Sphere::rayIntersection(const Ray &ray, double &t, Vector3D &normal, Point3D &point) {
+bool Sphere::rayIntersection(const Ray &ray, double &t, Vector3D &normal, Point3D &point, Point2D &uv) {
 	Vector3D oMc = ray.origin();
 
 	double a = 1.0;
@@ -51,11 +51,14 @@ bool Sphere::rayIntersection(const Ray &ray, double &t, Vector3D &normal, Point3
 		point = ray.getPoint(t);
 		normal = point;
 
+		double u = 0.5 + atan2(point.z(), -point.x()) / (2.0 * M_PI);
+		double v = 0.5 - asin(point.y()) / M_PI;
+		uv = Point2D(u,v);
+
 		// if(c < 0.0 ) {
 		// 	//cout << "w" << endl;
 		// 	normal = -normal;
 		// }
-		
 
 		return true;
 	} 
@@ -65,7 +68,7 @@ Cube::~Cube()
 {
 }
 
-bool Cube::rayIntersection(const Ray &ray, double &t, Vector3D &normal, Point3D &point) {
+bool Cube::rayIntersection(const Ray &ray, double &t, Vector3D &normal, Point3D &point, Point2D &uv) {
 	//Alg from http://tavianator.com/2011/05/fast-branchless-raybounding-box-intersections/
 	Point3D rayOrg = ray.origin();
 	Point3D rayDir = ray.direction();
@@ -121,7 +124,7 @@ bool Cube::rayIntersection(const Ray &ray, double &t, Vector3D &normal, Point3D 
 
 		//
 	    float min_distance = DBL_INF;
-
+	    int dir = 0;
 	    for (int i = 0; i < 3; ++i) {
 	        float distance = abs(0.5 - abs(newP[i]));
 
@@ -130,8 +133,26 @@ bool Cube::rayIntersection(const Ray &ray, double &t, Vector3D &normal, Point3D 
 
 	            normal = Vector3D();
 	            normal[i] = copysign(1.0, newP[i]);
+	            dir = i;
 	        }
 	    }
+		
+		double u,v;
+		if(dir == 0) {
+			u = (newP.z() + 1.0) / 2.0;
+ 			v = (newP.y() + 1.0) / 2.0;
+		}
+		else if(dir == 1) {
+ 			u = (newP.x() + 1.0) / 2.0;
+ 			v = (newP.z() + 1.0) / 2.0;
+		}
+		else {
+ 			u = (newP.x() + 1.0) / 2.0;
+ 			v = (newP.y() + 1.0) / 2.0;
+ 		}
+
+ 		uv = Point2D(u,v);
+
 		//if(dot(normal, ray.direction()) > 0.0) normal = -normal; //TODO
 
 		return true;
@@ -146,7 +167,7 @@ NonhierSphere::~NonhierSphere()
 }
 
 //TODO idea -- maybe I hsould only return t?
-bool NonhierSphere::rayIntersection(const Ray &ray, double &t, Vector3D &normal, Point3D &point) {
+bool NonhierSphere::rayIntersection(const Ray &ray, double &t, Vector3D &normal, Point3D &point, Point2D &uv) {
 	Vector3D oMc = ray.origin() - m_pos;
 
 	double a = 1.0;
@@ -181,8 +202,14 @@ bool NonhierSphere::rayIntersection(const Ray &ray, double &t, Vector3D &normal,
 		}
 
 		point = ray.getPoint(t);
-		normal = point - m_pos;
+
+		Point3D object_point = point - m_pos;
+		normal = object_point;
 		normal.normalize();
+
+		double u = 0.5 + atan2(object_point.z(), -object_point.x()) / (2.0 * M_PI);
+		double v = 0.5 - asin(object_point.y()) / M_PI;
+		uv = Point2D(u,v);
 
 		//ray started inside?
 		// if(c < 0.1 ) {
@@ -198,7 +225,7 @@ NonhierBox::~NonhierBox()
 {
 }
 
-bool NonhierBox::rayIntersection(const Ray &ray, double &t, Vector3D &normal, Point3D &point) {
+bool NonhierBox::rayIntersection(const Ray &ray, double &t, Vector3D &normal, Point3D &point, Point2D &uv) {
 	//Alg from http://tavianator.com/2011/05/fast-branchless-raybounding-box-intersections/
 	double halfSize = m_size/2.0;
 	Point3D minP = m_pos;
@@ -255,7 +282,7 @@ Torus::~Torus()
 {
 }
 
-bool Torus::rayIntersection(const Ray &ray, double &t, Vector3D &normal, Point3D &point) {
+bool Torus::rayIntersection(const Ray &ray, double &t, Vector3D &normal, Point3D &point, Point2D &uv) {
 	double A = 2.0, B = 1.0;
 	Point3D E = ray.origin();
 	Vector3D D = ray.direction();
@@ -303,7 +330,7 @@ bool Torus::rayIntersection(const Ray &ray, double &t, Vector3D &normal, Point3D
  	return intersects;
 
 }
-// bool Torus::rayIntersection(const Ray &ray, double &t, Vector3D &normal, Point3D &point) {
+// bool Torus::rayIntersection(const Ray &ray, double &t, Vector3D &normal, Point3D &point, Point2D &uv) {
 //   // (the dot product) looks just right (:-)
 //   struct { float a,b; } a;
 //   a.b = dot(ray.origin(), ray.direction());

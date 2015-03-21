@@ -1,7 +1,7 @@
 #include "camera.hpp"
 
-Camera::Camera(Point3D eye, Vector3D view, Vector3D up, double fov, int width, int height)
-        : mLookFrom(eye), mViewDirection(view), mUp(up), mFov(fov), mWidth(width), mHeight(height)
+Camera::Camera(Point3D eye, Vector3D lookat, Vector3D up, double fov, int width, int height)
+        : mLookFrom(eye), mLookAt(lookat), mUp(up), mFov(fov), mWidth(width), mHeight(height)
 {
     double d = 1.0;
     double worldH = 2.0 * d * tan(mFov/2.0 * M_PI/180.0); //Remeber have to convert to rads!!!
@@ -17,7 +17,7 @@ Camera::Camera(Point3D eye, Vector3D view, Vector3D up, double fov, int width, i
 
     //3. Rotate
     Matrix4x4 R3;
-    Vector3D w = (mViewDirection).normalized();
+    Vector3D w = (mLookAt - mLookFrom).normalized();
     Vector3D u = cross(mUp, w).normalized();
     Vector3D v = cross(w, u);
 

@@ -6,7 +6,7 @@
 
 class Camera {
 public:
-  	Camera(Point3D eye, Vector3D view, Vector3D up, double fov, int width, int height);
+  	Camera(Point3D eye, Vector3D lookat, Vector3D up, double fov, int width, int height);
 
   	Ray makeRay(Point2D screenCoord);
 
@@ -18,7 +18,7 @@ public:
 private:
 	QMatrix4x4 mScreenToWorld;
 	Point3D mLookFrom;
-	Vector3D mViewDirection;
+	Vector3D mLookAt;
 	Vector3D mUp;
 
 	double mFov;

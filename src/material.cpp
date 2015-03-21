@@ -2,12 +2,52 @@
 #include "light.hpp"
 #include "options.hpp"
 
+
+Material::Material() {
+	m_texmap = NULL;
+	m_bumpmap = NULL;
+}
+
 Material::~Material()
 {
+	delete m_texmap;
+	delete m_bumpmap;
 }
+
 
 Colour Material::computeColour(const Intersection &i, const Renderer *rend) const {
 
+}
+
+void Material::setTextureMap(const char* filename) {
+	m_texmap = new Image();
+	m_texmap->loadPng(filename);
+}
+
+void Material::setBumpMap(const char* filename) {
+	m_bumpmap = new Image();
+	m_bumpmap->loadPng(filename);
+}
+
+Colour Material::getTextureColour(Point2D uv) const {
+	return m_texmap->bilinearGetColour(uv);
+}
+
+double Material::getBumpVal(Point2D uv) const {
+	Colour mapCol = m_bumpmap->bilinearGetColour(uv);
+	return (mapCol.R() + mapCol.G() + mapCol.B()) / 3.0; //TODO this might be a waste
+}
+
+Vector3D Material::getDisplacementNormal(const Vector3D &n, const Point2D &uv) const {
+	double E = 1.0/64.0; //TODO how much?
+ 	//Question - should i be offsetting uv values or actual physical point and then getting new uv values?
+	Point2D across = Point2D(E, 0.0);
+	Point2D up = Point2D(0.0, E);
+
+	double Bu = (getBumpVal(uv + across) - getBumpVal(uv - across))/(2.0 * E);
+	double Bv = (getBumpVal(uv + up) - getBumpVal(uv - up))/(2.0 * E);
+
+	return Bu * Vector3D(1.0,0.0,0.0) + Bv * Vector3D(0.0,1.0,0.0); //TODO properly calc X and Y
 }
 
 PhongMaterial::PhongMaterial(const Colour& kd, const Colour& ks, double shininess)
@@ -25,8 +65,21 @@ PhongMaterial::~PhongMaterial()
 }
 
 Colour PhongMaterial::computeColour(const Intersection &i, const Renderer *rend) const {
+	Colour diffuseComp = m_kd;
+	Vector3D normal = i.normal;
+	
+	//Get colour from tex map
+	if(m_texmap) {
+		diffuseComp = getTextureColour(i.uv);
+	}
+
+	if(m_bumpmap) {
+		normal = (i.normal + getDisplacementNormal(i.normal, i.uv)).normalized();
+		//cout << normal << endl;
+	}
+
 	//Start with ambient colour
-	Colour finalColour = rend->mAmbientColour * m_kd;
+	Colour finalColour = rend->mAmbientColour * diffuseComp;
 
 	//Go through every light
 	for (auto lightIt = rend->mLights.begin(); lightIt != rend->mLights.end(); ++lightIt) {
@@ -36,7 +89,7 @@ Colour PhongMaterial::computeColour(const Intersection &i, const Renderer *rend)
 
 		//Need to do many samples for soft shadows
 		for(int j = 0; j < light->num_samples; j++) {
-			lightContribution += computeLightContribution(i, light, rend);	
+			lightContribution += computeLightContribution(normal, diffuseComp, i, light, rend);	
 		}
 
 		finalColour += lightContribution / (double)(light->num_samples) * (1.0 -m_reflectivity) * (1.0 -m_transparency); //TODO should I do this?
@@ -44,18 +97,19 @@ Colour PhongMaterial::computeColour(const Intersection &i, const Renderer *rend)
 
 	//Reflection and refractions components
 	if(m_reflectivity > MY_EPSILON) {
-		finalColour += computeReflectedContribution(i, rend);
+		finalColour += computeReflectedContribution(normal, i, rend);
 	}
 
 	if(m_transparency > MY_EPSILON) {
-		finalColour += computeRefractionContribution(i, rend); 
+		finalColour += computeRefractionContribution(normal, i, rend); 
 	}
 	
 
 	return finalColour;	
 }
 
-Colour PhongMaterial::computeLightContribution(const Intersection &i, Light *light, const Renderer *rend) const {
+//TODO refactor so no passing in intersection
+Colour PhongMaterial::computeLightContribution(const Vector3D &normal, const Colour &diffuseComp, const Intersection &i, Light *light, const Renderer *rend) const {
 	Vector3D point = i.getPoint();
 	Point3D lightPos = light->getSample();
 
@@ -67,21 +121,21 @@ Colour PhongMaterial::computeLightContribution(const Intersection &i, Light *lig
 
 	Vector3D lightVec = lightPos - point;
 	Vector3D L = (lightPos - point).normalized();
-	Vector3D R = reflect(L, i.normal);
+	Vector3D R = reflect(L, normal);
 	Vector3D V = -i.ray->direction();
 
-	double diffuseFact = qMax(dot(L, i.normal), 0.0f);
+	double diffuseFact = qMax(dot(L, normal), 0.0f);
 	double specularFact = qMax(dot(R, V), 0.0f);
-	Colour surfaceColour = m_kd * diffuseFact + m_ks * pow(specularFact, m_shininess);
+	Colour surfaceColour = diffuseComp * diffuseFact + m_ks * pow(specularFact, m_shininess);
 
 	//TODO combine this right
 	//	return surfaceColour * light->colour * attenuation * (1.0 - material->getReflectivity())* (1.0 - material->getTransparency());
 	return surfaceColour * light->getIntensity(lightVec);
 }
 
-Colour PhongMaterial::computeReflectedContribution(const Intersection &i, const Renderer *rend) const {
+Colour PhongMaterial::computeReflectedContribution(const Vector3D &normal, const Intersection &i, const Renderer *rend) const {
 	//Compute reflected direction
-	Vector3D reflDir = reflect(-i.ray->direction(), i.normal);
+	Vector3D reflDir = reflect(-i.ray->direction(), normal);
 	Colour reflectColour(0.0);
 
 	#if USE_GLOSSY_REFLECTIONS
@@ -109,7 +163,7 @@ Colour PhongMaterial::computeReflectedContribution(const Intersection &i, const 
 	return reflectColour / (double)samples;
 }
 
-Colour PhongMaterial::computeRefractionContribution(const Intersection &i, const Renderer *rend) const {
+Colour PhongMaterial::computeRefractionContribution(const Vector3D &normal, const Intersection &i, const Renderer *rend) const {
 	//http://graphics.stanford.edu/courses/cs148-10-summer/docs/2006--degreve--reflection_refraction.pdf
 
 	double n1 = i.sourceMaterial->getIor(), n2 = m_ior;
@@ -121,7 +175,7 @@ Colour PhongMaterial::computeRefractionContribution(const Intersection &i, const
 
 	const Vector3D &l = i.ray->direction();
 	double n = n1/n2;
-	double c = -dot(i.normal, l);
+	double c = -dot(normal, l);
 	double sinsq = n * n * (1.0 - c * c);
 
 	if(n1 < n2 && sinsq > 1.0){
@@ -131,7 +185,7 @@ Colour PhongMaterial::computeRefractionContribution(const Intersection &i, const
 	Vector3D refr = n * l + (n * c - c) * i.normal;
 	Ray refrRay(i.getPoint(), refr); //TODO - Should I preturb using the normal?material->getTransparency();
 
-	return rend->traceRay(refrRay, i.depth + 1, this) * m_transparency * m_kd; //TODO properly * material->getDiffuse();
+	return rend->traceRay(refrRay, i.depth + 1, this) * m_transparency;// * m_kd; //TODO properly * material->getDiffuse();
 }
 
 LightMaterial::~LightMaterial()

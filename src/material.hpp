@@ -5,6 +5,7 @@
 #include "renderer.hpp"
 #include "ray.hpp"
 #include "light.hpp"
+#include "Image.hpp"
 
 class Renderer;
 
@@ -15,10 +16,17 @@ public:
   virtual Colour computeColour(const Intersection &i, const Renderer *rend) const;
   virtual double getIor() const { return 1.0; }
 
+  void setTextureMap(const char* filename);
+  void setBumpMap(const char* filename);
+
 protected:
-  Material()
-  {
-  }
+  Material();
+  Colour getTextureColour(Point2D uv) const;
+  double getBumpVal(Point2D uv) const;
+  Vector3D getDisplacementNormal(const Vector3D &n, const Point2D &uv) const;
+
+  Image *m_texmap;
+  Image *m_bumpmap;
 };
 
 class PhongMaterial : public Material {
@@ -39,9 +47,9 @@ public:
   double getGloss() const { return m_glossy; }
 
 private:
-  Colour computeLightContribution(const Intersection &i, Light *light, const Renderer *rend) const;
-  Colour computeReflectedContribution(const Intersection &i, const Renderer *rend) const;
-  Colour computeRefractionContribution(const Intersection &i, const Renderer *rend) const;
+  Colour computeLightContribution(const Vector3D &normal, const Colour &diffuseComp,const Intersection &i, Light *light, const Renderer *rend) const;
+  Colour computeReflectedContribution(const Vector3D &normal, const Intersection &i, const Renderer *rend) const;
+  Colour computeRefractionContribution(const Vector3D &normal, const Intersection &i, const Renderer *rend) const;
 
   Colour m_kd;
   Colour m_ks;

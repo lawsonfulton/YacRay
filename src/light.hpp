@@ -15,7 +15,7 @@ public:
   virtual Point3D getSample() const;
   virtual Colour getIntensity(const Point3D &lightVec);
   double computeAttenuation(const Vector3D &lightVec);
-  virtual bool rayIntersection(const Ray &ray, double &t, Vector3D &normal, Point3D &point);
+  virtual bool rayIntersection(const Ray &ray, double &t, Vector3D &normal, Point3D &point, Point2D &uv);
 
   Colour colour;
   Point3D position;
@@ -30,7 +30,7 @@ class RectLight : public Light {
 	public:
 		RectLight(double x_len, double z_len, const Point3D &pos, double *atn, Colour col, int n_samples);
 
-		virtual bool rayIntersection(const Ray &ray, double &t, Vector3D &normal, Point3D &point);
+		virtual bool rayIntersection(const Ray &ray, double &t, Vector3D &normal, Point3D &point, Point2D &uv);
 		
 		virtual Point3D getSample() const;
 		virtual Colour getIntensity(const Point3D &lightVec);

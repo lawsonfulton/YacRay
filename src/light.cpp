@@ -42,7 +42,7 @@ Colour Light::getIntensity(const Vector3D &lightVec) {
   return colour * computeAttenuation(lightVec);
 }
 
-bool Light::rayIntersection(const Ray &ray, double &t, Vector3D &normal, Point3D &point) {
+bool Light::rayIntersection(const Ray &ray, double &t, Vector3D &normal, Point3D &point, Point2D &uv) {
   return false;
 }
 
@@ -80,7 +80,7 @@ Point3D RectLight::getSample() const {
   return bottomLeft + u * basis[0] + v * basis[1];
 }
 
-bool RectLight::rayIntersection(const Ray &ray, double &t, Vector3D &normal, Point3D &point) {
+bool RectLight::rayIntersection(const Ray &ray, double &t, Vector3D &normal, Point3D &point, Point2D &uv) {
   Vector3D toPlane = position - ray.origin();
   normal = Vector3D(0,-1,0);
 

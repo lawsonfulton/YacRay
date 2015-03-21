@@ -64,6 +64,21 @@ Vector3D reflect(const Vector3D &dir, const Vector3D &normal);
 template<typename T>
 T lin_interpolate(const T &a, const T &b, const double &t);
 
+void getBarycentricCoordinates(const Point3D &p,
+                               const Point3D &a,
+                               const Point3D &b,
+                               const Point3D &c,
+                               float &u, float &v, float &w);
+
+//Uses barycetric cordinates for point in triangle v0,v1,v2
+//to interpolate values i0,i1,i2
+template<typename T>
+T barycentricInterpolate(const Point3D &v0, 
+                         const Point3D &v1,
+                         const Point3D &v2,
+                         const Point3D &point,
+                         const T &i0, const T &i1, const T &i2);
+
 template <typename T>
 T clamp(const T& n, const T& lower, const T& upper);
 

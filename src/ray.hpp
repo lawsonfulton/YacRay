@@ -11,7 +11,7 @@ class Material;
 
 struct Intersection
 {
-	Intersection() : node(NULL), ray(NULL), t(DBL_INF), normal(Vector3D()), point(Point3D()), sourceMaterial(NULL), depth(0) {}
+	Intersection() : node(NULL), ray(NULL), t(DBL_INF), normal(Vector3D()), point(Point3D()), uv(Point2D()), sourceMaterial(NULL), depth(0) {}
 
 	Point3D getPoint() const;
 
@@ -20,6 +20,7 @@ struct Intersection
 	double t;
 	Vector3D normal;
 	Point3D point;
+  Point2D uv;
 
   const Material *sourceMaterial; //used for refraction
 

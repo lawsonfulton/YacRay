@@ -1,6 +1,8 @@
 #include "mesh.hpp"
 #include "ray.hpp" 
 #include "options.hpp"
+#include "algebra.hpp"
+#include "tiny_obj_loader.h"
 
 #include <iostream>
 
@@ -62,8 +64,8 @@ bool Mesh::pointInConvexPolygon(const Point3D &point, const Face &face, const Ve
   return true;
 } 
 
-bool Mesh::rayIntersection(const Ray &ray, double &t, Vector3D &normal, Point3D &point) {
-  bool hitBbox = mBoundingBox.rayIntersection(ray, t, normal, point);
+bool Mesh::rayIntersection(const Ray &ray, double &t, Vector3D &normal, Point3D &point, Point2D &uv) {
+  bool hitBbox = mBoundingBox.rayIntersection(ray, t, normal, point, uv);
   
   #if DRAW_BOUNDING_BOXES
   return hitBbox;
@@ -121,7 +123,7 @@ BoundingBox::BoundingBox(const Point3D &minP, const Point3D &maxP) {
 BoundingBox::BoundingBox() {
 }
 
-bool BoundingBox::rayIntersection(const Ray &ray, double &t, Vector3D &normal, Point3D &point) {
+bool BoundingBox::rayIntersection(const Ray &ray, double &t, Vector3D &normal, Point3D &point, Point2D &uv) {
   //Alg from http://tavianator.com/2011/05/fast-branchless-raybounding-box-intersections/
   Point3D rayOrg = ray.origin();
   Point3D rayDir = ray.direction();
@@ -170,3 +172,203 @@ bool BoundingBox::rayIntersection(const Ray &ray, double &t, Vector3D &normal, P
     return false;
   }
 }
+
+//*******************
+
+TriMesh::TriMesh(const char* obj_path) {
+    //Load the obj file using 3rd party library
+    std::vector<tinyobj::shape_t> shapes;
+    std::vector<tinyobj::material_t> materials;
+    std::string err = tinyobj::LoadObj(shapes, materials, obj_path);
+
+    tinyobj::mesh_t &mesh = shapes[0].mesh;
+
+    mVerts.resize(mesh.positions.size()/3);
+    mNormals.resize(mesh.normals.size()/3);
+    mIndices.resize(mesh.indices.size());
+    mTexCoords.resize(mesh.texcoords.size()/2);
+    mNumFaces = (int)mIndices.size()/3;
+
+    for(int i = 0; i < (int)mesh.positions.size()/3; i++) {
+        mVerts[i] = Point3D(mesh.positions[3 * i + 0],
+                            mesh.positions[3 * i + 1],
+                            mesh.positions[3 * i + 2]);
+    }
+
+    for(int i = 0; i < (int)mesh.normals.size()/3; i++) {
+        mNormals[i] = Vector3D(mesh.normals[3 * i + 0],
+                               mesh.normals[3 * i + 1],
+                               mesh.normals[3 * i + 2]);
+    }
+
+    for(int i = 0; i < (int)mesh.indices.size(); i++) {
+        mIndices[i] = (int)mesh.indices[i];
+    }
+
+    for(int i = 0; i < (int)mesh.texcoords.size()/2; i++) {
+        mTexCoords[i] = Point2D(mesh.texcoords[2 * i + 0],
+                               mesh.texcoords[2 * i + 1]);
+    }
+
+    for(int i = 0; i < mNumFaces; i++) {
+        int *face = &mIndices[i * 3];
+
+        Point3D v0 = mVerts[face[0]];
+        Point3D v1 = mVerts[face[1]];
+        Point3D v2 = mVerts[face[2]];
+        cout << "p0: " << v0 << " n: " << mNormals[face[0]] << endl;
+        cout << "p1: " << v1 << " n: " << mNormals[face[1]] << endl;
+        cout << "p2: " << v2 << " n: " << mNormals[face[2]] << endl;
+    }
+
+    //Calc normals if we didn't get any
+    if(mNormals.size() == 0) {
+        mHasVertNormals = false;
+
+        for(int i = 0; i < mNumFaces; i++) {
+            int *face = &mIndices[i * 3];
+            Vector3D planeNormal = cross(mVerts[face[0]] - mVerts[face[2]], mVerts[face[1]] - mVerts[face[2]]).normalized();
+            mNormals.push_back(planeNormal);
+        }
+
+    } else {
+        mHasVertNormals = true;
+    }
+
+    //Set up bounding box
+    Point3D maxP = Point3D(-DBL_INF, -DBL_INF, -DBL_INF);
+    Point3D minP = Point3D(DBL_INF, DBL_INF, DBL_INF);
+
+    for(int i = 0; i < (int)mVerts.size(); i++) {
+        maxP = vectorMax(maxP, mVerts[i]);
+        minP = vectorMin(minP, mVerts[i]);
+    }
+
+    mBoundingBox = BoundingBox(minP, maxP);
+}
+
+
+bool TriMesh::rayIntersection(const Ray &ray, double &t, Vector3D &normal, Point3D &point, Point2D &uv) {
+    bool hitBbox = mBoundingBox.rayIntersection(ray, t, normal, point, uv);
+
+    #if DRAW_BOUNDING_BOXES
+    return hitBbox;
+    #endif
+
+    if(hitBbox) {
+        double minT = DBL_INF;
+        bool intersects = false;
+
+        for(int i = 0; i < mNumFaces; i++) {
+            double newT = DBL_INF;
+            int *face = &mIndices[i * 3];
+
+            Point3D v0 = mVerts[face[0]];
+            Point3D v1 = mVerts[face[1]];
+            Point3D v2 = mVerts[face[2]];
+
+            bool hit = triangleIntersection(v0, v1, v2, ray, newT);
+
+            if(hit && newT > MIN_INTERSECT_DIST) {
+                if(newT < minT) {
+                    minT = newT;
+                    point = ray.getPoint(newT);
+                    intersects = true;
+                    
+                    if(mHasVertNormals) {
+                        Vector3D n0 = mNormals[face[0]];
+                        Vector3D n1 = mNormals[face[1]];
+                        Vector3D n2 = mNormals[face[2]];
+
+                        normal = barycentricInterpolate(v0, v1, v2, point, n0, n1, n2);//barycentricInterpolate(v2, v1, v0, point, n2, n1, n0);
+                        normal.normalize();
+                        //The point is nowhere near the triangle??
+                        // cout << "point: " << point << " normal: " << normal << endl;
+                        // cout << "p0: " << v0 << " n: " << mNormals[face[0]] << endl;
+                        // cout << "p1: " << v1 << " n: " << mNormals[face[1]] << endl;
+                        // cout << "p2: " << v2 << " n: " << mNormals[face[2]] << endl;
+                    }
+                    else {
+                        normal = mNormals[i];
+                    }
+                }
+            }
+        }
+
+        t = minT;
+
+        return intersects;
+    }
+    else {
+        return false;
+    }
+}
+
+#define TRI_EPSILON 0.000001
+//http://en.wikipedia.org/wiki/M%C3%B6ller%E2%80%93Trumbore_intersection_algorithm
+bool TriMesh::triangleIntersection( const Point3D &V1,  // Triangle vertices
+                                   const Point3D &V2,
+                                   const Point3D &V3,
+                                   const Ray &ray,
+                                   double &t)
+{
+  Vector3D e1, e2;  //Edge1, Edge2
+  Vector3D P, Q, T;
+  double det, inv_det, u, v; //TODO - should be double?
+  double newT;
+ 
+  //Find vectors for two edges sharing V1
+  e1 = V2 - V1;
+  e2 = V3 - V1;
+
+  //Begin calculating determinant - also used to calculate u parameter
+  P = cross(ray.direction(), e2);
+  //if determinant is near zero, ray lies in plane of triangle
+  det = dot(e1, P);
+  //NOT CULLING
+  if(det > -TRI_EPSILON && det < TRI_EPSILON) return false;
+  inv_det = 1.0 / det;
+ 
+  //calculate distance from V1 to ray origin
+  T = ray.origin() - V1;
+ 
+  //Calculate u parameter and test bound
+  u = dot(T, P) * inv_det;
+
+  //The intersection lies outside of the triangle
+  if(u < 0.0 || u > 1.0) return false;
+ 
+  //Prepare to test v parameter
+  Q = cross(T, e1);
+ 
+  //Calculate V parameter and test bound
+  v = dot(ray.direction(), Q) * inv_det;
+  //The intersection lies outside of the triangle
+  if(v < 0.0 || u + v  > 1.0) return false;
+ 
+  newT = dot(e2, Q) * inv_det;
+ 
+  if(newT > TRI_EPSILON) { //ray intersection
+    t = newT;
+    return true;
+  }
+ 
+  // No hit, no win
+  return false;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

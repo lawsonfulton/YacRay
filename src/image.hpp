@@ -48,6 +48,10 @@ public:
 
   void gammaCorrect(double gamma);
   void normalize();
+
+  Colour getColour(int x, int y);
+
+  Colour bilinearGetColour(Point2D uv);
   
 private:
   int m_width, m_height;

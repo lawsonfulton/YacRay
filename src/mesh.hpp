@@ -11,7 +11,7 @@ public:
   BoundingBox(const Point3D &minP, const Point3D &maxP);
   BoundingBox();
 
-  virtual bool rayIntersection(const Ray &ray, double &t, Vector3D &normal, Point3D &point);
+  virtual bool rayIntersection(const Ray &ray, double &t, Vector3D &normal, Point3D &point, Point2D &uv);
   
 private:
   Point3D mMinP;
@@ -26,7 +26,7 @@ public:
   Mesh(const std::vector<Point3D>& verts,
        const std::vector< std::vector<int> >& faces);
 
-  virtual bool rayIntersection(const Ray &ray, double &t, Vector3D &normal, Point3D &point);
+  virtual bool rayIntersection(const Ray &ray, double &t, Vector3D &normal, Point3D &point, Point2D &uv);
   
   typedef std::vector<int> Face;
   
@@ -43,5 +43,30 @@ private:
 };
 
 
+class TriMesh : public Primitive {
+public:
+  TriMesh(const char* obj_path);
+
+  virtual bool rayIntersection(const Ray &ray, double &t, Vector3D &normal, Point3D &point, Point2D &uv);
+
+  typedef std::vector<int> Face;
+
+private:
+  bool triangleIntersection(const Point3D &V1, const Point3D &V2, const Point3D &V3, const Ray &ray, double &t);
+
+  std::vector<Point3D> mVerts;
+  std::vector<Vector3D> mNormals;
+  std::vector<Point2D> mTexCoords;
+  std::vector<int> mIndices; //Grouped in threes
+  int mNumFaces;
+
+  bool mHasVertNormals;
+
+  BoundingBox mBoundingBox;
+};
+
 
 #endif
+
+
+

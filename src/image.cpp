@@ -323,5 +323,56 @@ void Image::normalize() {
   }
 }
 
+Colour Image::getColour(int x, int y) {
+  return Colour((*this)(x,y,0),(*this)(x,y,1),(*this)(x,y,2));
+}
+
+Colour Image::bilinearGetColour(Point2D uv) {
+  //Source: http://fastcpp.blogspot.ca/2011/06/bilinear-pixel-interpolation-using-sse.html
+  double x = uv.x() * width();
+  double y = uv.y() * height();
+
+  if(x >= width() - 1) {
+    x = x - width() + 1;
+  }
+  if(y >= height() - 1) {
+    y = y - height() + 1;
+  }
+  if(x < 0.0) {
+    x = width() - 1 + x;
+  }
+  if(y < 0.0) {
+    y = height() - 1 + y;
+  }
+  int px = (int)floor(x); // floor of x
+  int py = (int)floor(y); // floor of y
+
+
+
+  // load the four neighboring pixels
+  Colour p1 = getColour(px + 0, py + 0);
+  Colour p2 = getColour(px + 1, py + 0);
+  Colour p3 = getColour(px + 0, py + 1);
+  Colour p4 = getColour(px + 1, py + 1);
+
+  // Calculate the weights for each pixel
+  double fx = x - (double)px;
+  double fy = y - (double)py;
+  double fx1 = 1.0 - (double)fx;
+  double fy1 = 1.0 - (double)fy;
+
+  double w1 = fx1 * fy1;
+  double w2 = fx  * fy1;
+  double w3 = fx1 * fy;
+  double w4 = fx  * fy;
+
+  Colour out = p1 * w1 + p2 * w2 + p3 * w3 + p4 * w4;
+
+ if(out.R() > 1.0) {
+  cout << p1 << " " << p2 << " " << p3 << " " << p4 << endl;
+  cout << w1 << " " << w2 << " " << w3 << " " << w4 << endl;
+}
+ return out;
+}
 
 

@@ -135,12 +135,13 @@ bool GeometryNode::computeIntersection(const Ray &ray, Intersection &i) const{
   double t = DBL_INF;
   Vector3D normal;
   Point3D point;
+  Point2D uv;
 
   Matrix4x4 normalMatrix = Matrix4x4(m_trans.normalMatrix());
 
   Ray transformedRay(ray);
   transformedRay.transform(m_invtrans);
-  bool intersects = m_primitive->rayIntersection(transformedRay, t, normal, point);
+  bool intersects = m_primitive->rayIntersection(transformedRay, t, normal, point, uv);
 
   //Transform it back into world space
   if(intersects) {
@@ -157,6 +158,7 @@ bool GeometryNode::computeIntersection(const Ray &ray, Intersection &i) const{
   i.t = t;
   i.normal = normal; //TODO adjust normal
   i.point = point;
+  i.uv = uv;
 
   return intersects;
 }

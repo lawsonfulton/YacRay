@@ -310,6 +310,26 @@ int gr_mesh_cmd(lua_State* L)
   return 1;
 }
 
+// Create a mesh that will be loaded by the c++ class
+extern "C"
+int gr_obj_mesh_cmd(lua_State* L)
+{
+  GRLUA_DEBUG_CALL;
+  
+  gr_node_ud* data = (gr_node_ud*)lua_newuserdata(L, sizeof(gr_node_ud));
+  data->node = 0;
+
+  const char* name = luaL_checkstring(L, 1);
+  const char* path = luaL_checkstring(L, 2);
+
+  data->node = new GeometryNode(name, new TriMesh(path));
+
+  luaL_getmetatable(L, "gr.node");
+  lua_setmetatable(L, -2);
+
+  return 1;
+}
+
 // Make a point light
 extern "C"
 int gr_light_cmd(lua_State* L)
@@ -433,7 +453,10 @@ int gr_material_cmd(lua_State* L)
                                      Colour(ks[0], ks[1], ks[2]),
                                      shininess);
 
-  luaL_newmetatable(L, "gr.material");
+  //luaL_newmetatable(L, "gr.material");
+  //lua_setmetatable(L, -2);
+
+  luaL_getmetatable(L, "gr.material");
   lua_setmetatable(L, -2);
   
   return 1;
@@ -462,10 +485,50 @@ int gr_fancy_material_cmd(lua_State* L)
                                      Colour(ks[0], ks[1], ks[2]),
                                      shininess, reflectivity, ior, transparency, gloss);
 
-  luaL_newmetatable(L, "gr.material");
+  //luaL_newmetatable(L, "gr.material");
+  //lua_setmetatable(L, -2);
+
+  luaL_getmetatable(L, "gr.material");
   lua_setmetatable(L, -2);
   
   return 1;
+}
+
+// Set a materials's texture
+// material.set_texture_map("filename.png")
+extern "C"
+int gr_material_set_texture_map_cmd(lua_State* L)
+{
+  GRLUA_DEBUG_CALL;
+  
+  gr_material_ud* matdata = (gr_material_ud*)luaL_checkudata(L, 1, "gr.material");
+  luaL_argcheck(L, matdata != 0, 1, "Material expected");
+
+  Material* self = dynamic_cast<Material*>(matdata->material);
+
+  const char* filename = luaL_checkstring(L, 2);
+
+  self->setTextureMap(filename);
+
+  return 0;
+}
+
+// Set a materials's bump map
+extern "C"
+int gr_material_set_bump_map_cmd(lua_State* L)
+{
+  GRLUA_DEBUG_CALL;
+  
+  gr_material_ud* matdata = (gr_material_ud*)luaL_checkudata(L, 1, "gr.material");
+  luaL_argcheck(L, matdata != 0, 1, "Material expected");
+
+  Material* self = dynamic_cast<Material*>(matdata->material);
+
+  const char* filename = luaL_checkstring(L, 2);
+
+  self->setBumpMap(filename);
+
+  return 0;
 }
 
 
@@ -619,6 +682,7 @@ static const luaL_reg grlib_functions[] = {
   {"nh_sphere", gr_nh_sphere_cmd},
   {"nh_box", gr_nh_box_cmd},
   {"mesh", gr_mesh_cmd},
+  {"obj_mesh", gr_obj_mesh_cmd},
   {"light", gr_light_cmd},
   {"rect_light", gr_rect_light_cmd},
   {"render", gr_render_cmd},
@@ -648,6 +712,13 @@ static const luaL_reg grlib_node_methods[] = {
   {0, 0}
 };
 
+static const luaL_reg grlib_material_methods[] = {
+ // {"__gc", gr_node_gc_cmd},
+  {"set_texture_map", gr_material_set_texture_map_cmd},
+  {"set_bump_map", gr_material_set_bump_map_cmd},
+  {0, 0}
+};
+
 // This function calls the lua interpreter to define the scene and
 // raytrace it as appropriate.
 bool run_lua(const std::string& filename)
@@ -664,6 +735,14 @@ bool run_lua(const std::string& filename)
 
 
   GRLUA_DEBUG("Setting up our functions");
+
+  luaL_newmetatable(L, "gr.material");
+  lua_pushstring(L, "__index");
+  lua_pushvalue(L, -2);
+  lua_settable(L, -3);
+
+  //load material methods
+  luaL_openlib(L, 0, grlib_material_methods, 0);
 
   // Set up the metatable for gr.node
   luaL_newmetatable(L, "gr.node");
