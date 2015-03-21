@@ -15,6 +15,22 @@ Final Scene Idea
 - Desk with pointer (normal) and foam apple.. something else? golf ball, chair, projector
 
 
-normal source:
-Consistent Normal Interpolation
-Alexander Reshetov Alexei Soupikov William R. Mark
+
+*For grids
+ARTS: Accelerated Ray-Tracing System
+Akira Fujimoto, Takayuki Tanaka, and Kansei Iwata
+
+A Fast Voxel Traversal Algorithm for Ray Tracing - John Amanatides
+
+http://delivery.acm.org.proxy.lib.uwaterloo.ca/10.1145/1870000/1866168/a142-reshetov.pdf?ip=129.97.58.73&id=1866168&acc=ACTIVE%20SERVICE&key=FD0067F557510FFB%2E9219CF56F73DCF78%2E4D4702B0C3E38B35%2E4D4702B0C3E38B35&CFID=647099131&CFTOKEN=23084208&__acm__=1426966097_c5c2e497314ca7d4f51dd0150ced0737
+
+* 1: Objective one: Reflective materials
+~ 2: Objective two: Transparent materials with refraction
+* 3: Objective three: Soft Shadows
+~ 4: Objective four: Glossy Reflections
+ 5: Objective five: Anti-aliasing using adaptive supersampling
+* 6: Objective six: Smooth Phong shading on triangle meshes
+* 7: Objective seven: Texture Mapping
+~ 8: Objective eight: Bump Mapping
+ 9: Objective nine: Tone Mapping
+ 10: Objective ten: Final scene that demonstrates objectives 1 - 9

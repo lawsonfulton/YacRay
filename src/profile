@@ -1,0 +1,6 @@
+#!/bin/bash
+
+cd ../scenes
+iprofiler -timeprofiler -T 30 ../src/rt $1.lua
+rm -r $1.dtps
+mv rt.dtps $1.dtps

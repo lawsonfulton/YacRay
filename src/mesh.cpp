@@ -210,15 +210,15 @@ TriMesh::TriMesh(const char* obj_path) {
                                mesh.texcoords[2 * i + 1]);
     }
 
-    for(int i = 0; i < mNumFaces; i++) {
-        int *face = &mIndices[i * 3];
-
-        Point3D v0 = mVerts[face[0]];
-        Point3D v1 = mVerts[face[1]];
-        Point3D v2 = mVerts[face[2]];
-        cout << "p0: " << v0 << " n: " << mNormals[face[0]] << endl;
-        cout << "p1: " << v1 << " n: " << mNormals[face[1]] << endl;
-        cout << "p2: " << v2 << " n: " << mNormals[face[2]] << endl;
+    //Default uv mapping sphere projection
+    if(mTexCoords.size() == 0) {
+        mTexCoords.resize(mVerts.size());
+        for(int i = 0; i < mVerts.size(); i++) {
+            Point3D &point = mVerts[i];
+            double u = 0.5 + atan2(point.z(), -point.x()) / (2.0 * M_PI);
+            double v = 0.5 - asin(point.y()) / M_PI;
+            mTexCoords[i] = Point2D(u,v);
+        }
     }
 
     //Calc normals if we didn't get any
@@ -263,9 +263,9 @@ bool TriMesh::rayIntersection(const Ray &ray, double &t, Vector3D &normal, Point
             double newT = DBL_INF;
             int *face = &mIndices[i * 3];
 
-            Point3D v0 = mVerts[face[0]];
-            Point3D v1 = mVerts[face[1]];
-            Point3D v2 = mVerts[face[2]];
+            const Point3D &v0 = mVerts[face[0]];
+            const Point3D &v1 = mVerts[face[1]];
+            const Point3D &v2 = mVerts[face[2]];
 
             bool hit = triangleIntersection(v0, v1, v2, ray, newT);
 
@@ -275,18 +275,17 @@ bool TriMesh::rayIntersection(const Ray &ray, double &t, Vector3D &normal, Point
                     point = ray.getPoint(newT);
                     intersects = true;
                     
-                    if(mHasVertNormals) {
-                        Vector3D n0 = mNormals[face[0]];
-                        Vector3D n1 = mNormals[face[1]];
-                        Vector3D n2 = mNormals[face[2]];
+                    if(mHasVertNormals) { //TODO move this out of main loop?
+                        const Vector3D &n0 = mNormals[face[0]];
+                        const Vector3D &n1 = mNormals[face[1]];
+                        const Vector3D &n2 = mNormals[face[2]];
 
                         normal = barycentricInterpolate(v0, v1, v2, point, n0, n1, n2);//barycentricInterpolate(v2, v1, v0, point, n2, n1, n0);
-                        normal.normalize();
-                        //The point is nowhere near the triangle??
-                        // cout << "point: " << point << " normal: " << normal << endl;
-                        // cout << "p0: " << v0 << " n: " << mNormals[face[0]] << endl;
-                        // cout << "p1: " << v1 << " n: " << mNormals[face[1]] << endl;
-                        // cout << "p2: " << v2 << " n: " << mNormals[face[2]] << endl;
+                        
+                        const Point2D &uv0 = mTexCoords[face[0]];
+                        const Point2D &uv1 = mTexCoords[face[1]];
+                        const Point2D &uv2 = mTexCoords[face[2]];
+                        uv = barycentricInterpolate(v0, v1, v2, point, uv0, uv1, uv2);
                     }
                     else {
                         normal = mNormals[i];

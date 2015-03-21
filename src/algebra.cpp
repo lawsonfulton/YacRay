@@ -130,5 +130,5 @@ Vector3D uniformRandomHemisphereUnitVec() {
 
 //Dummy instantiations of templates to avoid linker errors
 template QVector3D barycentricInterpolate<QVector3D>(QVector3D const&, QVector3D const&, QVector3D const&, QVector3D const&, QVector3D const&, QVector3D const&, QVector3D const&);
-
+template Point2D barycentricInterpolate<Point2D>(QVector3D const&, QVector3D const&, QVector3D const&, QVector3D const&, Point2D const&, Point2D const&, Point2D const&);
 

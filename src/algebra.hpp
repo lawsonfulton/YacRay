@@ -41,8 +41,18 @@ typedef QVector2D Point2D;
 #define EPSILON_VEC Vector3D(MY_EPSILON, MY_EPSILON, MY_EPSILON)
 
 
-#define dot QVector3D::dotProduct
-#define cross QVector3D::crossProduct
+//#define dot QVector3D::dotProduct
+//#define cross QVector3D::crossProduct
+
+inline float dot(const Vector3D &a, const Vector3D &b) {
+  return a.x() * b.x() + a.y() * b.y() + a.z() * b.z();
+}
+
+inline Vector3D cross(const Vector3D &a, const Vector3D &b) {
+  return Vector3D((a[1] * b[2]) - (a[2] * b[1]),
+                  (a[2] * b[0]) - (a[0] * b[2]),
+                  (a[0] * b[1]) - (a[1] * b[0]));
+}
 
 using namespace std;
 

@@ -37,18 +37,14 @@ checker:set_texture_map("big_checker.png")
 
 
 require('readobj')
-mesh = gr.obj_mesh('test_mesh','meshes/smoothed_uv_sphere.obj')
+mesh = gr.obj_mesh('test_mesh','meshes/suzy_smooth.obj')
 --mesh = gr.mesh('ball', readobj('meshes/cow.obj'))
---mesh:translate(0,1,0)
---mesh:scale(2,2,2)
---mesh:rotate('y',180)
-mesh:set_material(white_cornell_shiny)
+mesh:translate(0,1,0)
+--mesh:scale(0.5,0.5,0.5)
+mesh:rotate('y',180)
+mesh:set_material(white_cornell)
 scene:add_child(mesh)
 
-ball = gr.sphere('ball')
-ball:set_material(white_cornell)
-scene:add_child(ball)
-ball:translate(-2,0,0)
 
 -- box = gr.cube('c')
 -- box:translate(1,-1,0)
@@ -126,8 +122,8 @@ sqlight = gr.rect_light({0, box_height - 2.01, -2}, 3, 3, light_color, {1,0,0}, 
 -- 	  {-2, 4, -10}, {2, -2, 10}, {0, 1, 0}, 50,
 -- 	  {0.2, 0.2, 0.2}, {light1, light2})
 gr.render(scene,
-	  'mesh.png', 500, 500, 4,
-	  {-2, 2, -6}, {0, 0, 0}, {0, 1, 0}, 50,
+	  'mesh.png', 500, 500, 1,
+	  {-1, 3, -4}, {0, 1, 0}, {0, 1, 0}, 50,
 	  {0.2,0.2,0.2}, {light2,light1})
 
 --top

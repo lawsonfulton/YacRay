@@ -35,4 +35,5 @@
 *.sublime-workspace
 *.sublime-project
 *.d
+*.dtps
 rt
