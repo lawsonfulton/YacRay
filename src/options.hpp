@@ -5,7 +5,7 @@
 
 #define NUM_THREADS 8
 
-#define USE_GLOSSY_REFLECTIONS false
+#define USE_GLOSSY_REFLECTIONS true
 #define GLOSSY_SAMPLES 25
 
 

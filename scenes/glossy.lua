@@ -12,7 +12,7 @@ stone = gr.material({0.8, 0.7, 0.7}, {0.0, 0.0, 0.0}, 0)
 grass = gr.material({0.1, 0.0, 0.3}, {0.0, 0.0, 0.0}, 0)
 ground = gr.material({0.3, 0.3, 0.3}, {0.0, 0.0, 0.0}, 0)
 hide = gr.material({0.84, 0.6, 0.53}, {0.3, 0.3, 0.3}, 20)
-mirror = gr.fancy_material({0,0,0}, {1, 1, 1}, 50, 1.0, 1.0, 0.0, 0.0)
+
 glass = gr.fancy_material({1.0,1.0,1.0}, {0.1, 0.1, 0.1}, 50, 0.0, 1.01, 1, 0.0)
 shirt = gr.material({0.9,0.9,0.9}, {0, 0, 0}, 2)
 pants = gr.material({0.2,0.3,0.9}, {0, 0, 0}, 2)
@@ -26,8 +26,8 @@ green_cornell = gr.material({0.162928, 0.408903, 0.083375}, {0, 0, 0}, 0)
 
 
 scene = gr.node('scene')
-
-tex_test = gr.fancy_material({0.740063, 0.742313, 0.733934}, {1, 1, 1}, 4, 0.4,1.0,0.0,0.3)
+mirror = gr.fancy_material({0,0,0}, {1, 1, 1}, 500, 1.0, 1.0, 0.0, 0.3)
+tex_test = gr.fancy_material({0.740063, 0.742313, 0.733934}, {1, 1, 1}, 400, 0.4,1.0,0.0,0.0)
 --tex_test:set_texture_map("earth.png")
 tex_test:set_texture_map("textures/wood_floor.png")
 --tex_test:set_texture_map("plasma_bump.png")
@@ -127,7 +127,7 @@ sqlight = gr.rect_light({0, box_height - 2.01, -2}, 3, 3, light_color, {1,0,0}, 
 gr.render(scene,
 	  'glossy.png', 700, 700, 1,
 	  {-2, 1.5, -2}, {-0, -0.3, 0}, {0, 1, 0}, 50,
-	  {0.2,0.2,0.2}, {sqlight}, "textures/apartment_env_map_sm.png")
+	  {0.05,0.05,0.05}, {sqlight}, "textures/apartment_env_map_sm.png")
 
 --top
 --close

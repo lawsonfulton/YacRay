@@ -90,7 +90,7 @@ Colour PhongMaterial::computeColour(const Intersection &i, const Renderer *rend)
 			lightContribution += computeLightContribution(normal, diffuseComp, i, light, rend);	
 		}
 
-		lightSum += lightContribution / (double)(light->num_samples) * (1.0 -m_reflectivity) * (1.0 -m_transparency); //TODO should I do this?
+		lightSum += lightContribution / (double)(light->num_samples); //TODO should I do this?
 	}
 
 	//Reflection and refractions components
@@ -161,6 +161,7 @@ Colour PhongMaterial::computeReflectedContribution(const Vector3D &normal, const
 	//Compute reflected direction
 	Vector3D reflDir = reflect(-i.ray->direction(), normal);
 	Colour reflectColour(0.0);
+
 
 	#if USE_GLOSSY_REFLECTIONS
 	int samples = GLOSSY_SAMPLES;
