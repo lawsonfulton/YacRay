@@ -2,12 +2,14 @@
 #define RENDERER_HPP
 
 #include <list>
+#include <vector>
 #include <atomic>
 
 #include "camera.hpp"
 #include "scene.hpp"
 #include "algebra.hpp"
 #include "image.hpp"
+#include "material.hpp"
 
 class Camera;
 class SceneNode;
@@ -18,9 +20,9 @@ using namespace std;
 
 class Renderer {
 public:
-    Renderer(Camera *camera, SceneNode *scene, list<Light*> lights, Colour ambient, int ssLevel)
-             :  mAmbientColour(ambient), mLights(lights), mSSLevel(ssLevel), mCamera(camera), mScene(scene) {}
-    
+    Renderer(Camera *camera, SceneNode *scene, list<Light*> lights, Colour ambient, int ssLevel, const char* skymap);
+    ~Renderer();
+
     void renderImage(const string &filename);
     Colour traceRay(const Ray &ray, int depth, const Material *sourceMaterial) const;
     bool checkVisibility(const Point3D &a, const Point3D &b) const;
@@ -31,9 +33,11 @@ public:
 private:
     void renderSlicesThread(Image &img, int totalSlices, atomic_int &currentSlice, atomic_int &pixelCounter);
     void renderSlice(Image &img, int slice, int totalSlices, atomic_int &pixelCounter);
+    Colour computePixelColour(int x, int y);
+    Colour subSample(const Point2D &minP, const Point2D &maxP, int &nSamples);
     Intersection findClosestIntersection(const Ray &ray, bool includeLights = true) const;
     Colour computeColour(const Intersection &intersection) const;
-    Colour backGroundColour(const Vector3D &u) const;
+    Colour backGroundColour(const Vector3D &direction) const;
 
     int mSSLevel;
 
@@ -41,6 +45,10 @@ private:
     SceneNode *mScene;
 
     list<GeometryNode> mGeometryList;
+
+    vector<vector<Colour*> > mRayColours;
+    Material *mSourceMaterial;
+    Image *mSkymap;
 };
 
 #endif

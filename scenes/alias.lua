@@ -18,7 +18,7 @@ shirt = gr.material({0.9,0.9,0.9}, {0, 0, 0}, 2)
 pants = gr.material({0.2,0.3,0.9}, {0, 0, 0}, 2)
 shoes = gr.material({0.1,0.1,0.1}, {0.3, 0.3, 0.3}, 20)
 
-white_cornell = gr.material({0.740063, 0.742313, 0.733934}, {0, 0, 0}, 0)
+white_cornell = gr.material({0, 0.742313, 0.733934}, {0, 0, 0}, 0)
 white_cornell_shiny = gr.fancy_material({0.740063/2, 0.742313/2, 0.733934/2}, {1, 1, 1}, 4, 0.6,1.0,0.0,0.3)
 red_cornell =   gr.material({0.366046, 0.037182, 0.041638}, {0, 0, 0}, 0)
 green_cornell = gr.material({0.162928, 0.408903, 0.083375}, {0, 0, 0}, 0)
@@ -27,31 +27,17 @@ green_cornell = gr.material({0.162928, 0.408903, 0.083375}, {0, 0, 0}, 0)
 
 scene = gr.node('scene')
 
-tex_test = gr.material({0.740063, 0.742313, 0.733934}, {0, 0, 0}, 0)
---tex_test:set_texture_map("earth.png")
-tex_test:set_texture_map("textures/golfball_bump.png")
---tex_test:set_texture_map("plasma_bump.png")
-
 checker = gr.material({0.740063, 0.742313, 0.733934}, {0, 0, 0}, 0)
-checker:set_texture_map("big_checker.png")
+checker:set_texture_map("textures/checker.png")
+white_cornell_shiny:set_texture_map("textures/checker.png")
 
+sphere = gr.sphere('s')
+radius = 1.5
+sphere:translate(0,radius - 1,0)
+sphere:scale(radius, radius, radius)
+sphere:set_material(checker)
+scene:add_child(sphere)
 
-require('readobj')
-mesh = gr.obj_mesh('test_mesh','meshes/suzy_smooth.obj')
---mesh = gr.mesh('ball', readobj('meshes/cow.obj'))
-mesh:translate(0,1,0)
---mesh:scale(0.5,0.5,0.5)
-mesh:rotate('y',180)
-mesh:set_material(mirror)
-scene:add_child(mesh)
-
-
--- box = gr.cube('c')
--- box:translate(1,-1,0)
--- box:scale(2,4,2)
--- box:rotate('y', 30)
--- box:set_material(checker)
--- scene:add_child(box)
 
 -- Cornell Box
 cornell_box = gr.node('cornell box')
@@ -62,8 +48,8 @@ box_length = 30.0
 	--floor
 floor = gr.cube('floor')
 floor:set_material(white_cornell)
-floor:translate(-box_width/2.0,-2.0,-box_length/1.5)
-floor:scale(box_width,1,box_length)
+floor:translate(-box_width/2.0,-2.0,-6)
+floor:scale(15,1,15)
 cornell_box:add_child(floor)
 
 	--ceiling
@@ -102,12 +88,12 @@ scene:add_child(cornell_box)
 light_color = {0.780131, 0.780409, 0.775833}
 light_color_2 = {0.780131/2, 0.780409/2, 0.775833/2}
 -- on ceiling
-light1 = gr.light({-3, box_height - 3.0, -3}, light_color_2, {1, 0, 0})
+light1 = gr.light({0, box_height - 3.0, -3}, light_color_2, {1, 0, 0})
 -- by camera
 light2 = gr.light({-2.0, box_height - 3.0, -10}, light_color_2, {1, 0, 0})
 
 
-sqlight = gr.rect_light({0, box_height - 2.01, -2}, 3, 3, light_color, {1,0,0}, 10)
+--sqlight = gr.rect_light({0, box_height - 2.01, -2}, 3, 3, light_color, {1,0,0}, 10)
 
 
 --far
@@ -122,9 +108,9 @@ sqlight = gr.rect_light({0, box_height - 2.01, -2}, 3, 3, light_color, {1,0,0}, 
 -- 	  {-2, 4, -10}, {2, -2, 10}, {0, 1, 0}, 50,
 -- 	  {0.2, 0.2, 0.2}, {light1, light2})
 gr.render(scene,
-	  'mesh.png', 500, 500, 4,
-	  {-1, 3, -4}, {0, 1, 0}, {0, 1, 0}, 50,
-	  {0.2,0.2,0.2}, {sqlight})
+	  'alias.png', 700, 700, 3,
+	  {-1, 3, -10}, {0, 0, 0}, {0, 1, 0}, 50,
+	  {0.2,0.2,0.2}, {light1, light2})
 
 --top
 --close

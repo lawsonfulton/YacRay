@@ -54,6 +54,10 @@ inline Vector3D cross(const Vector3D &a, const Vector3D &b) {
                   (a[0] * b[1]) - (a[1] * b[0]));
 }
 
+inline bool approxEqual(double a, double b, double eps) {
+  return fabs(a - b) < eps;
+}
+
 using namespace std;
 
 string toString(const QVector4D &vec);
@@ -551,6 +555,10 @@ public:
   double B() const 
   { 
     return b_;
+  }
+
+  bool almostEqual(const Colour &b, double eps) {
+    return approxEqual(r_, b.R(), eps) && approxEqual(g_, b.G(), eps) && approxEqual(b_, b.B(), eps);
   }
 
 private:

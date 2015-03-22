@@ -26,6 +26,34 @@ static inline void loadbar(unsigned int x, unsigned int n, unsigned int w = 50)
     cout << "]\r" << flush;
 }
 
+Renderer::Renderer(Camera *camera, SceneNode *scene, list<Light*> lights, Colour ambient, int ssLevel, const char* skymap)
+             :  mAmbientColour(ambient), mLights(lights), mSSLevel(ssLevel), mCamera(camera), mScene(scene), mSkymap(NULL) {
+    if(skymap) {
+    	mSkymap = new Image();
+    	cout << "Loading environment map..." << flush;
+    	mSkymap->loadPng(skymap);
+    	cout << " Done." << endl;
+    }
+
+    //Cache for adaptive anti aliasing
+	mRayColours.resize(camera->width() + 1);
+	for(int i = 0; i < (int)mRayColours.size(); i++) {
+		mRayColours[i].resize(camera->height() + 1, NULL);   
+	}
+
+	mSourceMaterial = (Material*) new PhongMaterial(Colour(0.0), Colour(0.0), 0, 1.0); //Air
+}
+
+Renderer::~Renderer() {
+	for(int i = 0; i < (int)mRayColours.size(); i++) {
+		for(int j = 0; j < (int)mRayColours.size(); j++) {
+			delete mRayColours[i][j];
+		}
+	}
+
+	delete mSourceMaterial;
+	delete mSkymap;
+}
 
 void Renderer::renderImage(const string &filename) {
 	cout << endl;//formattting
@@ -66,6 +94,116 @@ void Renderer::renderSlicesThread(Image &img, int totalSlices, atomic_int &curre
 	while((slice = currentSlice++) < totalSlices) {
 		renderSlice(img, slice, totalSlices, pixelCounter);
 	}
+}
+
+// void Renderer::renderSlice(Image &img, int slice, int totalSlices, atomic_int &pixelCounter) {
+// 	int totalPixels = mCamera->width() * mCamera->height();
+
+// 	int sliceWidth = mCamera->width() / totalSlices;
+// 	int start = slice * sliceWidth;
+// 	int end = start + sliceWidth;
+
+// 	//Get any extra pixels
+// 	if(slice == totalSlices - 1) {
+// 		end += mCamera->width() % totalSlices;
+// 	}
+
+// 	for (int y = 0; y < mCamera->height(); y++) {
+// 		for (int x = start; x < end; x++) {
+
+// 			Colour finalColour = computePixelColour(x,y);
+// 			img.setColour(x, y, finalColour);
+			
+// 			//Update the loading bar
+// 			pixelCounter++;
+// 			loadbar(pixelCounter, totalPixels);
+// 		}
+// 	}
+// }
+
+Colour Renderer::computePixelColour(int x, int y) {
+	double numSamples = 0;
+	double spacing = 1.0/(double)mSSLevel;
+
+	Colour finalColour(0.0);
+
+	//Test the corners
+	if(!mRayColours[x][y]) {
+		Ray primaryRay = mCamera->makeRay(Point2D((double)x, (double)y));
+		mRayColours[x][y] = new Colour(traceRay(primaryRay, 0, mSourceMaterial));
+	}
+	if(!mRayColours[x + 1][y]) {
+		Ray primaryRay = mCamera->makeRay(Point2D((double)x + 1, (double)y));
+		mRayColours[x + 1][y] = new Colour(traceRay(primaryRay, 0, mSourceMaterial));
+	}
+	if(!mRayColours[x][y + 1]) {
+		Ray primaryRay = mCamera->makeRay(Point2D((double)x, (double)y + 1));
+		mRayColours[x][y + 1] = new Colour(traceRay(primaryRay, 0, mSourceMaterial));
+	}
+	if(!mRayColours[x + 1][y + 1]) {
+		Ray primaryRay = mCamera->makeRay(Point2D((double)x + 1, (double)y + 1));
+		mRayColours[x + 1][y + 1] = new Colour(traceRay(primaryRay, 0, mSourceMaterial));
+	}
+
+	Colour &c0 = *mRayColours[x][y];
+	Colour &c1 = *mRayColours[x + 1][y];
+	Colour &c2 = *mRayColours[x][y + 1];
+	Colour &c3 = *mRayColours[x + 1][y + 1];
+
+	finalColour += c0;
+	finalColour += c1;
+	finalColour += c2;
+	finalColour += c3;
+	numSamples += 4;
+
+	double eps = 0.02;
+	if(c0.almostEqual(c1, eps) && c0.almostEqual(c2, eps) && c0.almostEqual(c3, eps)) {
+		finalColour = finalColour / 4.0;
+	}
+	else {
+		int samples;
+		finalColour += subSample(Point2D(x, y + 1), Point2D(x + 1, y), samples);
+		numSamples += samples;
+		finalColour = finalColour / numSamples;
+		//finalColour = Colour(1.0,0.0,0.0);
+	}
+	
+
+	// for(int yi = 0; yi < mSSLevel; yi++) {
+	// 	for(int xi = 0; xi < mSSLevel; xi++) {
+	// 		Ray primaryRay = mCamera->makeRay(Point2D((double)x + xi * spacing, (double)y + yi * spacing));
+	// 		Colour colour = traceRay(primaryRay, 0, (Material*)mSourceMaterial);
+
+	// 		finalColour += colour / numSamples;
+	// 	}
+	// }
+
+	return finalColour;
+}
+
+Colour Renderer::subSample(const Point2D &minP, const Point2D &maxP, int &nSamples) {
+	Colour finalColour(0.0);
+	Ray primaryRay;
+	double d = (maxP.x() - minP.x()) / 2.0;
+
+	//middle top
+	primaryRay = mCamera->makeRay(Point2D(minP.x() + d, maxP.y()));
+	finalColour += traceRay(primaryRay, 0, mSourceMaterial);
+	//left 
+	primaryRay = mCamera->makeRay(Point2D(minP.x(), maxP.y() + d));
+	finalColour += traceRay(primaryRay, 0, mSourceMaterial);
+	//middle 
+	primaryRay = mCamera->makeRay(Point2D(minP.x() + d, maxP.y() + d));
+	finalColour += traceRay(primaryRay, 0, mSourceMaterial);
+	//right 
+	primaryRay = mCamera->makeRay(Point2D(maxP.x(), maxP.y() + d));
+	finalColour += traceRay(primaryRay, 0, mSourceMaterial);
+	//middle bottom 
+	primaryRay = mCamera->makeRay(Point2D(minP.x() + d, minP.y()));
+	finalColour += traceRay(primaryRay, 0, mSourceMaterial);
+
+	nSamples = 5;
+	return finalColour;
 }
 
 void Renderer::renderSlice(Image &img, int slice, int totalSlices, atomic_int &pixelCounter) {
@@ -146,22 +284,30 @@ Colour Renderer::computeColour(const Intersection &i) const {
 	return material->computeColour(i, this);
 }
 
-Colour Renderer::backGroundColour(const Vector3D &u) const {
-	return Colour(0.0);
+Colour Renderer::backGroundColour(const Vector3D &direction) const {
+	if(!mSkymap) {
+		return Colour(0.0);
+	}
+
+	double u = 0.5 + atan2(direction.z(), -direction.x()) / (2.0 * M_PI);
+	double v = 0.5 - asin(direction.y()) / M_PI;
+	Point2D uv(u,v);
+
+	return mSkymap->bilinearGetColour(uv);
 	
 	//Sky sphere
-	double theta = asin(u.y());
-	double t = (theta + M_PI_2)/M_PI;
+	// double theta = asin(direction.y());
+	// double t = (theta + M_PI_2)/M_PI;
 
-	Colour horizon(1,1,1);///(0.8,0.8,0.9);
-	Colour bottom(1,1,1);
-	Colour top(0,0,1);
+	// Colour horizon(1,1,1);///(0.8,0.8,0.9);
+	// Colour bottom(1,1,1);
+	// Colour top(0,0,1);
 
-	if(t > 0.5) {
-		return lin_interpolate(horizon, top, clamp((t - 0.5) * 8.0, 0.0, 1.0));
-	} else {
-		return lin_interpolate(bottom, horizon, t * 2.0);
-	}
+	// if(t > 0.5) {
+	// 	return lin_interpolate(horizon, top, clamp((t - 0.5) * 8.0, 0.0, 1.0));
+	// } else {
+	// 	return lin_interpolate(bottom, horizon, t * 2.0);
+	// }
 }
 
 

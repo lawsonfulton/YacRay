@@ -1,8 +1,5 @@
 Project TODO
-- use look_at instead of view direction
-- implement new mesh type
-- adaptive aliasing
-- 
+-  3rd picture for textur
 
 
 Done 
@@ -10,6 +7,9 @@ Done
 - control ss level from render command
 - set_texture_map
 - changed it to look_at
+- uv mapping for meshes
+- sky map
+- plane primitive
 
 Final Scene Idea
 - Desk with pointer (normal) and foam apple.. something else? golf ball, chair, projector
@@ -28,9 +28,14 @@ http://delivery.acm.org.proxy.lib.uwaterloo.ca/10.1145/1870000/1866168/a142-resh
 ~ 2: Objective two: Transparent materials with refraction
 * 3: Objective three: Soft Shadows
 ~ 4: Objective four: Glossy Reflections
- 5: Objective five: Anti-aliasing using adaptive supersampling
+* 5: Objective five: Anti-aliasing using adaptive supersampling
 * 6: Objective six: Smooth Phong shading on triangle meshes
 * 7: Objective seven: Texture Mapping
 ~ 8: Objective eight: Bump Mapping
  9: Objective nine: Tone Mapping
  10: Objective ten: Final scene that demonstrates objectives 1 - 9
+
+
+
+Note:
+http://wiki.povray.org/content/Knowledgebase:The_Shadow_Line_Artifact

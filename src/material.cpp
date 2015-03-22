@@ -67,7 +67,9 @@ PhongMaterial::~PhongMaterial()
 Colour PhongMaterial::computeColour(const Intersection &i, const Renderer *rend) const {
 	Colour diffuseComp = m_kd;
 	Vector3D normal = i.normal;
-	
+	Colour It(0.0), Ir(0.0), lightSum(0.0);
+	const Colour &Ia = rend->mAmbientColour;
+
 	//Get colour from tex map
 	if(m_texmap) {
 		diffuseComp = getTextureColour(i.uv);
@@ -75,11 +77,7 @@ Colour PhongMaterial::computeColour(const Intersection &i, const Renderer *rend)
 
 	if(m_bumpmap) {
 		normal = (i.normal + getDisplacementNormal(i.normal, i.uv)).normalized();
-		//cout << normal << endl;
 	}
-
-	//Start with ambient colour
-	Colour finalColour = rend->mAmbientColour * diffuseComp;
 
 	//Go through every light
 	for (auto lightIt = rend->mLights.begin(); lightIt != rend->mLights.end(); ++lightIt) {
@@ -92,20 +90,46 @@ Colour PhongMaterial::computeColour(const Intersection &i, const Renderer *rend)
 			lightContribution += computeLightContribution(normal, diffuseComp, i, light, rend);	
 		}
 
-		finalColour += lightContribution / (double)(light->num_samples) * (1.0 -m_reflectivity) * (1.0 -m_transparency); //TODO should I do this?
+		lightSum += lightContribution / (double)(light->num_samples) * (1.0 -m_reflectivity) * (1.0 -m_transparency); //TODO should I do this?
 	}
 
 	//Reflection and refractions components
 	if(m_reflectivity > MY_EPSILON) {
-		finalColour += computeReflectedContribution(normal, i, rend);
+		Ir = computeReflectedContribution(normal, i, rend);
 	}
 
 	if(m_transparency > MY_EPSILON) {
-		finalColour += computeRefractionContribution(normal, i, rend); 
+		It = computeRefractionContribution(normal, i, rend); 
 	}
 	
+	return Ia
+		   + lightSum
+		   + m_ks * Ir 
+		   + m_transparency * (Colour(1.0) - m_ks) * It;
+/**	I = Ka * Ia
++ Kd * [sum for each light: (N . L) * Il]
++ Ks * [sum for each light: ((R . V) ^ Ps) * Fl * Il]
++ Ks * Fr * Ir
++ Kt * (1 - Ks) * Ft * It
 
-	return finalColour;	
+I := surface point's color
+V := ray direction
+P := surface point
+N := surface normal
+L := light's position - P
+R := L - 2 * (N . L) * P
+Ka := surface material's ambient coefficient
+Kd := surface material's diffuse coefficient
+Ks := surface material's specular coefficient
+Ps := surface material's shininess
+Kt := surface material's transmission coefficient
+Ia := ambient light color
+Il := light's color
+Ir := reflected ray's color
+It := transmitted ray's color
+Fl := light's Fresnel coefficient
+Fr := reflected Fresnel coefficient
+Ft := transmitted Fresnel coefficient**/
 }
 
 //TODO refactor so no passing in intersection

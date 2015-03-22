@@ -28,6 +28,13 @@ public:
   virtual bool rayIntersection(const Ray &ray, double &t, Vector3D &normal, Point3D &point, Point2D &uv);
 };
 
+class Plane : public Primitive {
+public:
+  virtual ~Plane();
+
+  virtual bool rayIntersection(const Ray &ray, double &t, Vector3D &normal, Point3D &point, Point2D &uv);
+};
+
 class NonhierSphere : public Primitive {
 public:
   NonhierSphere(const Point3D& pos, double radius)

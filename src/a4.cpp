@@ -19,7 +19,8 @@ void a4_render(// What to render
                const Vector3D& up, double fov,
                // Lighting parameters
                const Colour& ambient,
-               const std::list<Light*>& lights
+               const std::list<Light*>& lights,
+               const char *skymap
                )
 {
   high_resolution_clock::time_point t1 = high_resolution_clock::now();
@@ -28,7 +29,7 @@ void a4_render(// What to render
   cout << "Camera Location: " << toString(eye) << " Look at: " << toString(view) << " Up: " << toString(up) << " FOV: " << fov << endl; 
 
   Camera camera(eye, view, up, fov, width, height);
-  Renderer renderer(&camera, root, lights, ambient, ss_level); 
+  Renderer renderer(&camera, root, lights, ambient, ss_level, skymap); 
 
   renderer.renderImage(filename);
 

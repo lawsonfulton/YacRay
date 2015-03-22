@@ -33,7 +33,7 @@ sphere = gr.sphere('s')
 radius = 1.5
 sphere:translate(-2,radius - 1,0)
 sphere:scale(radius, radius, radius)
-sphere:set_material(glass)
+sphere:set_material(mirror)
 scene:add_child(sphere)
 
 box = gr.cube('c')

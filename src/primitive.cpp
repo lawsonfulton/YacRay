@@ -139,16 +139,16 @@ bool Cube::rayIntersection(const Ray &ray, double &t, Vector3D &normal, Point3D 
 		
 		double u,v;
 		if(dir == 0) {
-			u = (newP.z() + 1.0) / 2.0;
- 			v = (newP.y() + 1.0) / 2.0;
+			u = (newP.z() + 0.5);
+ 			v = (newP.y() + 0.5);
 		}
 		else if(dir == 1) {
- 			u = (newP.x() + 1.0) / 2.0;
- 			v = (newP.z() + 1.0) / 2.0;
+ 			u = (newP.x() + 0.5);
+ 			v = (newP.z() + 0.5);
 		}
 		else {
- 			u = (newP.x() + 1.0) / 2.0;
- 			v = (newP.y() + 1.0) / 2.0;
+ 			u = (newP.x() + 0.5);
+ 			v = (newP.y() + 0.5);
  		}
 
  		uv = Point2D(u,v);
@@ -160,6 +160,30 @@ bool Cube::rayIntersection(const Ray &ray, double &t, Vector3D &normal, Point3D 
 	else {
 		return false;
 	}
+}
+
+Plane::~Plane()
+{
+}
+
+bool Plane::rayIntersection(const Ray &ray, double &t, Vector3D &normal, Point3D &point, Point2D &uv) {
+	//Find point on plane
+	normal = Vector3D(0,1,0);
+	double lDn = dot(ray.direction(), normal);
+	t = dot(-ray.origin(), normal) / lDn;
+	point = ray.getPoint(t);
+
+	double u, v, intp;
+	u = modf(point.x(), &intp);
+	v = modf(point.z(), &intp);
+
+	uv = Point2D(u,v);
+
+	if(t > MIN_INTERSECT_DIST) {
+		return true;
+	}
+
+	return false;
 }
 
 NonhierSphere::~NonhierSphere()
