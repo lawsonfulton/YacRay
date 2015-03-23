@@ -1,5 +1,7 @@
 Project TODO
 -  3rd picture for textur
+- uncomment light intersection code
+- fix fresenel
 
 
 Done 
@@ -10,6 +12,7 @@ Done
 - uv mapping for meshes
 - sky map
 - plane primitive
+- frsenel
 
 Final Scene Idea
 - Desk with pointer (normal) and foam apple.. something else? golf ball, chair, projector

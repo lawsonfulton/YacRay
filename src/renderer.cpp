@@ -46,7 +46,7 @@ Renderer::Renderer(Camera *camera, SceneNode *scene, list<Light*> lights, Colour
 
 Renderer::~Renderer() {
 	for(int i = 0; i < (int)mRayColours.size(); i++) {
-		for(int j = 0; j < (int)mRayColours.size(); j++) {
+		for(int j = 0; j < (int)mRayColours[i].size(); j++) {
 			delete mRayColours[i][j];
 		}
 	}
@@ -245,7 +245,7 @@ void Renderer::renderSlice(Image &img, int slice, int totalSlices, atomic_int &p
 
 Colour Renderer::traceRay(const Ray &ray, int depth, const Material *sourceMaterial) const {
 	if(depth > MAX_RECURSION_DEPTH) {
-		return Colour(0.0); //TODO should I return ambient?
+		return backGroundColour(ray.direction()); //TODO should I return ambient?
 	}
 	Intersection closest = findClosestIntersection(ray);
 	closest.sourceMaterial = sourceMaterial;

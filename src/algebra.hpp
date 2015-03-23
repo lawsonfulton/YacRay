@@ -27,6 +27,9 @@
 #define M_PI 3.14159265358979323846
 #endif
 
+#define M_PI_180 M_PI / 180.0
+#define M_180_PI 180.0 / M_PI
+
 typedef QMatrix4x4 Matrix4x4;
 typedef QMatrix3x3 Matrix3x3;
 typedef QVector4D Vector4D;

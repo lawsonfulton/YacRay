@@ -499,7 +499,7 @@ int gr_fancy_material_cmd(lua_State* L)
   double reflectivity = luaL_checknumber(L, 4);
   double ior = luaL_checknumber(L, 5);
   double transparency = luaL_checknumber(L, 6);
-  double gloss = luaL_checknumber(L, 7);
+  int gloss = luaL_checknumber(L, 7);
   
   data->material = new PhongMaterial(Colour(kd[0], kd[1], kd[2]),
                                      Colour(ks[0], ks[1], ks[2]),

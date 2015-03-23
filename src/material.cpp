@@ -51,12 +51,12 @@ Vector3D Material::getDisplacementNormal(const Vector3D &n, const Point2D &uv) c
 }
 
 PhongMaterial::PhongMaterial(const Colour& kd, const Colour& ks, double shininess)
-  : m_kd(kd), m_ks(ks), m_shininess(shininess), m_reflectivity(0.0), m_ior(1.0), m_transparency(0.0), m_glossy(0.0)
+  : m_kd(kd), m_ks(ks), m_shininess(shininess), m_reflectivity(0.0), m_ior(1.0), m_transparency(0.0), m_refSamples(1)
 {
 }
 
-PhongMaterial::PhongMaterial(const Colour& kd, const Colour& ks, double shininess, double reflectivity, double ior, double transparency, double glossy)
-  : m_kd(kd), m_ks(ks), m_shininess(shininess), m_reflectivity(reflectivity), m_ior(ior), m_transparency(transparency), m_glossy(glossy)
+PhongMaterial::PhongMaterial(const Colour& kd, const Colour& ks, double shininess, double reflectivity, double ior, double transparency, int refSamples)
+  : m_kd(kd), m_ks(ks), m_shininess(shininess), m_reflectivity(reflectivity), m_ior(ior), m_transparency(transparency), m_refSamples(refSamples)
 {
 }
 
@@ -94,18 +94,24 @@ Colour PhongMaterial::computeColour(const Intersection &i, const Renderer *rend)
 	}
 
 	//Reflection and refractions components
-	if(m_reflectivity > MY_EPSILON) {
+	if(m_ks.R() > MY_EPSILON && m_ks.G() > MY_EPSILON && m_ks.B() > MY_EPSILON) {
 		Ir = computeReflectedContribution(normal, i, rend);
 	}
 
+	double Fr = 1.0, Ft = 1.0;
 	if(m_transparency > MY_EPSILON) {
 		It = computeRefractionContribution(normal, i, rend); 
+		//if(i.depth == 0)computeFresnelCoefs(i, normal, Fr, Ft); //TODO fix this
+		//cout << Fr << " " << Ft  << endl;
 	}
+
 	
-	return Ia
+	
+	
+	return Ia * diffuseComp
 		   + lightSum
-		   + m_ks * Ir 
-		   + m_transparency * (Colour(1.0) - m_ks) * It;
+		   + m_ks * Fr * Ir 
+		   + m_transparency * (Colour(1.0) - m_ks) * Ft * It;
 /**	I = Ka * Ia
 + Kd * [sum for each light: (N . L) * Il]
 + Ks * [sum for each light: ((R . V) ^ Ps) * Fl * Il]
@@ -150,7 +156,7 @@ Colour PhongMaterial::computeLightContribution(const Vector3D &normal, const Col
 
 	double diffuseFact = qMax(dot(L, normal), 0.0f);
 	double specularFact = qMax(dot(R, V), 0.0f);
-	Colour surfaceColour = diffuseComp * diffuseFact + m_ks * pow(specularFact, m_shininess);
+	Colour surfaceColour = diffuseComp * diffuseFact;// + m_ks * pow(specularFact, m_shininess);
 
 	//TODO combine this right
 	//	return surfaceColour * light->colour * attenuation * (1.0 - material->getReflectivity())* (1.0 - material->getTransparency());
@@ -162,55 +168,122 @@ Colour PhongMaterial::computeReflectedContribution(const Vector3D &normal, const
 	Vector3D reflDir = reflect(-i.ray->direction(), normal);
 	Colour reflectColour(0.0);
 
+	double theta = acos(reflDir.y());
+	double phi = atan2(reflDir.z(), reflDir.x());
 
-	#if USE_GLOSSY_REFLECTIONS
-	int samples = GLOSSY_SAMPLES;
-	#else
-	int samples = 1;
-	#endif
-
-	//Don't do a lot of samples if we don't have to
-	if(m_glossy < MY_EPSILON) {
-		samples = 1;
-	}
+	// Matrix4x4 rot;
+	// rot.rotate(-90, 0.0, 0.0, 1.0);
+	// rot.rotate(-90, 0.0, 1.0, 0.0);
+	// cout << rot * Vector3D(0,1,0) << endl;
+	// exit(1);
 
 	//Need to do many samples for glossy reflections
-	for(int j = 0; j < samples; j++) {
-		#if USE_GLOSSY_REFLECTIONS
-		Ray reflectedRay(i.getPoint(), (reflDir + uniformRandomHemisphereUnitVec() * m_glossy).normalized()); //TODO - Should I preturb using the normal?
-		#else
-		Ray reflectedRay(i.getPoint(), reflDir); //TODO - Should I preturb using the normal?
-		#endif
+	for(int j = 0; j < m_refSamples; j++) {
+		double x1 = uniformRand(), x2 = uniformRand();
+		double alpha = acos(pow(1.0 - x1, 1.0 / (m_shininess + 1.0)));
+		double beta = 2.0 * M_PI * x2;
 
-		reflectColour += rend->traceRay(reflectedRay.perturbed(0.01), i.depth + 1, this) * m_reflectivity;// * material->getDiffuse(); //TODO how to combine right
+		Vector3D perturb(sin(alpha) * cos(beta),
+						 cos(alpha),
+						 sin(beta) * sin(alpha));
+
+		Matrix4x4 rot;
+		rot.rotate(-phi * M_180_PI, 0.0, 1.0, 0.0);
+		rot.rotate(-theta * M_180_PI, 0.0, 0.0, 1.0);
+		
+		// cout << "offset: " << perturb << " refDir: " << reflDir;
+		reflDir = rot * perturb;
+		// cout << " newRefDir: " << reflDir << endl;
+
+		// cout << reflDir << " ";
+		// reflDir = Vector3D(sin(theta) * cos(phi),
+		// 				   cos(theta),
+		// 				   sin(phi) * sin(theta));
+
+		//reflDir =  origOffset * Vector3D(0.0, 1.0, 0.0);
+		// cout << reflDir << endl;
+
+		Ray reflectedRay(i.getPoint(), reflDir);
+		reflectColour += rend->traceRay(reflectedRay.perturbed(0.01), i.depth + 1, this);// * material->getDiffuse(); //TODO how to combine right
 	}
 
-	return reflectColour / (double)samples;
+	return reflectColour / (double)m_refSamples;
 }
 
 Colour PhongMaterial::computeRefractionContribution(const Vector3D &normal, const Intersection &i, const Renderer *rend) const {
 	//http://graphics.stanford.edu/courses/cs148-10-summer/docs/2006--degreve--reflection_refraction.pdf
-
+	Vector3D refr;
 	double n1 = i.sourceMaterial->getIor(), n2 = m_ior;
 
+	Vector3D n = normal;
 	//If same source and current, then assume going into air
 	if(this == i.sourceMaterial){
 		n2 = 1.0;
+		n = -n;
 	}
 
-	const Vector3D &l = i.ray->direction();
-	double n = n1/n2;
-	double c = -dot(normal, l);
-	double sinsq = n * n * (1.0 - c * c);
+	 const Vector3D &v = i.ray->direction();
+     double k = dot(v, n);
+ 
+     Vector3D s = (n1/n2) * (v - k*n);
+ 
+     k = 1.0 - dot(s,s);
+ 
+     if (k < MY_EPSILON)
+     {
+     	//cout << k << endl;
+         return Colour(0.0);
+     }
+     else
+     {
+     	//cout << "ay" << endl;
+        refr = s - sqrt(k)*n;
+     }
 
-	if(n1 < n2 && sinsq > 1.0){
-		return Colour(0.0);
-	}
+	// const Vector3D &l = i.ray->direction();
+	// double n = n1/n2;
+	// double c = -dot(normal, l);
+	// double sinsq = n * n * (1.0 - c * c);
 
-	Vector3D refr = n * l + (n * c - c) * i.normal;
-	Ray refrRay(i.getPoint(), refr); //TODO - Should I preturb using the normal?material->getTransparency();
+	// if(n1 < n2 && sinsq > 1.0){
+	// 	return Colour(0.0);
+	// }
+
+	// Vector3D refr = n * l + (n * c - c) * normal;
+	Ray refrRay(i.getPoint(), refr.normalized()); //TODO - Should I preturb using the normal?material->getTransparency();
 
 	return rend->traceRay(refrRay, i.depth + 1, this) * m_transparency;// * m_kd; //TODO properly * material->getDiffuse();
+}
+
+void PhongMaterial::computeFresnelCoefs(const Intersection &i, const Vector3D &normal, double &Fr, double &Ft) const {
+	double n1 = i.sourceMaterial->getIor(), n2 = m_ior;
+
+	Vector3D norm = normal;
+	const Vector3D &v = i.ray->direction();
+	//If same source and current, then assume going into air
+	if(this == i.sourceMaterial){
+		n2 = 1.0;
+		norm = -norm;
+	}
+
+	double n = n1 / n2;
+	double cosThetaI = dot(v, norm) * -1.0;
+	double sinThetaI = sqrt(1.0 - cosThetaI*cosThetaI); //TODO Recomputing these, should just do all calculations in one function
+	double sinThetaT = n * sinThetaI;
+	double cosThetaT = sqrt(1.0 - sinThetaT*sinThetaT);
+
+	double a = n1 * cosThetaI;
+	double b = n2 * cosThetaT;
+	double Rs = (a - b) / (a + b);
+	Rs = Rs * Rs;
+
+	a = n1 * cosThetaT;
+	b = n2 * cosThetaI;
+	double Rt = (a - b) / (a + b);
+	Rt = Rt * Rt;
+
+	Fr = (Rs + Rt) / 2.0;
+	Ft = 1.0 - Fr;
 }
 
 LightMaterial::~LightMaterial()

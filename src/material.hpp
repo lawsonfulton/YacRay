@@ -32,7 +32,7 @@ protected:
 class PhongMaterial : public Material {
 public:
   PhongMaterial(const Colour& kd, const Colour& ks, double shininess);
-  PhongMaterial(const Colour& kd, const Colour& ks, double shininess, double reflectivity, double ior = 1.0, double transparency = 0.0, double glossy = 0.0);
+  PhongMaterial(const Colour& kd, const Colour& ks, double shininess, double reflectivity, double ior = 1.0, double transparency = 0.0, int refSamples = 1);
   virtual ~PhongMaterial();
 
   virtual Colour computeColour(const Intersection &i, const Renderer *rend) const;
@@ -44,17 +44,18 @@ public:
   double getShininess() const { return m_shininess; }
   virtual double getIor() const { return m_ior; }
   double getTransparency() const { return m_transparency; }
-  double getGloss() const { return m_glossy; }
 
 private:
   Colour computeLightContribution(const Vector3D &normal, const Colour &diffuseComp,const Intersection &i, Light *light, const Renderer *rend) const;
   Colour computeReflectedContribution(const Vector3D &normal, const Intersection &i, const Renderer *rend) const;
   Colour computeRefractionContribution(const Vector3D &normal, const Intersection &i, const Renderer *rend) const;
+  void computeFresnelCoefs(const Intersection &i, const Vector3D &normal, double &Fr, double &Ft) const;
 
   Colour m_kd;
   Colour m_ks;
 
-  double m_shininess, m_reflectivity, m_ior, m_transparency, m_glossy;
+  double m_shininess, m_reflectivity, m_ior, m_transparency;
+  int m_refSamples;
 };
 
 class LightMaterial {
