@@ -30,9 +30,15 @@ public:
 
 class Plane : public Primitive {
 public:
+  Plane(double radius) : mRadSq(radius*radius) {}
+  Plane() : mRadSq(DBL_INF) {}
+
   virtual ~Plane();
 
   virtual bool rayIntersection(const Ray &ray, double &t, Vector3D &normal, Point3D &point, Point2D &uv);
+
+private:
+  double mRadSq;
 };
 
 class NonhierSphere : public Primitive {
@@ -57,6 +63,11 @@ public:
   {
   }
   
+  NonhierBox()
+    : m_pos(Point3D(0,0,0)), m_size(1.0)
+  {
+  }
+
   virtual ~NonhierBox();
 
   virtual bool rayIntersection(const Ray &ray, double &t, Vector3D &normal, Point3D &point, Point2D &uv);
@@ -71,6 +82,21 @@ public:
   virtual ~Torus();
 
   virtual bool rayIntersection(const Ray &ray, double &t, Vector3D &normal, Point3D &point, Point2D &uv);
+};
+
+
+class MengerSponge : public Primitive {
+public:
+  MengerSponge(const Point3D &pos, int level, int maxLevel, double size = 1.0);
+
+  virtual ~MengerSponge();
+
+  virtual bool rayIntersection(const Ray &ray, double &t, Vector3D &normal, Point3D &point, Point2D &uv);
+
+  NonhierBox mBox;
+  Point3D mPos;
+  int mLevel, mMaxLevel;
+  double mSize;
 };
 
 #endif

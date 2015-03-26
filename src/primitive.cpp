@@ -1,6 +1,7 @@
 #include "primitive.hpp"
 #include "polyroots.hpp"
 #include "ray.hpp"
+#include <vector>
 
 Primitive::~Primitive()
 {
@@ -173,14 +174,16 @@ bool Plane::rayIntersection(const Ray &ray, double &t, Vector3D &normal, Point3D
 	t = dot(-ray.origin(), normal) / lDn;
 	point = ray.getPoint(t);
 
-	double u, v, intp;
-	u = modf(point.x(), &intp);
-	v = modf(point.z(), &intp);
-
-	uv = Point2D(u,v);
-
 	if(t > MIN_INTERSECT_DIST) {
-		return true;
+		if(point.lengthSquared() < mRadSq){
+			double u, v, intp;
+			u = (modf(point.x(), &intp) + 1.0) / 2.0;
+			v = (modf(point.z(), &intp) + 1.0) / 2.0;
+
+			uv = Point2D(u,v);
+
+			return true;
+		}
 	}
 
 	return false;
@@ -252,8 +255,8 @@ NonhierBox::~NonhierBox()
 bool NonhierBox::rayIntersection(const Ray &ray, double &t, Vector3D &normal, Point3D &point, Point2D &uv) {
 	//Alg from http://tavianator.com/2011/05/fast-branchless-raybounding-box-intersections/
 	double halfSize = m_size/2.0;
-	Point3D minP = m_pos;
-	Point3D maxP = m_pos + Vector3D(m_size,m_size,m_size);
+	Point3D minP = m_pos - Vector3D(halfSize, halfSize, halfSize);
+	Point3D maxP = m_pos + Vector3D(halfSize, halfSize, halfSize);
 	Point3D rayOrg = ray.origin();
 	Point3D rayDir = ray.direction();
 
@@ -280,10 +283,10 @@ bool NonhierBox::rayIntersection(const Ray &ray, double &t, Vector3D &normal, Po
 		point = ray.getPoint(t);
 
 		//Compute normal by finding compennent with biggest magnitude
-		Point3D newP = point - (m_pos + Vector3D(halfSize, halfSize, halfSize));//Need to do this around origin
-		double x = abs(newP.x());
-		double y = abs(newP.y());
-		double z = abs(newP.z());
+		Point3D newP = point - m_pos;//Need to do this around origin
+		double x = fabs(newP.x());
+		double y = fabs(newP.y());
+		double z = fabs(newP.z());
 
 		if(x > y && x > z) {
 			normal = Vector3D(copysign(1.0,newP.x()),0.0,0.0);
@@ -354,53 +357,102 @@ bool Torus::rayIntersection(const Ray &ray, double &t, Vector3D &normal, Point3D
  	return intersects;
 
 }
-// bool Torus::rayIntersection(const Ray &ray, double &t, Vector3D &normal, Point3D &point, Point2D &uv) {
-//   // (the dot product) looks just right (:-)
-//   struct { float a,b; } a;
-//   a.b = dot(ray.origin(), ray.direction());
-//   a.a = ray.origin().lengthSquared();
 
-//   // Set up quartic in t:
-//   //
-//   //  4     3     2
-//   // t + A t + B t + C t + D = 0
-//   //
-//   float R = 2.0;
-//   float r = 1.0;
-//   float R2 = R*R;
-//   float K = a.a - r*r - R2;
-//   float A = 4*a.b;
-//   float B = 2*(2*a.b*a.b + K + 2*R2*ray.direction().z()*ray.direction().z());
-//   float C = 4*(K*a.b + 2*R2*ray.origin().z()*ray.direction().z());
-//   float D = K*K + 4*R2*(ray.origin().z()*ray.origin().z() - r*r);
 
-//   // Solve quartic...
-//   double roots[4];
-//   int nroots = quarticRoots(A,B,C,D,roots);
 
-//   double intersections[4];
-//   int num_intersections = 0;
-//   while(nroots--)
-//     {
-//       float t = roots[nroots];
-//       float x = ray.origin().x() + t*ray.direction().x();
-//       float y = ray.origin().y() + t*ray.direction().y();
-//       float l = R*(M_PI/2 - atan2(y,x));
-//       if (l >= 0) //if (l <= vlength && l >= 0) what is vlength
-//         intersections[num_intersections++] = t;
-//     }
+MengerSponge::MengerSponge(const Point3D &pos, int level, int maxLevel, double size) : mPos(pos), mLevel(level), mMaxLevel(maxLevel), mSize(size) {
+	//mSize = pow(1.0/3.0,  level);//Todo profile with this change, don't have to store msize either, only need to compute once per level
+    mBox = NonhierBox(pos, mSize);
+};
 
-//  	t = DBL_INF;
-//  	bool intersects = false;
-//  	for(int i = 0; i < num_intersections; i++) {
-//  		if(intersections[i] > MIN_INTERSECT_DIST && intersections[i] < t) {
-//  			t = intersections[i];
-//  			intersects = true;
-//  		}
-//  	}
+MengerSponge::~MengerSponge()
+{
+}
 
-//  	return intersects;
+bool MengerSponge::rayIntersection(const Ray &ray, double &t, Vector3D &normal, Point3D &point, Point2D &uv) {
+	bool hitBox = mBox.rayIntersection(ray, t, normal, point, uv);
 
+	if(hitBox){
+		if(mLevel == mMaxLevel) {
+			return hitBox;
+		}
+
+		vector<MengerSponge> sponges;
+		sponges.reserve(20);
+
+		double offset = mSize / 3.0;
+		double newSize = pow(0.33333333333333333333333, mLevel + 1);
+		sponges.push_back(MengerSponge(mPos + Point3D(-offset, offset, offset), mLevel + 1, mMaxLevel, newSize)); //1	
+		sponges.push_back(MengerSponge(mPos + Point3D(-offset, offset, 0), mLevel + 1, mMaxLevel, newSize));	//2
+		sponges.push_back(MengerSponge(mPos + Point3D(-offset, offset, -offset), mLevel + 1, mMaxLevel, newSize));//3	
+		sponges.push_back(MengerSponge(mPos + Point3D(0, offset, -offset), mLevel + 1, mMaxLevel, newSize));	//4
+		sponges.push_back(MengerSponge(mPos + Point3D(offset, offset, -offset), mLevel + 1, mMaxLevel, newSize));//5	
+		sponges.push_back(MengerSponge(mPos + Point3D(offset, offset, 0), mLevel + 1, mMaxLevel, newSize));	//6
+		sponges.push_back(MengerSponge(mPos + Point3D(offset, offset, offset), mLevel + 1, mMaxLevel, newSize));//7	
+		sponges.push_back(MengerSponge(mPos + Point3D(0, offset, offset), mLevel + 1, mMaxLevel, newSize));	//8
+
+		sponges.push_back(MengerSponge(mPos + Point3D(-offset, 0, offset), mLevel + 1, mMaxLevel, newSize)); //1	
+		sponges.push_back(MengerSponge(mPos + Point3D(-offset, 0, -offset), mLevel + 1, mMaxLevel, newSize));//3	
+		sponges.push_back(MengerSponge(mPos + Point3D(offset, 0, -offset), mLevel + 1, mMaxLevel, newSize));//5	
+		sponges.push_back(MengerSponge(mPos + Point3D(offset, 0, offset), mLevel + 1, mMaxLevel, newSize));//7
+
+		sponges.push_back(MengerSponge(mPos + Point3D(-offset, -offset, offset), mLevel + 1, mMaxLevel, newSize)); //1	
+		sponges.push_back(MengerSponge(mPos + Point3D(-offset, -offset, 0), mLevel + 1, mMaxLevel, newSize));	//2
+		sponges.push_back(MengerSponge(mPos + Point3D(-offset, -offset, -offset), mLevel + 1, mMaxLevel, newSize));//3	
+		sponges.push_back(MengerSponge(mPos + Point3D(0, -offset, -offset), mLevel + 1, mMaxLevel, newSize));	//4
+		sponges.push_back(MengerSponge(mPos + Point3D(offset, -offset, -offset), mLevel + 1, mMaxLevel, newSize));//5	
+		sponges.push_back(MengerSponge(mPos + Point3D(offset, -offset, 0), mLevel + 1, mMaxLevel, newSize));	//6
+		sponges.push_back(MengerSponge(mPos + Point3D(offset, -offset, offset), mLevel + 1, mMaxLevel, newSize));//7	
+		sponges.push_back(MengerSponge(mPos + Point3D(0, -offset, offset), mLevel + 1, mMaxLevel, newSize));	//8
+
+		
+		hitBox = false;
+		double ct = DBL_INF;
+		Vector3D cn;
+		Point3D cp;
+
+		for (int i = 0; i < 20; i++) {
+			bool intersects = sponges[i].rayIntersection(ray, t, normal, point, uv); //TODO should I perturb here? //ray.perturbed(MY_EPSILON)
+
+			if(intersects) {
+				hitBox = true;
+				if(t < ct && t > MIN_INTERSECT_DIST) {
+					ct = t;
+					cn = normal;
+					cp = point;
+				}
+			}
+		}
+
+		t = ct;
+		normal = cn;
+		point = cp;
+
+		return hitBox;
+	}
+
+	return false;
+}
+
+// Intersection Renderer::findClosestIntersection(const Ray &ray, bool includeLights) const {
+// 	Intersection closestI;
+// 	closestI.ray = &ray;
+
+// 	for (auto nodeIt = mGeometryList.begin(); nodeIt != mGeometryList.end(); ++nodeIt) {
+// 		if(includeLights || !(*nodeIt).isLight()) {
+// 			Intersection newI;
+// 			bool intersects = nodeIt->computeIntersection(ray, newI); //TODO should I perturb here? //ray.perturbed(MY_EPSILON)
+
+// 			if(intersects) {
+// 				if(newI.t < closestI.t && newI.t > MIN_INTERSECT_DIST) {
+// 					closestI = newI;
+// 				}
+// 			}
+// 		}
+// 	}
+
+// 	return closestI;
 // }
+
 
 

@@ -212,7 +212,8 @@ int gr_plane_cmd(lua_State* L)
   data->node = 0;
   
   const char* name = luaL_checkstring(L, 1);
-  data->node = new GeometryNode(name, new Plane());
+  double radius = luaL_checknumber(L, 2);
+  data->node = new GeometryNode(name, new Plane(radius));
 
   luaL_getmetatable(L, "gr.node");
   lua_setmetatable(L, -2);
@@ -261,6 +262,28 @@ int gr_nh_box_cmd(lua_State* L)
   double size = luaL_checknumber(L, 3);
 
   data->node = new GeometryNode(name, new NonhierBox(pos, size));
+
+  luaL_getmetatable(L, "gr.node");
+  lua_setmetatable(L, -2);
+
+  return 1;
+}
+
+
+extern "C"
+int gr_menger_sponge_cmd(lua_State* L)
+{
+  GRLUA_DEBUG_CALL;
+  
+  gr_node_ud* data = (gr_node_ud*)lua_newuserdata(L, sizeof(gr_node_ud));
+  data->node = 0;
+
+  const char* name = luaL_checkstring(L, 1);
+
+
+  int maxLevel = luaL_checknumber(L, 2);
+
+  data->node = new GeometryNode(name, new MengerSponge(Point3D(0,0,0), 0, maxLevel));
 
   luaL_getmetatable(L, "gr.node");
   lua_setmetatable(L, -2);
@@ -702,6 +725,7 @@ static const luaL_reg grlib_functions[] = {
   {"plane", gr_plane_cmd},
   {"nh_sphere", gr_nh_sphere_cmd},
   {"nh_box", gr_nh_box_cmd},
+  {"menger_sponge", gr_menger_sponge_cmd},
   {"mesh", gr_mesh_cmd},
   {"obj_mesh", gr_obj_mesh_cmd},
   {"light", gr_light_cmd},

@@ -81,7 +81,7 @@ Point3D RectLight::getSample() const {
 }
 
 bool RectLight::rayIntersection(const Ray &ray, double &t, Vector3D &normal, Point3D &point, Point2D &uv) {
-  return false;//TODO temp
+  //return false;//TODO temp
   Vector3D toPlane = position - ray.origin();
   normal = Vector3D(0,-1,0);
 

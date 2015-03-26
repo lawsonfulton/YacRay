@@ -1,7 +1,12 @@
 Project TODO
 -  3rd picture for textur
-- uncomment light intersection code
 - fix fresenel
+- make graph of rendering times for threading
+- make gallery of additional features
+- do write up
+- make final scene
+- bump mapping
+- tone mapping
 
 
 Done 
@@ -13,6 +18,7 @@ Done
 - sky map
 - plane primitive
 - frsenel
+- menger sponge
 
 Final Scene Idea
 - Desk with pointer (normal) and foam apple.. something else? golf ball, chair, projector
@@ -42,3 +48,9 @@ http://delivery.acm.org.proxy.lib.uwaterloo.ca/10.1145/1870000/1866168/a142-resh
 
 Note:
 http://wiki.povray.org/content/Knowledgebase:The_Shadow_Line_Artifact
+
+--Questions
+-> good source for uniform spatial subdiv
+
+
+http://www.hdrlabs.com/sibl/archive.html
