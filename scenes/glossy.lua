@@ -76,7 +76,7 @@ light1 = gr.light({-3, box_height - 3.0, -3}, light_color_2, {1, 0, 0})
 light2 = gr.light({0, box_height - 3.0, -2}, light_color, {1, 0, 0})
 
 
-sqlight = gr.rect_light({0, box_height - 2.01, 0}, 3, 3, light_color, {1,0,0}, 20)
+sqlight = gr.rect_light({0, box_height - 2.01, 0}, 3, 3, light_color, {1,0,0}, 5)
 
 
 --far
@@ -91,7 +91,7 @@ sqlight = gr.rect_light({0, box_height - 2.01, 0}, 3, 3, light_color, {1,0,0}, 2
 -- 	  {-2, 4, -10}, {2, -2, 10}, {0, 1, 0}, 50,
 -- 	  {0.2, 0.2, 0.2}, {light1, light2})
 gr.render(scene,
-	  'glossy.png', 700, 450, 4,
+	  'glossy.png', 1920, 1080, 4,
 	  {6, 1.5, 0}, {-0, -0.3, 0}, {0, 1, 0}, 50,
 	  {0.15,0.15,0.15}, {sqlight}, "textures/apartment_env_map_sm.png")
 

@@ -125,7 +125,7 @@ sqlight = gr.rect_light({0, box_height - 2.01, -2}, 3, 3, light_color, {1,0,0}, 
 -- 	  {-2, 4, -10}, {2, -2, 10}, {0, 1, 0}, 50,
 -- 	  {0.2, 0.2, 0.2}, {light1, light2})
 gr.render(scene,
-	  'phong.png', 700, 700, 4,
+	  'phong.png', 700, 700, 1,
 	  {-2, 2, -2}, {-0.2, -0.2, 0}, {0, 1, 0}, 50,
 	  {0.2,0.2,0.2}, {sqlight})
 
