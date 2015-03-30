@@ -50,6 +50,7 @@ public:
   void normalize();
 
   Colour getColour(int x, int y);
+  Colour getColour(Point2D uv);
 
   Colour bilinearGetColour(Point2D uv);
   

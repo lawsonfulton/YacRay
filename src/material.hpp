@@ -17,16 +17,18 @@ public:
   virtual double getIor() const { return 1.0; }
 
   void setTextureMap(const char* filename);
-  void setBumpMap(const char* filename);
+  void setBumpMap(const char* filename, double magnitude);
 
 protected:
   Material();
   Colour getTextureColour(Point2D uv) const;
   double getBumpVal(Point2D uv) const;
-  Vector3D getDisplacementNormal(const Vector3D &n, const Point2D &uv) const;
+  Vector3D getDisplacementNormal(const Intersection &i) const;
 
-  Image *m_texmap;
-  Image *m_bumpmap;
+  Image *mTexmap;
+
+  Image *mBumpmap;
+  double mBumpMagnitude;
 };
 
 class PhongMaterial : public Material {
@@ -37,13 +39,13 @@ public:
 
   virtual Colour computeColour(const Intersection &i, const Renderer *rend) const;
 
-  const Colour &getDiffuse() const { return m_kd; }
-  const Colour &getSpecular() const { return m_ks; }
+  const Colour &getDiffuse() const { return mKd; }
+  const Colour &getSpecular() const { return mKs; }
   
-  double getReflectivity() const { return m_reflectivity; }
-  double getShininess() const { return m_shininess; }
-  virtual double getIor() const { return m_ior; }
-  double getTransparency() const { return m_transparency; }
+  double getReflectivity() const { return mReflectivity; }
+  double getShininess() const { return mShininess; }
+  virtual double getIor() const { return mIor; }
+  double getTransparency() const { return mTransparency; }
 
 private:
   Colour computeLightContribution(const Vector3D &normal, const Colour &diffuseComp,const Intersection &i, Light *light, const Renderer *rend) const;
@@ -51,11 +53,11 @@ private:
   Colour computeRefractionContribution(const Vector3D &normal, const Intersection &i, const Renderer *rend) const;
   void computeFresnelCoefs(const Intersection &i, const Vector3D &normal, double &Fr, double &Ft) const;
 
-  Colour m_kd;
-  Colour m_ks;
+  Colour mKd;
+  Colour mKs;
 
-  double m_shininess, m_reflectivity, m_ior, m_transparency;
-  int m_refSamples;
+  double mShininess, mReflectivity, mIor, mTransparency;
+  int mRefSamples;
 };
 
 class LightMaterial {

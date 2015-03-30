@@ -22,6 +22,7 @@ std::list<GeometryNode> SceneNode::getFlattened() const {
     for(auto childIt = childFlattened.begin(); childIt != childFlattened.end(); ++childIt) {
       childIt->m_trans = m_trans * childIt->m_trans;
       childIt->m_invtrans = childIt->m_invtrans * m_invtrans;
+      childIt->m_normalMat = Matrix4x4(childIt->m_trans.normalMatrix());
       flattened.push_back(*childIt);
     }
 
@@ -137,7 +138,7 @@ bool GeometryNode::computeIntersection(const Ray &ray, Intersection &i) const{
   Point3D point;
   Point2D uv;
 
-  Matrix4x4 normalMatrix = Matrix4x4(m_trans.normalMatrix());
+  //Matrix4x4 normalMatrix = Matrix4x4(m_trans.normalMatrix());
 
   Ray transformedRay(ray);
   transformedRay.transform(m_invtrans);
@@ -147,7 +148,7 @@ bool GeometryNode::computeIntersection(const Ray &ray, Intersection &i) const{
   if(intersects) {
     point = m_trans * point;
     t = copysign((point - ray.origin()).length(), t);
-    normal = (normalMatrix * normal).normalized();
+    normal = (m_normalMat * normal).normalized();
   }
 
   //TODO major error here because we are checking for t < MIN_INTERSECT_DIST in model space after scale
@@ -161,6 +162,12 @@ bool GeometryNode::computeIntersection(const Ray &ray, Intersection &i) const{
   i.uv = uv;
 
   return intersects;
+}
+
+void GeometryNode::getTangents(const Intersection &i, Vector3D &Ou, Vector3D &Ov) const {
+  m_primitive->getTangents(i, Ou, Ov);
+  Ou = m_normalMat * Ou;
+  Ov = m_normalMat * Ov;
 }
 
 const Material* GeometryNode::get_material() const {
@@ -181,6 +188,7 @@ std::list<GeometryNode> GeometryNode::getFlattened() const {
     for(auto childIt = childFlattened.begin(); childIt != childFlattened.end(); ++childIt) {
       childIt->m_trans = m_trans * childIt->m_trans;
       childIt->m_invtrans = childIt->m_invtrans * m_invtrans;
+      childIt->m_normalMat = Matrix4x4(childIt->m_trans.normalMatrix());
       flattened.push_back(*childIt);
     }
   }

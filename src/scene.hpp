@@ -65,6 +65,7 @@ protected:
   // Transformations
   Matrix4x4 m_trans;
   Matrix4x4 m_invtrans;
+  Matrix4x4 m_normalMat;
 
   // Hierarchy
   typedef std::list<SceneNode*> ChildList;
@@ -110,6 +111,7 @@ public:
   bool isLight() const { return m_primitive->isLight(); }
 
   bool computeIntersection(const Ray &ray, Intersection &i) const;
+  void getTangents(const Intersection &i, Vector3D &Ou, Vector3D &Ov) const;
 
   virtual std::list<GeometryNode> getFlattened() const;
 

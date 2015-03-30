@@ -569,7 +569,9 @@ int gr_material_set_bump_map_cmd(lua_State* L)
 
   const char* filename = luaL_checkstring(L, 2);
 
-  self->setBumpMap(filename);
+  double bumpMag = luaL_checknumber(L, 3);
+
+  self->setBumpMap(filename, bumpMag);
 
   return 0;
 }

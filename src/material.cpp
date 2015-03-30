@@ -4,14 +4,14 @@
 
 
 Material::Material() {
-	m_texmap = NULL;
-	m_bumpmap = NULL;
+	mTexmap = NULL;
+	mBumpmap = NULL;
 }
 
 Material::~Material()
 {
-	delete m_texmap;
-	delete m_bumpmap;
+	delete mTexmap;
+	delete mBumpmap;
 }
 
 
@@ -20,43 +20,54 @@ Colour Material::computeColour(const Intersection &i, const Renderer *rend) cons
 }
 
 void Material::setTextureMap(const char* filename) {
-	m_texmap = new Image();
-	m_texmap->loadPng(filename);
+	mTexmap = new Image();
+	mTexmap->loadPng(filename);
 }
 
-void Material::setBumpMap(const char* filename) {
-	m_bumpmap = new Image();
-	m_bumpmap->loadPng(filename);
+void Material::setBumpMap(const char* filename, double magnitude) {
+	mBumpmap = new Image();
+	mBumpmap->loadPng(filename);
+	mBumpMagnitude = magnitude;
 }
 
 Colour Material::getTextureColour(Point2D uv) const {
-	return m_texmap->bilinearGetColour(uv);
+	return mTexmap->bilinearGetColour(uv);
 }
 
 double Material::getBumpVal(Point2D uv) const {
-	Colour mapCol = m_bumpmap->bilinearGetColour(uv);
+	//Colour mapCol = mBumpmap->bilinearGetColour(uv);
+	Colour mapCol = mBumpmap->getColour(uv);
 	return (mapCol.R() + mapCol.G() + mapCol.B()) / 3.0; //TODO this might be a waste
 }
 
-Vector3D Material::getDisplacementNormal(const Vector3D &n, const Point2D &uv) const {
-	double E = 1.0/64.0; //TODO how much?
- 	//Question - should i be offsetting uv values or actual physical point and then getting new uv values?
+Vector3D Material::getDisplacementNormal(const Intersection &i) const {
+	const Point2D &uv = i.uv;
+
+	//double E = 1.0/1000.0; //TODO how much?
+	double E = 2.0/max(mBumpmap->width(),mBumpmap->height()) * 2.0;
 	Point2D across = Point2D(E, 0.0);
 	Point2D up = Point2D(0.0, E);
+
+	Vector3D Ou, Ov;
+	i.node->getTangents(i, Ou, Ov);
 
 	double Bu = (getBumpVal(uv + across) - getBumpVal(uv - across))/(2.0 * E);
 	double Bv = (getBumpVal(uv + up) - getBumpVal(uv - up))/(2.0 * E);
 
-	return Bu * Vector3D(1.0,0.0,0.0) + Bv * Vector3D(0.0,1.0,0.0); //TODO properly calc X and Y
+	Vector3D X = cross(i.normal, Ov);
+	Vector3D Y = cross(i.normal, Ou);
+
+	Vector3D D = (Bu * X - Bv * Y) * mBumpMagnitude;
+	return (i.normal + D).normalized();
 }
 
 PhongMaterial::PhongMaterial(const Colour& kd, const Colour& ks, double shininess)
-  : m_kd(kd), m_ks(ks), m_shininess(shininess), m_reflectivity(0.0), m_ior(1.0), m_transparency(0.0), m_refSamples(1)
+  : mKd(kd), mKs(ks), mShininess(shininess), mReflectivity(0.0), mIor(1.0), mTransparency(0.0), mRefSamples(1)
 {
 }
 
 PhongMaterial::PhongMaterial(const Colour& kd, const Colour& ks, double shininess, double reflectivity, double ior, double transparency, int refSamples)
-  : m_kd(kd), m_ks(ks), m_shininess(shininess), m_reflectivity(reflectivity), m_ior(ior), m_transparency(transparency), m_refSamples(refSamples)
+  : mKd(kd), mKs(ks), mShininess(shininess), mReflectivity(reflectivity), mIor(ior), mTransparency(transparency), mRefSamples(refSamples)
 {
 }
 
@@ -65,19 +76,20 @@ PhongMaterial::~PhongMaterial()
 }
 
 Colour PhongMaterial::computeColour(const Intersection &i, const Renderer *rend) const {
-	Colour diffuseComp = m_kd;
+	Colour diffuseComp = mKd;
 	Vector3D normal = i.normal;
 	Colour It(0.0), Ir(0.0), lightSum(0.0);
-	const Colour &Ia = rend->mAmbientColour;
+	
 
 	//Get colour from tex map
-	if(m_texmap) {
+	if(mTexmap) {
 		diffuseComp = getTextureColour(i.uv);
 	}
 
-	if(m_bumpmap) {
-		normal = (i.normal + getDisplacementNormal(i.normal, i.uv)).normalized();
+	if(mBumpmap) {
+		normal = getDisplacementNormal(i);
 	}
+	const Colour &Ia = rend->mAmbientColour * diffuseComp;
 
 	//Go through every light
 	for (auto lightIt = rend->mLights.begin(); lightIt != rend->mLights.end(); ++lightIt) {
@@ -94,12 +106,12 @@ Colour PhongMaterial::computeColour(const Intersection &i, const Renderer *rend)
 	}
 
 	//Reflection and refractions components
-	if(m_ks.R() > MY_EPSILON && m_ks.G() > MY_EPSILON && m_ks.B() > MY_EPSILON) {
+	if(mKs.R() > MY_EPSILON && mKs.G() > MY_EPSILON && mKs.B() > MY_EPSILON) {
 		Ir = computeReflectedContribution(normal, i, rend);
 	}
 
 	double Fr = 1.0, Ft = 1.0;
-	if(m_transparency > MY_EPSILON) {
+	if(mTransparency > MY_EPSILON) {
 		It = computeRefractionContribution(normal, i, rend); 
 		//if(i.depth == 0)computeFresnelCoefs(i, normal, Fr, Ft); //TODO fix this
 		//cout << Fr << " " << Ft  << endl;
@@ -110,8 +122,8 @@ Colour PhongMaterial::computeColour(const Intersection &i, const Renderer *rend)
 	
 	return Ia * diffuseComp
 		   + lightSum
-		   + m_ks * Fr * Ir 
-		   + m_transparency * (Colour(1.0) - m_ks) * Ft * It;
+		   + mKs * Fr * Ir 
+		   + mTransparency * (Colour(1.0) - mKs) * Ft * It;
 /**	I = Ka * Ia
 + Kd * [sum for each light: (N . L) * Il]
 + Ks * [sum for each light: ((R . V) ^ Ps) * Fl * Il]
@@ -156,7 +168,7 @@ Colour PhongMaterial::computeLightContribution(const Vector3D &normal, const Col
 
 	double diffuseFact = qMax(dot(L, normal), 0.0f);
 	double specularFact = qMax(dot(R, V), 0.0f);
-	Colour surfaceColour = diffuseComp * diffuseFact;// + m_ks * pow(specularFact, m_shininess);
+	Colour surfaceColour = diffuseComp * diffuseFact;// + mKs * pow(specularFact, mShininess);
 
 	//TODO combine this right
 	//	return surfaceColour * light->colour * attenuation * (1.0 - material->getReflectivity())* (1.0 - material->getTransparency());
@@ -178,9 +190,9 @@ Colour PhongMaterial::computeReflectedContribution(const Vector3D &normal, const
 	// exit(1);
 
 	//Need to do many samples for glossy reflections
-	for(int j = 0; j < m_refSamples; j++) {
+	for(int j = 0; j < mRefSamples; j++) {
 		double x1 = uniformRand(), x2 = uniformRand();
-		double alpha = acos(pow(1.0 - x1, 1.0 / (m_shininess + 1.0)));
+		double alpha = acos(pow(1.0 - x1, 1.0 / (mShininess + 1.0)));
 		double beta = 2.0 * M_PI * x2;
 
 		Vector3D perturb(sin(alpha) * cos(beta),
@@ -207,13 +219,13 @@ Colour PhongMaterial::computeReflectedContribution(const Vector3D &normal, const
 		reflectColour += rend->traceRay(reflectedRay.perturbed(0.01), i.depth + 1, this);// * material->getDiffuse(); //TODO how to combine right
 	}
 
-	return reflectColour / (double)m_refSamples;
+	return reflectColour / (double)mRefSamples;
 }
 
 Colour PhongMaterial::computeRefractionContribution(const Vector3D &normal, const Intersection &i, const Renderer *rend) const {
 	//http://graphics.stanford.edu/courses/cs148-10-summer/docs/2006--degreve--reflection_refraction.pdf
 	Vector3D refr;
-	double n1 = i.sourceMaterial->getIor(), n2 = m_ior;
+	double n1 = i.sourceMaterial->getIor(), n2 = mIor;
 
 	Vector3D n = normal;
 	//If same source and current, then assume going into air
@@ -252,11 +264,11 @@ Colour PhongMaterial::computeRefractionContribution(const Vector3D &normal, cons
 	// Vector3D refr = n * l + (n * c - c) * normal;
 	Ray refrRay(i.getPoint(), refr.normalized()); //TODO - Should I preturb using the normal?material->getTransparency();
 
-	return rend->traceRay(refrRay, i.depth + 1, this) * m_transparency;// * m_kd; //TODO properly * material->getDiffuse();
+	return rend->traceRay(refrRay, i.depth + 1, this) * mTransparency;// * mKd; //TODO properly * material->getDiffuse();
 }
 
 void PhongMaterial::computeFresnelCoefs(const Intersection &i, const Vector3D &normal, double &Fr, double &Ft) const {
-	double n1 = i.sourceMaterial->getIor(), n2 = m_ior;
+	double n1 = i.sourceMaterial->getIor(), n2 = mIor;
 
 	Vector3D norm = normal;
 	const Vector3D &v = i.ray->direction();

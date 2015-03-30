@@ -27,8 +27,8 @@ green_cornell = gr.material({0.162928, 0.408903, 0.083375}, {0, 0, 0}, 0)
 
 scene = gr.node('scene')
 mirror1 = gr.fancy_material({0,0,0}, {1, 1, 1}, 40000000.0, 0.0, 1.0, 0.0, 1)
-mirror2 = gr.fancy_material({0,0,0}, {1, 1, 1}, 1000.0, 0.0, 1.0, 0.0, 20)
-mirror3 = gr.fancy_material({0,0,0}, {1, 1, 1}, 100.0, 0.0, 1.0, 0.0, 40)
+mirror2 = gr.fancy_material({0,0,0}, {1, 1, 1}, 1000.0, 0.0, 1.0, 0.0, 2)
+mirror3 = gr.fancy_material({0,0,0}, {1, 1, 1}, 100.0, 0.0, 1.0, 0.0, 4)
 
 tex_test = gr.fancy_material({0.740063, 0.742313, 0.733934}, {0.4, 0.4, 0.4}, 1000.0, 0.8,1.0,0.0,10)
 tex_test:set_texture_map("textures/wood_floor.png")
@@ -91,7 +91,7 @@ sqlight = gr.rect_light({0, box_height - 2.01, 0}, 3, 3, light_color, {1,0,0}, 5
 -- 	  {-2, 4, -10}, {2, -2, 10}, {0, 1, 0}, 50,
 -- 	  {0.2, 0.2, 0.2}, {light1, light2})
 gr.render(scene,
-	  'glossy.png', 1920, 1080, 4,
+	  'glossy.png', 500, 500, 1,
 	  {6, 1.5, 0}, {-0, -0.3, 0}, {0, 1, 0}, 50,
 	  {0.15,0.15,0.15}, {sqlight}, "textures/apartment_env_map_sm.png")
 

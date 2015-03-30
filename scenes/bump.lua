@@ -30,17 +30,24 @@ mirror1 = gr.fancy_material({0,0,0}, {1, 1, 1}, 40000000.0, 0.0, 1.0, 0.0, 1)
 mirror2 = gr.fancy_material({0,0,0}, {1, 1, 1}, 1000.0, 0.0, 1.0, 0.0, 20)
 mirror3 = gr.fancy_material({0,0,0}, {1, 1, 1}, 100.0, 0.0, 1.0, 0.0, 40)
 
-tex_test = gr.fancy_material({0.740063, 0.742313, 0.733934}, {0, 0, 0}, 1000.0, 0.8,1.0,0.0,1)
-tex_test:set_texture_map("textures/grass/texture.png")
+tex_test = gr.fancy_material({0.740063, 0.742313, 0.733934}, {0, 0, 0}, 10000.0, 0.8,1.0,0.0,1)
+tex_test:set_texture_map("textures/grass/texture-light.png")
+--tex_test:set_bump_map("textures/grass/bump.png", 0.03)
+--tex_test:set_bump_map("textures/bumptest.png")
 
 
-ballmat = gr.fancy_material({1.0,1.0,1.0}, {0.5, 0.5, 0.5}, 40000000.0, 0.0, 1.0, 0.0, 1)
+--ballmat = gr.fancy_material({1.0,1.0,1.0}, {0.5, 0.5, 0.5}, 40000000.0, 0.0, 1.0, 0.0, 1)
+ballmat = gr.fancy_material({1.0,1.0,1.0}, {0.4, 0.4, 0.4}, 100.0, 0.0, 1.0, 0.0, 1)
+--ballmat:set_bump_map("textures/golfball_bump.png", 0.05)
+
 ball = gr.sphere("ball")
 ball:set_material(ballmat)
 ball:translate(0,1,0)
+ball:rotate('y',45)
 scene:add_child(ball)
 
-teemat = gr.material({1, 1, 1}, {0, 0, 0}, 0)
+--teemat = gr.material({1, 1, 1}, {0, 0, 0}, 0)
+teemat = gr.fancy_material({1.0,1.0,1.0}, {0.3, 0.3, 0.3}, 2000.0, 0.0, 1.0, 0.0, 3)
 tee = gr.obj_mesh("tee", "meshes/golf_tee.obj")
 tee:set_material(teemat)
 scene:add_child(tee)
@@ -57,10 +64,10 @@ box_length = 30.0
 -- floor:scale(box_width,1,box_width)
 -- cornell_box:add_child(floor)
 
-floor = gr.plane('floor', 30.0)
+floor = gr.plane('floor', 5.0)
 floor:set_material(tex_test)
 floor:translate(0,-1.0,0)
-floor:scale(3,3,3)
+floor:scale(5,5,5)
 --floor:scale(box_width,1,box_width)
 cornell_box:add_child(floor)
 
@@ -73,36 +80,24 @@ light_color = {0.780131 * 1, 0.780409 * 1, 0.775833 * 1}
 light_color = {1,1,1}
 light_color_2 = {0.780131/2, 0.780409/2, 0.775833/2}
 -- on ceiling
-light1 = gr.light({-3, box_height - 3.0, -3}, light_color_2, {1, 0, 0})
+light1 = gr.light({-4, 10 , -4}, light_color, {1, 0, 0})
 -- by camera
-light2 = gr.light({0, box_height - 3.0, -2}, light_color, {1, 0, 0})
+light2 = gr.light({0, box_height - 3.0, -2}, light_color_2, {1, 0, 0})
 
 
-sqlight = gr.rect_light({-30, 15, 0}, 3, 3, light_color, {1,0,0}, 5)
+sqlight = gr.rect_light({-300, 150, 0}, 80, 80, light_color, {1,0,0}, 5)
 
 
---far
--- gr.render(scene,
--- 	  'reflect.png', 800, 800,
--- 	  {-4, 4, -20}, {2, -2, 10}, {0, 1, 0}, 50,
--- 	  {0.2, 0.2, 0.2}, {light1, light2})
-
--- --close
--- gr.render(scene,
--- 	  'reflect.png', 800, 800,
--- 	  {-2, 4, -10}, {2, -2, 10}, {0, 1, 0}, 50,
--- 	  {0.2, 0.2, 0.2}, {light1, light2})
+--good
 gr.render(scene,
-	  'bump.png', 700, 700, 1,
+	  'bump.png', 700, 700, 4,
 	  {-4, 1, -4}, {-0, -0.3, 0}, {0, 1, 0}, 60,
 	  {0.15,0.15,0.15}, {sqlight}, "textures/sky4.png")
 
---top
---close
 -- gr.render(scene,
--- 	  'reflect.png', 800, 800,
--- 	  {0, 10, 0}, {0, -9, -5}, {0, 1, 0}, 50,
--- 	  {0.2, 0.2, 0.2}, {light1, light2})
+-- 	  'bump.png', 700, 700, 2,
+-- 	  {-4, 1, -4}, {-0, -1, 0}, {0, 1, 0}, 60,
+-- 	  {0.15,0.15,0.15}, {sqlight}, "textures/sky4light.png")
 
 
 

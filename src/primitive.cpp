@@ -65,6 +65,11 @@ bool Sphere::rayIntersection(const Ray &ray, double &t, Vector3D &normal, Point3
 	} 
 }
 
+void Sphere::getTangents(const Intersection &i, Vector3D &Ou, Vector3D &Ov) const {
+	Ou = cross(i.normal, Vector3D(0,1,0));
+	Ov = cross(Vector3D(1,0,0), i.normal); //* abs(sin(M_PI * (0.5 - v)));
+}
+
 Cube::~Cube()
 {
 }
@@ -176,17 +181,30 @@ bool Plane::rayIntersection(const Ray &ray, double &t, Vector3D &normal, Point3D
 
 	if(t > MIN_INTERSECT_DIST) {
 		if(point.lengthSquared() < mRadSq){
-			double u, v, intp;
-			u = (modf(point.x(), &intp) + 1.0) / 2.0;
-			v = (modf(point.z(), &intp) + 1.0) / 2.0;
+			double intp;
+			double x = modf(point.x(), &intp);
+			double z = modf(point.z(), &intp);
 
-			uv = Point2D(u,v);
+			if(x < 0) {
+				x = 1.0 + x;
+			}
+
+			if(z < 0) {
+				z = 1.0 + z;
+			}			
+
+			uv = Point2D(x,z);
 
 			return true;
 		}
 	}
 
 	return false;
+}
+
+void Plane::getTangents(const Intersection &i, Vector3D &Ou, Vector3D &Ov) const {
+	Ou = Vector3D(-1.0,0.0,0.0); //???? ---???
+	Ov = Vector3D(0.0,0.0,-1.0);
 }
 
 NonhierSphere::~NonhierSphere()

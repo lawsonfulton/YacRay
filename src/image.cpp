@@ -324,7 +324,30 @@ void Image::normalize() {
 }
 
 Colour Image::getColour(int x, int y) {
+  if(x >= width()) { 
+    x = x % width(); 
+  }
+  else if(x < 0) { 
+    x = (-x) % width();
+    x = width() - x;
+  }
+
+  if(y >= height()) { 
+    y = y % height(); 
+  }
+  else if(y < 0) { 
+    y = (-y) % height();
+    y = height() - y;
+  }
+
   return Colour((*this)(x,y,0),(*this)(x,y,1),(*this)(x,y,2));
+}
+
+Colour Image::getColour(Point2D uv) {
+  int x = floor(uv.x() * width() + 0.5);
+  int y = floor(uv.y() * height() + 0.5);
+
+  return getColour(x, y);
 }
 
 Colour Image::bilinearGetColour(Point2D uv) {
@@ -332,21 +355,8 @@ Colour Image::bilinearGetColour(Point2D uv) {
   double x = uv.x() * width();
   double y = uv.y() * height();
 
-  if(x >= width() - 1) {
-    x = x - width() + 1;
-  }
-  if(y >= height() - 1) {
-    y = y - height() + 1;
-  }
-  if(x < 0.0) {
-    x = width() - 1 + x;
-  }
-  if(y < 0.0) {
-    y = height() - 1 + y;
-  }
-  int px = (int)floor(x); // floor of x
-  int py = (int)floor(y); // floor of y
-
+  int px = (int)floor(x);
+  int py = (int)floor(y);
 
 
   // load the four neighboring pixels
@@ -369,6 +379,7 @@ Colour Image::bilinearGetColour(Point2D uv) {
   Colour out = p1 * w1 + p2 * w2 + p3 * w3 + p4 * w4;
 
  if(out.R() > 1.0) {
+  cout << "Colour error" << endl;
   cout << p1 << " " << p2 << " " << p3 << " " << p4 << endl;
   cout << w1 << " " << w2 << " " << w3 << " " << w4 << endl;
 }

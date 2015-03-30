@@ -12,6 +12,8 @@ public:
   virtual ~Primitive();
   virtual bool rayIntersection(const Ray &ray, double &t, Vector3D &normal, Point3D &point, Point2D &uv);
   virtual bool isLight() { return false; }
+
+  virtual void getTangents(const Intersection &i, Vector3D &Ou, Vector3D &Ov) const { Ou = Vector3D(); Ov = Vector3D(); }
 };
 
 class Sphere : public Primitive {
@@ -19,6 +21,7 @@ public:
   virtual ~Sphere();
 
   virtual bool rayIntersection(const Ray &ray, double &t, Vector3D &normal, Point3D &point, Point2D &uv);
+  virtual void getTangents(const Intersection &i, Vector3D &Ou, Vector3D &Ov) const;
 };
 
 class Cube : public Primitive {
@@ -36,7 +39,7 @@ public:
   virtual ~Plane();
 
   virtual bool rayIntersection(const Ray &ray, double &t, Vector3D &normal, Point3D &point, Point2D &uv);
-
+  virtual void getTangents(const Intersection &i, Vector3D &Ou, Vector3D &Ov) const;
 private:
   double mRadSq;
 };
