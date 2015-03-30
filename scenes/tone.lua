@@ -144,14 +144,14 @@ light1 = gr.light({4, 3.0, -1}, light_color_2, {1, 0, 0})
 light2 = gr.light({-2.0, box_height - 3.0, -3}, light_color_2, {1, 0, 0})
 
 
-sqlight = gr.rect_light({0, box_height - 2.01, -2}, 3, 3, light_color, {1,0,0}, 5)
-sqlight2 = gr.rect_light({3, box_height - 2.01, -2}, 3, 3, light_color, {1,0,0}, 5)
-sqlight3 = gr.rect_light({-3, box_height - 2.01, -2}, 3, 3, light_color, {1,0,0}, 5)
+sqlight = gr.rect_light({0, box_height - 2.01, -2}, 3, 3, light_color, {1,0,0}, 10)
+sqlight2 = gr.rect_light({3, box_height - 2.01, -2}, 3, 3, light_color, {1,0,0}, 10)
+sqlight3 = gr.rect_light({-3, box_height - 2.01, -2}, 3, 3, light_color, {1,0,0}, 10)
 
 
 --far
 gr.render(scene,
-	  'tone.png', 700, 700, 4,
+	  'tone.png', 1920, 1080, 4,
 	  {0, box_height/2.0, -box_length/2.0}, {0, -box_height/2.0, 30}, {0, 1, 0}, 50,
 	  {0.2,0.2,0.2}, {sqlight,sqlight2,sqlight3})
 

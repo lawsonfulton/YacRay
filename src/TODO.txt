@@ -19,6 +19,7 @@ Done
 - plane primitive
 - frsenel
 - menger sponge
+- multithreading
 
 Final Scene Idea
 - Desk with pointer (normal) and foam apple.. something else? golf ball, chair, projector

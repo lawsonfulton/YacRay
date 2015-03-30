@@ -90,7 +90,7 @@ sqlight = gr.rect_light({-300, 150, 0}, 80, 80, light_color, {1,0,0}, 5)
 
 --good
 gr.render(scene,
-	  'bump.png', 700, 700, 4,
+	  'bump.png', 1920, 1080, 4,
 	  {-4, 1, -4}, {-0, -0.3, 0}, {0, 1, 0}, 60,
 	  {0.15,0.15,0.15}, {sqlight}, "textures/sky4.png")
 
