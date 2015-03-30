@@ -84,6 +84,11 @@ void Renderer::renderImage(const string &filename) {
 
 	for (auto& th : threads) th.join();
 
+	// cout << endl;
+	// cout << "Tone mapping image..." << flush;
+	// img.ReinhardToneMap();
+	// cout << "Done." << endl;
+
 	img.savePng(filename);
 	cout << endl;//formatting
 }

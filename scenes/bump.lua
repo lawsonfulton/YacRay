@@ -32,13 +32,13 @@ mirror3 = gr.fancy_material({0,0,0}, {1, 1, 1}, 100.0, 0.0, 1.0, 0.0, 40)
 
 tex_test = gr.fancy_material({0.740063, 0.742313, 0.733934}, {0, 0, 0}, 10000.0, 0.8,1.0,0.0,1)
 tex_test:set_texture_map("textures/grass/texture-light.png")
---tex_test:set_bump_map("textures/grass/bump.png", 0.03)
+tex_test:set_bump_map("textures/grass/bump.png", 0.03)
 --tex_test:set_bump_map("textures/bumptest.png")
 
 
 --ballmat = gr.fancy_material({1.0,1.0,1.0}, {0.5, 0.5, 0.5}, 40000000.0, 0.0, 1.0, 0.0, 1)
 ballmat = gr.fancy_material({1.0,1.0,1.0}, {0.4, 0.4, 0.4}, 100.0, 0.0, 1.0, 0.0, 1)
---ballmat:set_bump_map("textures/golfball_bump.png", 0.05)
+ballmat:set_bump_map("textures/golfball_bump.png", 0.05)
 
 ball = gr.sphere("ball")
 ball:set_material(ballmat)

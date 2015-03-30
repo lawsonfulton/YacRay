@@ -34,6 +34,8 @@ public:
                                                ///particular component
                                                ///from the image.
 
+  double& pix(int x, int y, int i) { return (*this)(x, y, i); }
+
   void setColour(int x, int y, Colour &colour);
 
 
@@ -51,8 +53,14 @@ public:
 
   Colour getColour(int x, int y);
   Colour getColour(Point2D uv);
-
   Colour bilinearGetColour(Point2D uv);
+
+  double luminance(int x, int y);
+  double maxLuminance();
+  double L(int x, int y, double a, double LwBar);
+
+  void ReinhardToneMap();
+  void computeLuminances(Image &L);
   
 private:
   int m_width, m_height;

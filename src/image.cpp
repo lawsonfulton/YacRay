@@ -386,4 +386,121 @@ Colour Image::bilinearGetColour(Point2D uv) {
  return out;
 }
 
+double Image::luminance(int x, int y) {
+  return (0.2126 * pix(x,y,0) + 0.7152 * pix(x,y,1) + 0.0722 * pix(x,y,2));
+}
+
+double Image::maxLuminance() {
+  double wMax = 0.0;
+
+  //Compute max and min
+  for(int y = 0; y < m_height; y++) {
+    for(int x = 0; x < m_width; x++) {
+      double g = pix(x,y,0);
+
+      wMax = max(g, wMax);
+    }
+  }
+
+  return wMax;
+}
+
+double computeLwBar(Image &Lw) {
+  double delta = 0.00001; //TODO how much?
+  double sum = 0.0; //Might get error accum
+
+  for(int y = 0; y < Lw.height(); y++) {
+    for(int x = 0; x < Lw.width(); x++) {
+      sum += log(delta + Lw(x,y,0));
+    }
+  }
+
+  return exp(sum / (Lw.width() * Lw.height()));
+} 
+
+void simpleMap(Image &Lw, double a, double LwBar) {
+  for(int y = 0; y < Lw.height(); y++) {
+    for(int x = 0; x < Lw.width(); x++) {
+      double lxy = Lw.L(x,y,a,LwBar);
+
+      Lw(x,y,0) = lxy / (1.0 + lxy);
+    }
+  }
+}
+
+//Yes this is a terrible ugly hack
+//Use precomputed LwBar and a to compute image luminance
+double Image::L(int x, int y, double a, double LwBar) {
+  return a / LwBar * pix(x,y,0);
+}
+
+void Image::ReinhardToneMap() {
+  //Map into luminances
+  Image Lw(width(), height(), 1);
+  computeLuminances(Lw);
+
+  double a = 0.18;
+  double LwBar = computeLwBar(Lw);
+  double Lwhite = Lw.maxLuminance() * 2.0;
+
+  for(int y = 0; y < height(); y++) {
+    for(int x = 0; x < width(); x++) {
+      double lxy = Lw.L(x,y,a,LwBar);
+
+      Lw(x,y,0) = (lxy * (1.0 + lxy/pow(Lwhite,2)))/ (1.0 + lxy);
+    }
+  }
+
+  //Remap to RGB
+  for(int y = 0; y < height(); y++) {
+    for(int x = 0; x < width(); x++) {
+      double scale = Lw(x,y,0)/luminance(x, y);
+
+      for(int i = 0; i < 3; i++) {
+        pix(x,y,i) *= scale;
+      }
+    }
+  }
+
+}
+
+
+void Image::computeLuminances(Image &L) {
+  for(int y = 0; y < L.height(); y++) {
+    for(int x = 0; x < L.width(); x++) {
+      L(x,y,0) = luminance(x,y);
+    }
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

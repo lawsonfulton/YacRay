@@ -32,20 +32,44 @@ tex_test:set_bump_map("textures/moonbump2.png", 0.05)
 scene = gr.node('scene')
 
 
+--orig
+-- sphere = gr.sphere('s')
+-- radius = 1.5
+-- sphere:translate(-2,radius - 1,0)
+-- sphere:scale(radius, radius, radius)
+-- sphere:set_material(white_cornell)
+-- scene:add_child(sphere)
 
-sphere = gr.sphere('s')
-radius = 1.5
-sphere:translate(-2,radius - 1,0)
-sphere:scale(radius, radius, radius)
-sphere:set_material(white_cornell)
-scene:add_child(sphere)
+-- box = gr.cube('c')
+-- box:translate(1,-1,0)
+-- box:scale(2,4,2)
+-- box:rotate('y', 30)
+-- box:set_material(white_cornell)
+-- scene:add_child(box)
 
-box = gr.cube('c')
-box:translate(1,-1,0)
-box:scale(2,4,2)
-box:rotate('y', 30)
-box:set_material(white_cornell)
-scene:add_child(box)
+math.randomseed(1)
+
+nspheres = 10
+for i=1,nspheres do
+	r = math.random()
+	g = math.random()
+	b = math.random()
+	spheremat = gr.fancy_material({r,g,b}, {0.3, 0.3, 0.3}, 1000000000.0, 0.6,1.0,0.0,1)
+
+	sphere = gr.sphere('s')
+	radius = math.random()
+	x = math.random() * 10 - (5 + radius)
+	z = math.random() * 10 - (5 + radius)
+	sphere:translate(x,radius - 1,z)
+	sphere:scale(radius, radius, radius)
+	sphere:set_material(spheremat)
+	scene:add_child(sphere)
+
+end
+
+
+
+
 
 -- Cornell Box
 cornell_box = gr.node('cornell box')
@@ -61,15 +85,10 @@ floor:translate(5.0,-1.0,0)
 cornell_box:add_child(floor)
 
 	--ceiling
-ceiling = gr.cube('ceiling')
-ceiling:set_material(white_cornell)
-ceiling:translate(-box_width/2.0,box_height - 2.0,-box_length/1.5)
-ceiling:scale(box_width,1,box_length)
-cornell_box:add_child(ceiling)
 
 ceiling = gr.plane('ceiling', 30.0)
 ceiling:set_material(white_cornell)
-ceiling:translate(0,box_height,0)
+ceiling:translate(0,5,0)
 ceiling:rotate('z',180)
 --ceiling:scale(box_width,1,box_width)
 cornell_box:add_child(ceiling)
@@ -91,11 +110,20 @@ cornell_box:add_child(left_wall)
 -- cornell_box:add_child(left_wall)
 
 	--right wall
-right_wall = gr.cube('right_wall')
+-- right_wall = gr.cube('right_wall')
+-- right_wall:set_material(red_cornell)
+-- right_wall:translate(-box_width/2.0,-1.0,-box_length/1.5)
+-- right_wall:scale(1,box_height,box_length)
+-- cornell_box:add_child(right_wall)
+
+right_wall = gr.plane('right_wall', 30.0)
 right_wall:set_material(red_cornell)
-right_wall:translate(-box_width/2.0,-1.0,-box_length/1.5)
-right_wall:scale(1,box_height,box_length)
+right_wall:translate(-5,0,0)
+right_wall:rotate('y',90)
+right_wall:rotate('x',90)
+--right_wall:scale(box_width,1,box_width)
 cornell_box:add_child(right_wall)
+
 
 	--back wall
 back_wall = gr.cube('back_wall')
@@ -116,16 +144,16 @@ light1 = gr.light({4, 3.0, -1}, light_color_2, {1, 0, 0})
 light2 = gr.light({-2.0, box_height - 3.0, -3}, light_color_2, {1, 0, 0})
 
 
-sqlight = gr.rect_light({0, box_height - 2.01, -2}, 3, 3, light_color, {1,0,0}, 3)
-sqlight2 = gr.rect_light({3, box_height - 2.01, -2}, 3, 3, light_color, {1,0,0}, 3)
-sqlight3 = gr.rect_light({-3, box_height - 2.01, -2}, 3, 3, light_color, {1,0,0}, 3)
+sqlight = gr.rect_light({0, box_height - 2.01, -2}, 3, 3, light_color, {1,0,0}, 5)
+sqlight2 = gr.rect_light({3, box_height - 2.01, -2}, 3, 3, light_color, {1,0,0}, 5)
+sqlight3 = gr.rect_light({-3, box_height - 2.01, -2}, 3, 3, light_color, {1,0,0}, 5)
 
 
 --far
 gr.render(scene,
-	  'tone.png', 700, 700, 2,
+	  'tone.png', 700, 700, 4,
 	  {0, box_height/2.0, -box_length/2.0}, {0, -box_height/2.0, 30}, {0, 1, 0}, 50,
-	  {0.2,0.2,0.2}, {sqlight,sqlight2, sqlight3})
+	  {0.2,0.2,0.2}, {sqlight,sqlight2,sqlight3})
 
 
 --close
