@@ -149,9 +149,12 @@ sqlight2 = gr.rect_light({3, box_height - 2.01, -2}, 3, 3, light_color, {1,0,0},
 sqlight3 = gr.rect_light({-3, box_height - 2.01, -2}, 3, 3, light_color, {1,0,0}, 3)
 
 
+-- double mAperature = 0.01;
+-- 					double mFocalLen = 7.0;
+-- 					int mDofSamples = 4; 
 --far
 gr.render(scene,
-	  'tone.png', 700, 700, 4,
+	  'tone.png', 700, 700, 4, 1, 0.0, 0.0,
 	  {0, 1, -7.0}, {0, -box_height/2.0, 30}, {0, 1, 0}, 50,
 	  {0.2,0.2,0.2}, {sqlight,sqlight2,sqlight3})
 

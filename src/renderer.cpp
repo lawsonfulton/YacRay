@@ -26,8 +26,8 @@ static inline void loadbar(unsigned int x, unsigned int n, unsigned int w = 50)
     cout << "]\r" << flush;
 }
 
-Renderer::Renderer(Camera *camera, SceneNode *scene, list<Light*> lights, Colour ambient, int ssLevel, const char* skymap)
-             :  mAmbientColour(ambient), mLights(lights), mSSLevel(ssLevel), mCamera(camera), mScene(scene), mSkymap(NULL) {
+Renderer::Renderer(Camera *camera, SceneNode *scene, list<Light*> lights, Colour ambient, int ssLevel, int dofSamples, double aperature, double focalLen, const char* skymap)
+             :  mAmbientColour(ambient), mLights(lights), mSSLevel(ssLevel), mDofSamples(dofSamples), mAperature(aperature), mFocalLen(focalLen), mCamera(camera), mScene(scene), mSkymap(NULL) {
     if(skymap) {
     	mSkymap = new Image();
     	cout << "Loading environment map..." << flush;
@@ -231,50 +231,52 @@ void Renderer::renderSlice(Image &img, int slice, int totalSlices, atomic_int &p
 		for (int x = start; x < end; x++) {
 
 			Colour finalColour(0.0);
-			// for(int yi = 0; yi < mSSLevel; yi++) {
-			// 	for(int xi = 0; xi < mSSLevel; xi++) {
-			// 		Ray primaryRay = mCamera->makeRay(Point2D((double)x + xi * spacing, (double)y + yi * spacing));
-			// 		Colour colour = traceRay(primaryRay, 0, (Material*)&sourceMaterial);
-
-			// 		finalColour += colour / numSamples;
-			// 	}
-			// }
 
 			for(int yi = 0; yi < mSSLevel; yi++) {
 				for(int xi = 0; xi < mSSLevel; xi++) {
-					double aperature = 0.01;
-					double focalLen = 7.0;
-					int dofSamples = 4; 
-
 					Point2D initialPoint = Point2D((double)x + xi * spacing, (double)y + yi * spacing);
 					Ray primaryRay = mCamera->makeRay(initialPoint);
-					Point3D focalPoint = primaryRay.getPoint(focalLen);
 
-					const Vector3D &viewDir = mCamera->getDirection();
-					double viewTheta = acos(viewDir.y());
-					double viewPhi = atan2(viewDir.z(), viewDir.x());
+					if(mAperature > 0.0) {
+						Colour dofColour(0.0);
 
-					Matrix4x4 rot;
-					rot.rotate(-viewPhi * M_180_PI, 0.0, 1.0, 0.0);
-					rot.rotate(-viewTheta * M_180_PI, 0.0, 0.0, 1.0);
+						Point3D focalPoint = primaryRay.getPoint(mFocalLen);
+						const Vector3D &viewDir = mCamera->getDirection();
+						double viewTheta = acos(viewDir.y());
+						double viewPhi = atan2(viewDir.z(), viewDir.x());
 
-					for(int i = 0; i < dofSamples; i++) {
-						double theta = uniformAngleVal();
-						double r = uniformRand() * aperature;
-						
-						Vector3D offset(sqrt(r) * cos(theta), 0, sqrt(r) * sin(theta));
-						offset = rot * offset;
+						Matrix4x4 rot;
+						rot.rotate(-viewPhi * M_180_PI, 0.0, 1.0, 0.0);
+						rot.rotate(-viewTheta * M_180_PI, 0.0, 0.0, 1.0);
 
-						Point3D newOrigin = mCamera->getLocation() + offset;
-						Vector3D newDir = (focalPoint - newOrigin).normalized();
+						for(int i = 0; i < mDofSamples; i++) {
+							double theta = uniformAngleVal();
+							double r = uniformRand() * mAperature;
+							
+							Vector3D offset(sqrt(r) * cos(theta), 0, sqrt(r) * sin(theta));
+							offset = rot * offset;
 
-						Ray dofRay(newOrigin, newDir);
+							Point3D newOrigin = mCamera->getLocation() + offset;
+							Vector3D newDir = (focalPoint - newOrigin).normalized();
 
-						Colour colour = traceRay(dofRay, 0, (Material*)&sourceMaterial);
-						finalColour += colour / numSamples;
+							Ray dofRay(newOrigin, newDir);
+
+							Colour colour = traceRay(dofRay, 0, (Material*)&sourceMaterial);
+							dofColour += colour;
+						}
+
+						finalColour += dofColour / mDofSamples;
+					}
+					else {
+						Ray primaryRay = mCamera->makeRay(Point2D((double)x + xi * spacing, (double)y + yi * spacing));
+						Colour colour = traceRay(primaryRay, 0, (Material*)&sourceMaterial);
+
+						finalColour += colour;
 					}
 				}
 			}
+
+			finalColour = finalColour / numSamples;
 
 			img.setColour(x, y, finalColour);
 			

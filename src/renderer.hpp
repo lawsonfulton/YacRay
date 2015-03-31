@@ -20,14 +20,14 @@ using namespace std;
 
 class Renderer {
 public:
-    Renderer(Camera *camera, SceneNode *scene, list<Light*> lights, Colour ambient, int ssLevel, const char* skymap);
+    Renderer(Camera *camera, SceneNode *scene, list<Light*> lights, Colour ambient, int ssLevel,int dofSamples, double aperature, double focalLen, const char* skymap);
     ~Renderer();
 
     void renderImage(const string &filename);
     Colour traceRay(const Ray &ray, int depth, const Material *sourceMaterial) const;
     bool checkVisibility(const Point3D &a, const Point3D &b) const;
     Colour backGroundColour(const Vector3D &direction) const;
-    
+
     Colour mAmbientColour;
     list<Light*> mLights;
 
@@ -40,6 +40,10 @@ private:
     Colour computeColour(const Intersection &intersection) const;
 
     int mSSLevel;
+    int mDofSamples;
+    double mAperature;
+    double mFocalLen;
+    
 
     Camera *mCamera;
     SceneNode *mScene;

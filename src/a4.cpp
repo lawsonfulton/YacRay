@@ -14,6 +14,9 @@ void a4_render(// What to render
                // Image size
                int width, int height,
                int ss_level,
+               int dof_samples,
+               double aperature,
+               double focal_len,
                // Viewing parameters
                const Point3D& eye, const Vector3D& view,
                const Vector3D& up, double fov,
@@ -29,7 +32,7 @@ void a4_render(// What to render
   cout << "Camera Location: " << toString(eye) << " Look at: " << toString(view) << " Up: " << toString(up) << " FOV: " << fov << endl; 
 
   Camera camera(eye, view, up, fov, width, height);
-  Renderer renderer(&camera, root, lights, ambient, ss_level, skymap); 
+  Renderer renderer(&camera, root, lights, ambient, ss_level, dof_samples, aperature, focal_len, skymap); 
 
   renderer.renderImage(filename);
 

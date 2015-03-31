@@ -441,36 +441,40 @@ int gr_render_cmd(lua_State* L)
   int height = luaL_checknumber(L, 4);
   int ss_level = luaL_checknumber(L, 5);
 
+  int dof_samples = luaL_checknumber(L, 6);
+  double aperature = luaL_checknumber(L, 7);
+  double focal_len = luaL_checknumber(L, 8);
+
   Point3D eye;
   Vector3D view, up;
 
-  get_tuple(L, 6, &eye[0], 3);
-  get_tuple(L, 7, &view[0], 3);
-  get_tuple(L, 8, &up[0], 3);
+  get_tuple(L, 9, &eye[0], 3);
+  get_tuple(L, 10, &view[0], 3);
+  get_tuple(L, 11, &up[0], 3);
 
-  double fov = luaL_checknumber(L, 9);
+  double fov = luaL_checknumber(L, 12);
 
   double ambient_data[3];
-  get_tuple(L, 10, ambient_data, 3);
+  get_tuple(L, 13, ambient_data, 3);
   Colour ambient(ambient_data[0], ambient_data[1], ambient_data[2]);
 
-  luaL_checktype(L, 10, LUA_TTABLE);
-  int light_count = luaL_getn(L, 11);
+  luaL_checktype(L, 13, LUA_TTABLE);
+  int light_count = luaL_getn(L, 14);
   
-  luaL_argcheck(L, light_count >= 1, 11, "Tuple of lights expected");
+  luaL_argcheck(L, light_count >= 1, 14, "Tuple of lights expected");
   std::list<Light*> lights;
   for (int i = 1; i <= light_count; i++) {
-    lua_rawgeti(L, 11, i);
+    lua_rawgeti(L, 14, i);
     gr_light_ud* ldata = (gr_light_ud*)luaL_checkudata(L, -1, "gr.light");
-    luaL_argcheck(L, ldata != 0, 11, "Light expected");
+    luaL_argcheck(L, ldata != 0, 14, "Light expected");
 
     lights.push_back(ldata->light);
     lua_pop(L, 1);
   }
 
-  const char* skymap = luaL_optlstring(L, 12, NULL, NULL);
+  const char* skymap = luaL_optlstring(L, 15, NULL, NULL);
 
-  a4_render(root->node, filename, width, height, ss_level,
+  a4_render(root->node, filename, width, height, ss_level, dof_samples, aperature, focal_len,
             eye, view, up, fov,
             ambient, lights, skymap);
   

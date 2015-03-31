@@ -12,6 +12,9 @@ void a4_render(// What to render
                // Image size
                int width, int height,
                int ss_level,
+               int dof_samples,
+               double aperature,
+               double focal_len,
                // Viewing parameters
                const Point3D& eye, const Vector3D& view,
                const Vector3D& up, double fov,

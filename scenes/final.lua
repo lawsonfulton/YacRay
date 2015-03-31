@@ -92,7 +92,7 @@ sqlight = gr.rect_light({5, 7, 3}, 3, 3, light_color, {1,0,0}, 5)
 
 zoom = 10
 gr.render(scene,
-	  'final.png', 4000, 4000, 4,
+	  'final.png', 700, 700, 4, 2, 0.00001, 0.37,
 	  {1/zoom, 1.8/zoom, 3/zoom}, {0, -0.03, 0}, {0, 1, 0}, 50,
 	  {0.15,0.15,0.15}, {sqlight}, "textures/apartment_env_map_sm.png")
 
