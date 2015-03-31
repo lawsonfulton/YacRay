@@ -37,7 +37,7 @@ glass = gr.fancy_material({0,0,0}, {0.1, 0.1, 0.1}, 50000000.0, 1, 1.52, 1.0, 1)
 tex_test = gr.fancy_material({0.740063, 0.742313, 0.733934}, {0.4, 0.4, 0.4}, 1000.0, 0.8,1.0,0.0,1)
 tex_test:set_texture_map("textures/wood_floor.png")
 
-cup = gr.fancy_material({0.740063, 0.742313, 0.733934}, {0.4, 0.4, 0.4}, 1000.0, 0.8,1.0,0.0,1)
+cup = gr.fancy_material({0.740063, 0.742313, 0.733934}, {0.4, 0.4, 0.4}, 1000.0, 0.8,1.0,0.0,3)
 
 checker = gr.fancy_material({0.740063, 0.742313, 0.733934}, {1, 1, 1}, 4, 0,1.0,0.0,0.3)
 checker:set_texture_map("textures/big_checker.png")
@@ -116,7 +116,7 @@ light1 = gr.light({-3, box_height - 3.0, -3}, light_color_2, {1, 0, 0})
 light2 = gr.light({ballx - 10,5, 10}, light_color, {1, 0, 0})
 
 
-sqlight = gr.rect_light({ballx - 10,5, -10}, 3, 3, light_color, {1,0,0}, 1)
+sqlight = gr.rect_light({ballx - 10,5, -10}, 3, 3, light_color, {1,0,0}, 5)
 
 
 -- 	  {0.2, 0.2, 0.2}, {light1, light2})
@@ -127,7 +127,7 @@ sqlight = gr.rect_light({ballx - 10,5, -10}, 3, 3, light_color, {1,0,0}, 1)
 -- 	  {-2, 4, -10}, {2, -2, 10}, {0, 1, 0}, 50,
 -- 	  {0.2, 0.2, 0.2}, {light1, light2})
 gr.render(scene,
-	  'cup.png', 200, 200, 1,
+	  'cup.png', 600, 600, 4,
 	  {-3, 0.5, -2}, {ballx, bally + 0.5, ballz}, {0, 1, 0}, 50,
 	  {0.15,0.15,0.15}, {sqlight}, "textures/apartment_env_map_sm.png")
 

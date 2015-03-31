@@ -236,7 +236,7 @@ Colour PhongMaterial::computeReflectedContribution(const Vector3D &normal, const
 		// cout << reflDir << endl;
 
 		Ray reflectedRay(i.getPoint(), reflDir);
-		reflectColour += rend->traceRay(reflectedRay.perturbed(0.01), i.depth + 1, this);// * material->getDiffuse(); //TODO how to combine right
+		reflectColour += rend->traceRay(reflectedRay.perturbed(0.0001), i.depth + 1, this);// * material->getDiffuse(); //TODO how to combine right
 	}
 
 	return reflectColour / (double)mRefSamples;

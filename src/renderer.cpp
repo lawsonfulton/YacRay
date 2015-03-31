@@ -233,6 +233,7 @@ void Renderer::renderSlice(Image &img, int slice, int totalSlices, atomic_int &p
 			Colour finalColour(0.0);
 			for(int yi = 0; yi < mSSLevel; yi++) {
 				for(int xi = 0; xi < mSSLevel; xi++) {
+					
 					Ray primaryRay = mCamera->makeRay(Point2D((double)x + xi * spacing, (double)y + yi * spacing));
 					Colour colour = traceRay(primaryRay, 0, (Material*)&sourceMaterial);
 
