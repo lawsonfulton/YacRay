@@ -66,8 +66,14 @@ bool Sphere::rayIntersection(const Ray &ray, double &t, Vector3D &normal, Point3
 }
 
 void Sphere::getTangents(const Intersection &i, Vector3D &Ou, Vector3D &Ov) const {
-	Ou = cross(i.normal, Vector3D(0,1,0));
-	Ov = cross(Vector3D(1,0,0), i.normal); //* abs(sin(M_PI * (0.5 - v)));
+	if(i.normal.z() > 0) {
+		//Ou = cross(Vector3D(0,1,0), i.normal);
+		Ou = cross(i.normal, Vector3D(0,1,0));
+		Ov = cross(i.normal, Vector3D(1,0,0)); //* abs(sin(M_PI * (0.5 - v)));
+	} else {
+		Ou = cross(i.normal, Vector3D(0,1,0));
+		Ov = cross(Vector3D(1,0,0), i.normal); //* abs(sin(M_PI * (0.5 - v)));
+	}
 }
 
 Cube::~Cube()

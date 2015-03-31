@@ -556,6 +556,23 @@ int gr_material_set_texture_map_cmd(lua_State* L)
   return 0;
 }
 
+extern "C"
+int gr_material_set_specular_map_cmd(lua_State* L)
+{
+  GRLUA_DEBUG_CALL;
+  
+  gr_material_ud* matdata = (gr_material_ud*)luaL_checkudata(L, 1, "gr.material");
+  luaL_argcheck(L, matdata != 0, 1, "Material expected");
+
+  Material* self = dynamic_cast<Material*>(matdata->material);
+
+  const char* filename = luaL_checkstring(L, 2);
+
+  self->setSpecularMap(filename);
+
+  return 0;
+}
+
 // Set a materials's bump map
 extern "C"
 int gr_material_set_bump_map_cmd(lua_State* L)
@@ -762,6 +779,7 @@ static const luaL_reg grlib_node_methods[] = {
 static const luaL_reg grlib_material_methods[] = {
  // {"__gc", gr_node_gc_cmd},
   {"set_texture_map", gr_material_set_texture_map_cmd},
+  {"set_specular_map", gr_material_set_specular_map_cmd},
   {"set_bump_map", gr_material_set_bump_map_cmd},
   {0, 0}
 };

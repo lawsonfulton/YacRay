@@ -294,8 +294,8 @@ Colour Renderer::backGroundColour(const Vector3D &direction) const {
 		return Colour(0.0);
 	}
 
-	double u = 0.5 + atan2(direction.z(), -direction.x()) / (2.0 * M_PI);
-	double v = 0.5 - asin(direction.y()) / M_PI;
+	double u = 0.5 + (-M_PI/2.0 + atan2(direction.z(), -direction.x())) / (2.0 * M_PI);
+	double v = 0.5 - (asin(direction.y()))/ M_PI;
 	Point2D uv(u,v);
 
 	return mSkymap->bilinearGetColour(uv);
@@ -323,7 +323,7 @@ bool Renderer::checkVisibility(const Point3D &a, const Point3D &b) const {
 	double dist = (b-a).length();
 
 	Ray shadowRay(a, (b-a)/dist);
-	Intersection i = findClosestIntersection(shadowRay.perturbed(0.01), false); //TODO this perturbment is a bit of a hack, should really be doing proer calculation of t in world space
+	Intersection i = findClosestIntersection(shadowRay.perturbed(0.0001), false); //TODO this perturbment is a bit of a hack, should really be doing proer calculation of t in world space
 
 	if(i.t == DBL_INF) {
 		return true;

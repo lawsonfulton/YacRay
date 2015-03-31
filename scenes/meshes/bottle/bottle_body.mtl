@@ -1,0 +1,11 @@
+# Blender MTL File: 'None'
+# Material Count: 1
+
+newmtl PlasitcBlue
+Ns 96.078431
+Ka 0.000000 0.000000 0.000000
+Kd 0.291765 0.370196 0.608627
+Ks 0.427451 0.427451 0.427451
+Ni 1.000000
+d 0.150000
+illum 2

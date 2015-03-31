@@ -6,6 +6,7 @@
 Material::Material() {
 	mTexmap = NULL;
 	mBumpmap = NULL;
+	mSpecmap = NULL;
 }
 
 Material::~Material()
@@ -24,6 +25,11 @@ void Material::setTextureMap(const char* filename) {
 	mTexmap->loadPng(filename);
 }
 
+void Material::setSpecularMap(const char* filename) {
+	mSpecmap = new Image();
+	mSpecmap->loadPng(filename);
+}
+
 void Material::setBumpMap(const char* filename, double magnitude) {
 	mBumpmap = new Image();
 	mBumpmap->loadPng(filename);
@@ -32,6 +38,10 @@ void Material::setBumpMap(const char* filename, double magnitude) {
 
 Colour Material::getTextureColour(Point2D uv) const {
 	return mTexmap->bilinearGetColour(uv);
+}
+
+Colour Material::getSpecularColour(Point2D uv) const {
+	return mSpecmap->bilinearGetColour(uv);
 }
 
 double Material::getBumpVal(Point2D uv) const {
@@ -44,7 +54,7 @@ Vector3D Material::getDisplacementNormal(const Intersection &i) const {
 	const Point2D &uv = i.uv;
 
 	//double E = 1.0/1000.0; //TODO how much?
-	double E = 2.0/max(mBumpmap->width(),mBumpmap->height()) * 2.0;
+	double E = 2.0/max(mBumpmap->width(),mBumpmap->height()) * 1;
 	Point2D across = Point2D(E, 0.0);
 	Point2D up = Point2D(0.0, E);
 
@@ -76,14 +86,18 @@ PhongMaterial::~PhongMaterial()
 }
 
 Colour PhongMaterial::computeColour(const Intersection &i, const Renderer *rend) const {
-	Colour diffuseComp = mKd;
+	Colour diffuseComp = mKd, specularComp = mKs;
 	Vector3D normal = i.normal;
 	Colour It(0.0), Ir(0.0), lightSum(0.0);
 	
 
 	//Get colour from tex map
 	if(mTexmap) {
-		diffuseComp = getTextureColour(i.uv);
+		diffuseComp = mKd * getTextureColour(i.uv);
+	}
+
+	if(mSpecmap) {
+		specularComp = mKs * getSpecularColour(i.uv); //TODO switch diffuse to this technique
 	}
 
 	if(mBumpmap) {
@@ -106,7 +120,7 @@ Colour PhongMaterial::computeColour(const Intersection &i, const Renderer *rend)
 	}
 
 	//Reflection and refractions components
-	if(mKs.R() > MY_EPSILON && mKs.G() > MY_EPSILON && mKs.B() > MY_EPSILON) {
+	if(specularComp.R() > MY_EPSILON || specularComp.G() > MY_EPSILON || specularComp.B() > MY_EPSILON) {
 		Ir = computeReflectedContribution(normal, i, rend);
 	}
 
@@ -117,13 +131,19 @@ Colour PhongMaterial::computeColour(const Intersection &i, const Renderer *rend)
 		//cout << Fr << " " << Ft  << endl;
 	}
 
+	//computeFresnelCoefs(i, normal, Fr, Ft);
+	double costheta = dot(-i.ray->direction(), normal);
+	double R0 = 0.5;//specularComp.R();
+	if(costheta > 0) {
+		Fr = R0 + (1.0 - R0)*pow((1.0-costheta), 5);	
+	}
 	
 	
 	
 	return Ia * diffuseComp
 		   + lightSum
-		   + mKs * Fr * Ir 
-		   + mTransparency * (Colour(1.0) - mKs) * Ft * It;
+		   + specularComp * Fr * Ir 
+		   + mTransparency * (Colour(1.0) - specularComp) * Ft * It;
 /**	I = Ka * Ia
 + Kd * [sum for each light: (N . L) * Il]
 + Ks * [sum for each light: ((R . V) ^ Ps) * Fl * Il]
@@ -244,7 +264,8 @@ Colour PhongMaterial::computeRefractionContribution(const Vector3D &normal, cons
      if (k < MY_EPSILON)
      {
      	//cout << k << endl;
-         return Colour(0.0);
+     	//return Colour(0.0);
+         return rend->backGroundColour(normal);
      }
      else
      {

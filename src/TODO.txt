@@ -20,6 +20,10 @@ Done
 - frsenel
 - menger sponge
 - multithreading
+- kd tree
+- specular maps
+
+- really need to figure out that pertubr shit
 
 Final Scene Idea
 - Desk with pointer (normal) and foam apple.. something else? golf ball, chair, projector
@@ -58,12 +62,9 @@ http://www.hdrlabs.com/sibl/archive.html
 
 
 ------
-https://imdoingitwrong.wordpress.com/2010/08/19/why-reinhard-desaturates-my-blacks-3/
-I was using this colour space transform for a couple of days, until my esteemed colleague Miles pointed out that I was doing it wrong. A much simpler approach is to calculate your luminance directly from the RGB values, perform the tone mapping on this value and then scale the original RGB values appropriately:
-
-double L = 0.2126 * R + 0.7152 * G + 0.0722 * B;
-double nL = ToneMap(L);
-double scale = nL / L;
-R *= scale;
-G *= scale;
-B *= scale;
+before kd
+500x500 with 2xSSAA
+Running time: 24.0468
+After
+Running time: 1.44602
+http://blog.frogslayer.com/kd-trees-for-faster-ray-tracing-with-triangles/

@@ -4,17 +4,20 @@ scene = gr.node('scene')
 tex_test = gr.fancy_material({0.740063, 0.742313, 0.733934}, {0.4, 0.4, 0.4}, 1000.0, 0.8,1.0,0.0,1)
 tex_test:set_texture_map("textures/wood_floor.png")
 
-cup = gr.fancy_material({0.740063, 0.742313, 0.733934}, {0.4, 0.4, 0.4}, 1000.0, 0.8,1.0,0.0,1)
-
+cup = gr.fancy_material({0.740063, 0.742313, 0.733934}, {0.1, 0.1, 0.1}, 100.0, 0.8,1.0,0.0,2)
+cup:set_texture_map("meshes/head/skin.png")
+cup:set_bump_map("meshes/head/bump-lowRes.png", 2)
 
 ballx = -1
 bally = -1
 ballz = 1
-ball = gr.obj_mesh("ball", "meshes/teacup.obj")
-ball:translate(ballx,bally,ballz)
-ball:rotate('y',-30)
-ball:set_material(cup)
-scene:add_child(ball)
+bunny = gr.obj_mesh("bunny", "meshes/dragon_smooth.obj")
+bunny:translate(ballx,bally,ballz)
+bunny:rotate('y',200)
+bunny:translate(-0.5,0,0)
+bunny:scale(8,8,8)
+bunny:set_material(cup)
+scene:add_child(bunny)
 
 
 -- Cornell Box
@@ -48,14 +51,18 @@ sqlight = gr.rect_light({ballx - 10,5, -10}, 3, 3, light_color, {1,0,0}, 1)
 -- 	  {0.2, 0.2, 0.2}, {light1, light2})
 
 -- --close
+
 -- gr.render(scene,
--- 	  'reflect.png', 800, 800,
--- 	  {-2, 4, -10}, {2, -2, 10}, {0, 1, 0}, 50,
--- 	  {0.2, 0.2, 0.2}, {light1, light2})
+-- 	  'kd.png', 1280, 720, 1,
+-- 	  {-3, 0.5, -2}, {ballx, bally + 0.5, ballz}, {0, 1, 0}, 50,
+-- 	  {0.15,0.15,0.15}, {sqlight}, "textures/apartment_env_map_sm.png")
+
+
 gr.render(scene,
-	  'cup.png', 200, 200, 1,
+	  'kd.png', 1280, 720, 2,
 	  {-3, 0.5, -2}, {ballx, bally + 0.5, ballz}, {0, 1, 0}, 50,
 	  {0.15,0.15,0.15}, {sqlight}, "textures/apartment_env_map_sm.png")
+
 
 --top
 --close

@@ -17,15 +17,18 @@ public:
   virtual double getIor() const { return 1.0; }
 
   void setTextureMap(const char* filename);
+  void setSpecularMap(const char* filename);
   void setBumpMap(const char* filename, double magnitude);
 
 protected:
   Material();
   Colour getTextureColour(Point2D uv) const;
+  Colour getSpecularColour(Point2D uv) const;
   double getBumpVal(Point2D uv) const;
   Vector3D getDisplacementNormal(const Intersection &i) const;
 
   Image *mTexmap;
+  Image *mSpecmap;
 
   Image *mBumpmap;
   double mBumpMagnitude;
@@ -48,7 +51,7 @@ public:
   double getTransparency() const { return mTransparency; }
 
 private:
-  Colour computeLightContribution(const Vector3D &normal, const Colour &diffuseComp,const Intersection &i, Light *light, const Renderer *rend) const;
+  Colour computeLightContribution(const Vector3D &normal, const Colour &diffuseComp, const Intersection &i, Light *light, const Renderer *rend) const;
   Colour computeReflectedContribution(const Vector3D &normal, const Intersection &i, const Renderer *rend) const;
   Colour computeRefractionContribution(const Vector3D &normal, const Intersection &i, const Renderer *rend) const;
   void computeFresnelCoefs(const Intersection &i, const Vector3D &normal, double &Fr, double &Ft) const;

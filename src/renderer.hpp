@@ -26,7 +26,8 @@ public:
     void renderImage(const string &filename);
     Colour traceRay(const Ray &ray, int depth, const Material *sourceMaterial) const;
     bool checkVisibility(const Point3D &a, const Point3D &b) const;
-
+    Colour backGroundColour(const Vector3D &direction) const;
+    
     Colour mAmbientColour;
     list<Light*> mLights;
 
@@ -37,7 +38,6 @@ private:
     Colour subSample(const Point2D &minP, const Point2D &maxP, int &nSamples);
     Intersection findClosestIntersection(const Ray &ray, bool includeLights = true) const;
     Colour computeColour(const Intersection &intersection) const;
-    Colour backGroundColour(const Vector3D &direction) const;
 
     int mSSLevel;
 
