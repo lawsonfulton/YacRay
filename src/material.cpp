@@ -203,6 +203,10 @@ Colour PhongMaterial::computeReflectedContribution(const Vector3D &normal, const
 	double theta = acos(reflDir.y());
 	double phi = atan2(reflDir.z(), reflDir.x());
 
+	Matrix4x4 rot;
+	rot.rotate(-phi * M_180_PI, 0.0, 1.0, 0.0);
+	rot.rotate(-theta * M_180_PI, 0.0, 0.0, 1.0);
+
 	// Matrix4x4 rot;
 	// rot.rotate(-90, 0.0, 0.0, 1.0);
 	// rot.rotate(-90, 0.0, 1.0, 0.0);
@@ -218,10 +222,6 @@ Colour PhongMaterial::computeReflectedContribution(const Vector3D &normal, const
 		Vector3D perturb(sin(alpha) * cos(beta),
 						 cos(alpha),
 						 sin(beta) * sin(alpha));
-
-		Matrix4x4 rot;
-		rot.rotate(-phi * M_180_PI, 0.0, 1.0, 0.0);
-		rot.rotate(-theta * M_180_PI, 0.0, 0.0, 1.0);
 		
 		// cout << "offset: " << perturb << " refDir: " << reflDir;
 		reflDir = rot * perturb;

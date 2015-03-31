@@ -3,6 +3,8 @@
 Camera::Camera(Point3D eye, Vector3D lookat, Vector3D up, double fov, int width, int height)
         : mLookFrom(eye), mLookAt(lookat), mUp(up), mFov(fov), mWidth(width), mHeight(height)
 {
+    mDirection = (mLookAt - mLookFrom).normalized();
+    
     double d = 1.0;
     double worldH = 2.0 * d * tan(mFov/2.0 * M_PI/180.0); //Remeber have to convert to rads!!!
     double worldW = (double)mWidth / (double)mHeight * worldH;
@@ -17,7 +19,7 @@ Camera::Camera(Point3D eye, Vector3D lookat, Vector3D up, double fov, int width,
 
     //3. Rotate
     Matrix4x4 R3;
-    Vector3D w = (mLookAt - mLookFrom).normalized();
+    Vector3D w = mDirection;
     Vector3D u = cross(mUp, w).normalized();
     Vector3D v = cross(w, u);
 

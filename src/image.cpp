@@ -441,7 +441,7 @@ void Image::ReinhardToneMap() {
 
   double a = 0.18;
   double LwBar = computeLwBar(Lw);
-  double Lwhite = Lw.maxLuminance() * 0.6;
+  double Lwhite = Lw.maxLuminance() * 0.5;
 
   for(int y = 0; y < height(); y++) {
     for(int x = 0; x < width(); x++) {
