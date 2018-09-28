@@ -434,14 +434,13 @@ double Image::L(int x, int y, double a, double LwBar) {
   return a / LwBar * pix(x,y,0);
 }
 
-void Image::ReinhardToneMap() {
+void Image::ReinhardToneMap(double LwhiteFactor, double a) {
   //Map into luminances
   Image Lw(width(), height(), 1);
   computeLuminances(Lw);
 
-  double a = 0.18;
   double LwBar = computeLwBar(Lw);
-  double Lwhite = Lw.maxLuminance() * 0.5;
+  double Lwhite = Lw.maxLuminance() * LwhiteFactor;
 
   for(int y = 0; y < height(); y++) {
     for(int x = 0; x < width(); x++) {

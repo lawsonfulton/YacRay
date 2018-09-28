@@ -23,7 +23,7 @@ Done
 - kd tree
 - specular maps
 
-- really need to figure out that pertubr shit
+- remember to cite tiny_obj_loader
 
 Final Scene Idea
 - Desk with pointer (normal) and foam apple.. something else? golf ball, chair, projector
@@ -68,3 +68,8 @@ Running time: 24.0468
 After
 Running time: 1.44602
 http://blog.frogslayer.com/kd-trees-for-faster-ray-tracing-with-triangles/
+
+Idea for binding:
+Go to fedex?
+3 ring binder?
+print final image and laminate

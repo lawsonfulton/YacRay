@@ -7,6 +7,9 @@ Material::Material() {
 	mTexmap = NULL;
 	mBumpmap = NULL;
 	mSpecmap = NULL;
+
+	mUseFresnel = false;
+	mR0 = 0.0;
 }
 
 Material::~Material()
@@ -34,6 +37,14 @@ void Material::setBumpMap(const char* filename, double magnitude) {
 	mBumpmap = new Image();
 	mBumpmap->loadPng(filename);
 	mBumpMagnitude = magnitude;
+}
+
+void Material::setFresnel(double r0) { 
+	mR0 = r0;
+
+	if(r0 > 0.0) {
+		mUseFresnel = true;
+	}
 }
 
 Colour Material::getTextureColour(Point2D uv) const {
@@ -132,10 +143,12 @@ Colour PhongMaterial::computeColour(const Intersection &i, const Renderer *rend)
 	}
 
 	//computeFresnelCoefs(i, normal, Fr, Ft);
-	double costheta = dot(-i.ray->direction(), normal);
-	double R0 = 0.5;//specularComp.R();
-	if(costheta > 0) {
-		Fr = R0 + (1.0 - R0)*pow((1.0-costheta), 5);	
+
+	if(mUseFresnel) {
+		double costheta = dot(-i.ray->direction(), normal);
+		if(costheta > 0) {
+			Fr = mR0 + (1.0 - mR0)*pow((1.0-costheta), 5);	
+		}
 	}
 	
 	

@@ -1,0 +1,793 @@
+sum is: /usr/bin/sum
+
+
+2015-04-01 14:02       Checksum for A5 for ljfulton on gl02       Page 1
+
+
+A5:
+total 5264
+55163664 drwxrwx--- 4 ljfulton cs488       4096 Apr  1 14:01 ./
+40342050 -rw-r--r-- 1 ljfulton ljfulton    1143 Apr  1 14:01 README
+89719120 drwxrwxr-x 5 ljfulton ljfulton    4096 Apr  1 13:56 data/
+85595897 drwxrwx--- 8 ljfulton cs488       4096 Apr  1 13:54 ../
+50463126 drwxrwx--- 2 ljfulton ljfulton    8192 Apr  1 13:54 src/
+45338268 -rwxr-xr-x 1 ljfulton ljfulton 4610068 Apr  1 13:54 rt*
+23573402 -rw-r--r-- 1 ljfulton ljfulton  728416 Apr  1 10:01 screenshot01.png
+
+A5/data:
+total 20
+55163664 drwxrwx--- 4 ljfulton cs488    4096 Apr  1 14:01 ../
+89719121 drwxrwx--- 4 ljfulton ljfulton 4096 Apr  1 13:57 scenes/
+89719120 drwxrwxr-x 5 ljfulton ljfulton 4096 Apr  1 13:56 ./
+30314200 drwxrwxr-x 2 ljfulton ljfulton 4096 Apr  1 13:56 project_information/
+55163668 drwxrwxr-x 2 ljfulton ljfulton 4096 Apr  1 13:56 images/
+
+A5/data/scenes:
+total 248
+89719121 drwxrwx--- 4 ljfulton ljfulton  4096 Apr  1 13:57 ./
+89719120 drwxrwxr-x 5 ljfulton ljfulton  4096 Apr  1 13:56 ../
+58548772 -rw-r--r-- 1 ljfulton ljfulton  4714 Apr  1 13:55 tone.lua
+82424852 drwxrwxr-x 4 ljfulton ljfulton  4096 Apr  1 13:55 textures/
+82424851 -rw-r--r-- 1 ljfulton ljfulton  4084 Apr  1 13:55 texture.lua
+82424850 -rw-r--r-- 1 ljfulton ljfulton   828 Apr  1 13:55 suzy.lua
+82424849 -rw-r--r-- 1 ljfulton ljfulton  4105 Apr  1 13:55 sponge.lua
+82424848 -rw-r-x--- 1 ljfulton ljfulton  8859 Apr  1 13:55 smstdodeca.lua*
+82424847 -rw-r-x--- 1 ljfulton ljfulton   997 Apr  1 13:55 simple.lua*
+82424846 -rw-r-x--- 1 ljfulton ljfulton  2907 Apr  1 13:55 simple-cows.lua*
+82424845 -rw-r--r-- 1 ljfulton ljfulton  3928 Apr  1 13:55 shadows.lua
+82424844 -rw-r----- 1 ljfulton ljfulton 11770 Apr  1 13:55 sample.lua
+82424843 -rw-r--r-- 1 ljfulton ljfulton  4389 Apr  1 13:55 refract.lua
+82424842 -rw-r--r-- 1 ljfulton ljfulton  3605 Apr  1 13:55 reflect.lua
+82424841 -rw-r-x--- 1 ljfulton ljfulton  1268 Apr  1 13:55 readobj.lua*
+82424840 -rw-r--r-- 1 ljfulton ljfulton  4105 Apr  1 13:55 phong.lua
+82424839 -rw-r--r-- 1 ljfulton ljfulton  3599 Apr  1 13:55 objective1.lua
+82424837 -rw-r-x--- 1 ljfulton ljfulton  1470 Apr  1 13:55 nonhier2.lua*
+35263136 -rw-r-x--- 1 ljfulton ljfulton  1281 Apr  1 13:55 nonhier.lua*
+35263133 -rw-r--r-- 1 ljfulton ljfulton  3926 Apr  1 13:55 moon.lua
+35263126 -rw-r-x--- 1 ljfulton ljfulton 38328 Apr  1 13:55 mickey.lua*
+89719139 drwxrwxr-x 6 ljfulton ljfulton  8192 Apr  1 13:55 meshes/
+89719138 -rw-r--r-- 1 ljfulton ljfulton  3965 Apr  1 13:55 mesh.lua
+89719137 -rw-r-x--- 1 ljfulton ljfulton  2905 Apr  1 13:55 macho-cows.lua*
+89719136 -rw-r--r-- 1 ljfulton ljfulton  1769 Apr  1 13:55 kd.lua
+89719135 -rw-r-x--- 1 ljfulton ljfulton  1566 Apr  1 13:55 instance.lua*
+89719134 -rw-r-x--- 1 ljfulton ljfulton   755 Apr  1 13:55 icosa.lua*
+89719133 -rw-r-x--- 1 ljfulton ljfulton  2852 Apr  1 13:55 hier.lua*
+89719132 -rw-r--r-- 1 ljfulton ljfulton  3013 Apr  1 13:55 glossy.lua
+89719131 -rw-r--r-- 1 ljfulton ljfulton  3275 Apr  1 13:55 final.lua
+89719130 -rw-r--r-- 1 ljfulton ljfulton  3328 Apr  1 13:55 final-good.lua
+89719129 -rw-r-x--- 1 ljfulton ljfulton  1673 Apr  1 13:55 dodeca.lua*
+89719128 -rw-r-x--- 1 ljfulton ljfulton  1011 Apr  1 13:55 cylinder.lua*
+89719127 -rw-r--r-- 1 ljfulton ljfulton  4308 Apr  1 13:55 cup.lua
+89719126 -rw-r--r-- 1 ljfulton ljfulton  4017 Apr  1 13:55 bump2.lua
+89719125 -rw-r--r-- 1 ljfulton ljfulton  3314 Apr  1 13:55 bump.lua
+
+
+
+
+
+
+
+2015-04-01 14:02       Checksum for A5 for ljfulton on gl02       Page 2
+
+
+89719124 -rw-r-x--- 1 ljfulton ljfulton  4322 Apr  1 13:55 buckyball.lua*
+89719123 -rw-r--r-- 1 ljfulton ljfulton  3564 Apr  1 13:55 alias.lua
+89719122 -rw-r--r-- 1 ljfulton ljfulton  8196 Apr  1 13:55 .DS_Store
+
+A5/data/scenes/textures:
+total 215516
+89719121 drwxrwx--- 4 ljfulton ljfulton     4096 Apr  1 13:57 ../
+79963466 -rw-r--r-- 1 ljfulton ljfulton  8718386 Apr  1 13:55 wood_floor.png
+82424852 drwxrwxr-x 4 ljfulton ljfulton     4096 Apr  1 13:55 ./
+79963465 -rw-r--r-- 1 ljfulton ljfulton   270825 Apr  1 13:55 weirdbump.png
+79963464 -rw-r----- 1 ljfulton ljfulton   131072 Apr  1 13:55 weirdbump.jpg
+41900901 -rw-r----- 1 ljfulton ljfulton   490265 Apr  1 13:55 uv_test.png
+91359386 -rw-r--r-- 1 ljfulton ljfulton 27155708 Apr  1 13:55 sky4light.png
+91359385 -rw-r--r-- 1 ljfulton ljfulton 21320675 Apr  1 13:55 sky4.png
+91359384 -rw-r--r-- 1 ljfulton ljfulton 20757652 Apr  1 13:55 sky3.png
+91359383 -rw-r--r-- 1 ljfulton ljfulton 45760585 Apr  1 13:55 sky2.png
+91359382 -rw-r----- 1 ljfulton ljfulton 22631113 Apr  1 13:55 sky2.jpg
+91359381 -rw-r--r-- 1 ljfulton ljfulton   726687 Apr  1 13:55 sky1.png
+91359380 -rw-r----- 1 ljfulton ljfulton   130467 Apr  1 13:55 sky1.jpg
+91359379 -rw-r----- 1 ljfulton ljfulton   930661 Apr  1 13:55 planksbump.png
+91359367 drwxrwxr-x 2 ljfulton ljfulton     4096 Apr  1 13:55 planks/
+91359366 -rw-r--r-- 1 ljfulton ljfulton   171733 Apr  1 13:55 newbump.png
+17360068 -rw-r--r-- 1 ljfulton ljfulton   638510 Apr  1 13:55 moonbumpinv.png
+17360067 -rw-r--r-- 1 ljfulton ljfulton   570650 Apr  1 13:55 moonbump2.png
+17360066 -rw-r----- 1 ljfulton ljfulton   245713 Apr  1 13:55 moonbump2.jpg
+17360065 -rw-r--r-- 1 ljfulton ljfulton   400086 Apr  1 13:55 moonbump.png
+17360064 -rw-r----- 1 ljfulton ljfulton    47080 Apr  1 13:55 moonbump.jpg
+17360063 -rw-r--r-- 1 ljfulton ljfulton  2208219 Apr  1 13:55 masonrytexture.png
+17360062 -rw-r--r-- 1 ljfulton ljfulton  1377144 Apr  1 13:55 masonrybump.png
+17360061 -rw-r----- 1 ljfulton ljfulton   487112 Apr  1 13:55 masonry-wall-texture.jpg
+17360060 -rw-r----- 1 ljfulton ljfulton   204937 Apr  1 13:55 masonry-wall-bump-map.jpg
+17360059 -rw-r--r-- 1 ljfulton ljfulton   398642 Apr  1 13:55 leafbump.png
+17360051 drwxrwxr-x 2 ljfulton ljfulton     4096 Apr  1 13:55 grass/
+89948585 -rw-r--r-- 1 ljfulton ljfulton 14279634 Apr  1 13:55 golfcourse.png
+89948584 -rw-r--r-- 1 ljfulton ljfulton   113308 Apr  1 13:55 golfball_bump.png
+89948583 -rw-r----- 1 ljfulton ljfulton   223898 Apr  1 13:55 golfball_bump.jpg
+89948582 -rw-r----- 1 ljfulton ljfulton  2137763 Apr  1 13:55 earth.png
+89948581 -rw-r----- 1 ljfulton ljfulton     9264 Apr  1 13:55 checker_low_res.png
+89948580 -rw-r--r-- 1 ljfulton ljfulton    21427 Apr  1 13:55 checker.png
+89948579 -rw-r--r-- 1 ljfulton ljfulton   565152 Apr  1 13:55 bumpx.png
+89948578 -rw-r--r-- 1 ljfulton ljfulton   133604 Apr  1 13:55 bumptest.png
+89948577 -rw-r--r-- 1 ljfulton ljfulton   714925 Apr  1 13:55 bumpdots.png
+89948575 -rw-r--r-- 1 ljfulton ljfulton  1271801 Apr  1 13:55 brickbump2.png
+89948574 -rw-r----- 1 ljfulton ljfulton   700481 Apr  1 13:55 brickbump2.jpg
+89948573 -rw-r--r-- 1 ljfulton ljfulton   335767 Apr  1 13:55 brickbump.png
+89948572 -rw-r----- 1 ljfulton ljfulton    97286 Apr  1 13:55 brickbump.jpg
+89948571 -rw-r--r-- 1 ljfulton ljfulton    65912 Apr  1 13:55 big_checker.png
+89948570 -rw-r--r-- 1 ljfulton ljfulton 12062940 Apr  1 13:55 apartment_env_map_sm.png
+89948569 -rw-r--r-- 1 ljfulton ljfulton 31088236 Apr  1 13:55 apartment_env_map.png
+89948568 -rw-r--r-- 1 ljfulton ljfulton     6148 Apr  1 13:55 .DS_Store
+
+A5/data/scenes/textures/planks:
+total 141700
+82424852 drwxrwxr-x 4 ljfulton ljfulton     4096 Apr  1 13:55 ../
+91359378 -rw-r--r-- 1 ljfulton ljfulton  7227769 Apr  1 13:55 wood_specular_sm.png
+91359367 drwxrwxr-x 2 ljfulton ljfulton     4096 Apr  1 13:55 ./
+
+
+
+
+
+
+
+2015-04-01 14:02       Checksum for A5 for ljfulton on gl02       Page 3
+
+
+91359377 -rw-r--r-- 1 ljfulton ljfulton 28897446 Apr  1 13:55 wood_specular.png
+91359376 -rw-r--r-- 1 ljfulton ljfulton  9701457 Apr  1 13:55 wood_diffuse_sm_light.png
+91359375 -rw-r--r-- 1 ljfulton ljfulton  8035781 Apr  1 13:55 wood_diffuse_sm.png
+91359374 -rw-r--r-- 1 ljfulton ljfulton 44400766 Apr  1 13:55 wood_diffuse.png
+91359373 -rw-r--r-- 1 ljfulton ljfulton  4972604 Apr  1 13:55 wood_bump_sm.png
+91359372 -rw-r--r-- 1 ljfulton ljfulton 12585268 Apr  1 13:55 wood_bump.png
+91359371 -rw-r----- 1 ljfulton ljfulton  9542551 Apr  1 13:55 wood-flooring-041_r.jpg
+91359370 -rw-r----- 1 ljfulton ljfulton  8952284 Apr  1 13:55 wood-flooring-041_d.jpg
+91359369 -rw-r----- 1 ljfulton ljfulton 10125291 Apr  1 13:55 wood-flooring-041_b.png
+91359368 -rw-r--r-- 1 ljfulton ljfulton     6148 Apr  1 13:55 .DS_Store
+
+A5/data/scenes/textures/grass:
+total 11476
+82424852 drwxrwxr-x 4 ljfulton ljfulton    4096 Apr  1 13:55 ../
+17360058 -rw-r--r-- 1 ljfulton ljfulton 3758327 Apr  1 13:55 texture.png
+17360051 drwxrwxr-x 2 ljfulton ljfulton    4096 Apr  1 13:55 ./
+17360057 -rw-r----- 1 ljfulton ljfulton  966083 Apr  1 13:55 texture.jpg
+17360054 -rw-r--r-- 1 ljfulton ljfulton 4121109 Apr  1 13:55 texture-light.png
+17360053 -rw-r--r-- 1 ljfulton ljfulton 1862353 Apr  1 13:55 bump.png
+17360052 -rw-r----- 1 ljfulton ljfulton  977949 Apr  1 13:55 bump.jpg
+
+A5/data/scenes/meshes:
+total 78248
+89719121 drwxrwx--- 4 ljfulton ljfulton     4096 Apr  1 13:57 ../
+91998169 -rw-r--r-- 1 ljfulton ljfulton    23288 Apr  1 13:55 uv_sphere.obj
+89719139 drwxrwxr-x 6 ljfulton ljfulton     8192 Apr  1 13:55 ./
+91998168 -rw-r--r-- 1 ljfulton ljfulton    75348 Apr  1 13:55 uv_mapped_sphere.obj
+91998167 -rw-r--r-- 1 ljfulton ljfulton      263 Apr  1 13:55 uv_mapped_sphere.mtl
+91998166 -rw-r--r-- 1 ljfulton ljfulton    83923 Apr  1 13:55 towers.obj
+91998165 -rw-r--r-- 1 ljfulton ljfulton      137 Apr  1 13:55 towers.mtl
+55359902 drwxrwx--- 2 ljfulton ljfulton     4096 Apr  1 13:55 teapot/
+55359901 -rw-r--r-- 1 ljfulton ljfulton  2268618 Apr  1 13:55 teacup.obj
+55359900 -rw-r--r-- 1 ljfulton ljfulton      137 Apr  1 13:55 teacup.mtl
+55359899 -rw-r--r-- 1 ljfulton ljfulton   248538 Apr  1 13:55 suzy_smooth_tris.obj
+55359898 -rw-r--r-- 1 ljfulton ljfulton      137 Apr  1 13:55 suzy_smooth_tris.mtl
+55359897 -rw-r--r-- 1 ljfulton ljfulton   121193 Apr  1 13:55 suzy_smooth_no_normals.obj
+55359896 -rw-r--r-- 1 ljfulton ljfulton      137 Apr  1 13:55 suzy_smooth_no_normals.mtl
+55359895 -rw-r--r-- 1 ljfulton ljfulton   205577 Apr  1 13:55 suzy_smooth.obj
+55359889 -rw-r--r-- 1 ljfulton ljfulton      137 Apr  1 13:55 suzy_smooth.mtl
+55359888 -rw-r--r-- 1 ljfulton ljfulton    23838 Apr  1 13:55 suzy.obj
+55359887 -rw-r--r-- 1 ljfulton ljfulton      137 Apr  1 13:55 suzy.mtl
+55359885 -rw-r--r-- 1 ljfulton ljfulton   314614 Apr  1 13:55 stanford_bunny_smooth.obj
+18537886 -rw-r--r-- 1 ljfulton ljfulton      137 Apr  1 13:55 stanford_bunny_smooth.mtl
+18537885 -rw-r--r-- 1 ljfulton ljfulton   198442 Apr  1 13:55 stanford_bunny.obj
+18537883 -rw-r--r-- 1 ljfulton ljfulton    56488 Apr  1 13:55 smoothed_uv_sphere.obj
+18537882 -rw-r--r-- 1 ljfulton ljfulton      137 Apr  1 13:55 smoothed_uv_sphere.mtl
+18537881 -rwxr-xr-x 1 ljfulton ljfulton   314564 Apr  1 13:55 run*
+18537880 -rw-r--r-- 1 ljfulton ljfulton   421726 Apr  1 13:55 pointer.obj
+18537879 -rw-r--r-- 1 ljfulton ljfulton      137 Apr  1 13:55 pointer.mtl
+18537878 -rw-r--r-- 1 ljfulton ljfulton   884972 Apr  1 13:55 pointer.blend1
+54759214 -rw-r--r-- 1 ljfulton ljfulton   884972 Apr  1 13:55 pointer.blend
+54759213 -rw-r--r-- 1 ljfulton ljfulton   247514 Apr  1 13:55 monkey_sit_smooth.obj
+54759201 -rw-r--r-- 1 ljfulton ljfulton      137 Apr  1 13:55 monkey_sit_smooth.mtl
+25533031 -rw-r--r-- 1 ljfulton ljfulton   310350 Apr  1 13:55 monkey_sit.obj
+88140942 -rw-r--r-- 1 ljfulton ljfulton      137 Apr  1 13:55 monkey_sit.mtl
+88140941 -rw-r--r-- 1 ljfulton ljfulton   248932 Apr  1 13:55 med_poly_sphere.obj
+
+
+
+
+
+
+
+2015-04-01 14:02       Checksum for A5 for ljfulton on gl02       Page 4
+
+
+88140938 -rw-r--r-- 1 ljfulton ljfulton      137 Apr  1 13:55 med_poly_sphere.mtl
+88140937 -rw-r--r-- 1 ljfulton ljfulton   739384 Apr  1 13:55 kd.png
+88140934 -rw-r--r-- 1 ljfulton ljfulton  1051559 Apr  1 13:55 high_poly_sphere.obj
+88140933 -rw-r--r-- 1 ljfulton ljfulton      137 Apr  1 13:55 high_poly_sphere.mtl
+10164877 drwxrwx--- 2 ljfulton ljfulton     4096 Apr  1 13:55 head/
+10164876 -rw-r--r-- 1 ljfulton ljfulton     8963 Apr  1 13:55 grate.obj
+10164875 -rw-r--r-- 1 ljfulton ljfulton      137 Apr  1 13:55 grate.mtl
+10164874 -rw-r--r-- 1 ljfulton ljfulton   512781 Apr  1 13:55 golf_tee.obj
+10164873 -rw-r--r-- 1 ljfulton ljfulton      144 Apr  1 13:55 golf_tee.mtl
+10164872 -rw-r--r-- 1 ljfulton ljfulton 69034044 Apr  1 13:55 dragon_smooth.obj
+10164871 -rw-r--r-- 1 ljfulton ljfulton     6230 Apr  1 13:55 cyl_smooth.obj
+10164870 -rw-r--r-- 1 ljfulton ljfulton      137 Apr  1 13:55 cyl_smooth.mtl
+10164869 -rw-r--r-- 1 ljfulton ljfulton      749 Apr  1 13:55 cube_with_normals.obj
+10164868 -rw-r--r-- 1 ljfulton ljfulton      137 Apr  1 13:55 cube_with_normals.mtl
+10164867 -rw-r--r-- 1 ljfulton ljfulton      746 Apr  1 13:55 cube_smooth.obj
+10164866 -rw-r--r-- 1 ljfulton ljfulton      201 Apr  1 13:55 cube_smooth.mtl
+10164865 -rw-r--r-- 1 ljfulton ljfulton      456 Apr  1 13:55 cube_no_normals.obj
+10164864 -rw-r--r-- 1 ljfulton ljfulton      137 Apr  1 13:55 cube_no_normals.mtl
+10164861 -rw-r-x--- 1 ljfulton ljfulton   180010 Apr  1 13:55 cow.obj*
+92174249 drwxrwxr-x 2 ljfulton ljfulton     4096 Apr  1 13:55 bottle/
+92174248 -rw-r--r-- 1 ljfulton ljfulton  1091220 Apr  1 13:55 apple.blend
+92174230 drwxrwx--- 3 ljfulton ljfulton     4096 Apr  1 13:55 Apple/
+92174229 -rw-r--r-- 1 ljfulton ljfulton     6148 Apr  1 13:55 .DS_Store
+
+A5/data/scenes/meshes/teapot:
+total 2272
+89719139 drwxrwxr-x 6 ljfulton ljfulton    8192 Apr  1 13:55 ../
+42145813 -rwxr-xr-x 1 ljfulton ljfulton  868772 Apr  1 13:55 teapot.obj*
+55359902 drwxrwx--- 2 ljfulton ljfulton    4096 Apr  1 13:55 ./
+42145812 -rwxr-xr-x 1 ljfulton ljfulton 1417216 Apr  1 13:55 teapot.max*
+55359905 -rwxr-xr-x 1 ljfulton ljfulton    3071 Apr  1 13:55 default.png*
+55359904 -rwxr-xr-x 1 ljfulton ljfulton     281 Apr  1 13:55 default.mtl*
+55359903 -rwxr-xr-x 1 ljfulton ljfulton     652 Apr  1 13:55 copyright.txt*
+
+A5/data/scenes/meshes/head:
+total 119372
+89719139 drwxrwxr-x 6 ljfulton ljfulton     8192 Apr  1 13:55 ../
+ 9411416 -rw-r--r-- 1 ljfulton ljfulton 24799648 Apr  1 13:55 skin.png
+10164877 drwxrwx--- 2 ljfulton ljfulton     4096 Apr  1 13:55 ./
+ 9411415 -rw-r--r-- 1 ljfulton ljfulton 20835781 Apr  1 13:55 skin copy.png
+ 9411414 -rwxr-xr-x 1 ljfulton ljfulton    91931 Apr  1 13:55 rendered.jpg*
+ 9411413 -rwxr-xr-x 1 ljfulton ljfulton  8975275 Apr  1 13:55 lambertian.jpg*
+ 9411412 -rwxr-xr-x 1 ljfulton ljfulton     1206 Apr  1 13:55 Infinite-Scan_License.txt*
+ 9411411 -rw-r--r-- 1 ljfulton ljfulton  1592664 Apr  1 13:55 head_smooth.obj
+ 9411410 -rw-r--r-- 1 ljfulton ljfulton      256 Apr  1 13:55 head_smooth.mtl
+ 9411409 -rwxr-xr-x 1 ljfulton ljfulton  1436246 Apr  1 13:55 head.OBJ*
+ 9411408 -rwxr-xr-x 1 ljfulton ljfulton      194 Apr  1 13:55 head.mtl*
+ 9411407 -rwxr-xr-x 1 ljfulton ljfulton 29263143 Apr  1 13:55 bump.png*
+ 9411406 -rwxr-xr-x 1 ljfulton ljfulton   439109 Apr  1 13:55 bump-lowRes.png*
+ 9411405 -rwxr-xr-x 1 ljfulton ljfulton   377110 Apr  1 13:55 bump-lowRes copy.png*
+ 9411404 -rwxr-xr-x 1 ljfulton ljfulton 33859474 Apr  1 13:55 bump copy.png*
+
+A5/data/scenes/meshes/bottle:
+total 24888
+89719139 drwxrwxr-x 6 ljfulton ljfulton    8192 Apr  1 13:55 ../
+90502662 -rw-r--r-- 1 ljfulton ljfulton 6998960 Apr  1 13:55 sphere.obj
+
+
+
+
+
+
+
+2015-04-01 14:02       Checksum for A5 for ljfulton on gl02       Page 5
+
+
+92174249 drwxrwxr-x 2 ljfulton ljfulton    4096 Apr  1 13:55 ./
+90502661 -rw-r--r-- 1 ljfulton ljfulton     737 Apr  1 13:55 sphere.mtl
+90502660 -rw-r--r-- 1 ljfulton ljfulton 1329697 Apr  1 13:55 label.png
+90502659 -rw-r--r-- 1 ljfulton ljfulton  733413 Apr  1 13:55 etiket.jpg
+90502658 -rw-r--r-- 1 ljfulton ljfulton 1562392 Apr  1 13:55 bottle_water.obj
+90502657 -rw-r--r-- 1 ljfulton ljfulton     195 Apr  1 13:55 bottle_water.mtl
+90502656 -rw-r--r-- 1 ljfulton ljfulton  142824 Apr  1 13:55 bottle_label.obj
+90502655 -rw-r--r-- 1 ljfulton ljfulton     195 Apr  1 13:55 bottle_label.mtl
+90502654 -rw-r--r-- 1 ljfulton ljfulton  535265 Apr  1 13:55 bottle_cap.obj
+90502653 -rw-r--r-- 1 ljfulton ljfulton     197 Apr  1 13:55 bottle_cap.mtl
+90502652 -rw-r--r-- 1 ljfulton ljfulton 4033134 Apr  1 13:55 bottle_body.obj
+90502651 -rw-r--r-- 1 ljfulton ljfulton     201 Apr  1 13:55 bottle_body.mtl
+90502650 -rw-r----- 1 ljfulton ljfulton 9978946 Apr  1 13:55 Bottle.obj
+
+A5/data/scenes/meshes/Apple:
+total 1520
+89719139 drwxrwxr-x 6 ljfulton ljfulton   8192 Apr  1 13:55 ../
+92174247 -rw-r--r-- 1 ljfulton ljfulton 389794 Apr  1 13:55 apple_smooth.obj~
+92174230 drwxrwx--- 3 ljfulton ljfulton   4096 Apr  1 13:55 ./
+92174246 -rw-r--r-- 1 ljfulton ljfulton  37129 Apr  1 13:55 stem_smooth.obj
+92174245 -rw-r--r-- 1 ljfulton ljfulton    228 Apr  1 13:55 stem_smooth.mtl
+92174244 -rw-r--r-- 1 ljfulton ljfulton  20347 Apr  1 13:55 stem.png
+92174243 -rw-r--r-- 1 ljfulton ljfulton 113458 Apr  1 13:55 skin.png
+92174236 drwxrwx--- 2 ljfulton ljfulton   4096 Apr  1 13:55 Maps/
+92174235 -rw-r--r-- 1 ljfulton ljfulton 389795 Apr  1 13:55 apple_smooth.obj
+92174234 -rw-r--r-- 1 ljfulton ljfulton    403 Apr  1 13:55 apple_smooth.mtl
+92174233 -rw-r--r-- 1 ljfulton ljfulton 429385 Apr  1 13:55 apple.obj
+92174232 -rw-r--r-- 1 ljfulton ljfulton    582 Apr  1 13:55 apple.mtl
+92174231 -rw-r--r-- 1 ljfulton ljfulton 109333 Apr  1 13:55 apple.3ds
+
+A5/data/scenes/meshes/Apple/Maps:
+total 264
+92174230 drwxrwx--- 3 ljfulton ljfulton   4096 Apr  1 13:55 ../
+92174242 -rw-r--r-- 1 ljfulton ljfulton  37584 Apr  1 13:55 stem_color.tif
+92174236 drwxrwx--- 2 ljfulton ljfulton   4096 Apr  1 13:55 ./
+92174241 -rw-r--r-- 1 ljfulton ljfulton   2468 Apr  1 13:55 stem_color.jpg
+92174240 -rw-r--r-- 1 ljfulton ljfulton  37584 Apr  1 13:55 stem_bump.tif
+92174239 -rw-r--r-- 1 ljfulton ljfulton 145221 Apr  1 13:55 skin.tif
+92174238 -rw-r--r-- 1 ljfulton ljfulton   6732 Apr  1 13:55 skin.jpg
+92174237 -rw-r--r-- 1 ljfulton ljfulton   6732 Apr  1 13:55 skin copy.jpg
+
+A5/data/project_information:
+total 396
+30314200 drwxrwxr-x 2 ljfulton ljfulton   4096 Apr  1 13:56 ./
+89719120 drwxrwxr-x 5 ljfulton ljfulton   4096 Apr  1 13:56 ../
+94882730 -rw-r--r-- 1 ljfulton ljfulton   9710 Apr  1 10:00 CS488-Project-Proposal.tex
+94882729 -rw-r--r-- 1 ljfulton ljfulton  25168 Apr  1 10:00 CS488-Project-Proposal.synctex.gz
+94882728 -rw-r--r-- 1 ljfulton ljfulton 150112 Apr  1 10:00 CS488-Project-Proposal.pdf
+94882727 -rw-r--r-- 1 ljfulton ljfulton   5375 Apr  1 10:00 CS488-Project-Proposal.log
+94882726 -rw-r--r-- 1 ljfulton ljfulton      8 Apr  1 10:00 CS488-Project-Proposal.aux
+94882725 -rw-r----- 1 ljfulton ljfulton 174935 Apr  1 10:00 a5.pdf
+30314201 -rw-r--r-- 1 ljfulton ljfulton   6148 Apr  1 10:00 .DS_Store
+
+A5/data/images:
+total 12948
+89719120 drwxrwxr-x 5 ljfulton ljfulton    4096 Apr  1 13:56 ../
+
+
+
+
+
+
+
+2015-04-01 14:02       Checksum for A5 for ljfulton on gl02       Page 6
+
+
+55163668 drwxrwxr-x 2 ljfulton ljfulton    4096 Apr  1 13:56 ./
+97122389 -rw-r--r-- 1 ljfulton ljfulton  254731 Apr  1 10:00 objective9-before.png
+97122388 -rw-r--r-- 1 ljfulton ljfulton  342422 Apr  1 10:00 objective9-after.png
+97122387 -rw-r--r-- 1 ljfulton ljfulton  852878 Apr  1 10:00 objective8-before.png
+97122386 -rw-r--r-- 1 ljfulton ljfulton  901983 Apr  1 10:00 objective8-after.png
+97122385 -rw-r--r-- 1 ljfulton ljfulton  262479 Apr  1 10:00 objective7-before.png
+97122384 -rw-r--r-- 1 ljfulton ljfulton  176109 Apr  1 10:00 objective7-after.png
+97122383 -rw-r--r-- 1 ljfulton ljfulton  795135 Apr  1 10:00 objective6-before.png
+97122382 -rw-r--r-- 1 ljfulton ljfulton  818617 Apr  1 10:00 objective6-after.png
+97122381 -rw-r--r-- 1 ljfulton ljfulton   44007 Apr  1 10:00 objective5-before2.png
+97122380 -rw-r--r-- 1 ljfulton ljfulton   44299 Apr  1 10:00 objective5-before1.png
+97122379 -rw-r--r-- 1 ljfulton ljfulton   54319 Apr  1 10:00 objective5-after.png
+97122378 -rw-r--r-- 1 ljfulton ljfulton  792782 Apr  1 10:00 objective4-before.png
+97122377 -rw-r--r-- 1 ljfulton ljfulton  717842 Apr  1 10:00 objective4-after.png
+97122376 -rw-r--r-- 1 ljfulton ljfulton   77942 Apr  1 10:00 objective3-before.png
+97122375 -rw-r--r-- 1 ljfulton ljfulton  210611 Apr  1 10:00 objective3-after.png
+55163681 -rw-r--r-- 1 ljfulton ljfulton  553779 Apr  1 10:00 objective2-before.png
+55163680 -rw-r--r-- 1 ljfulton ljfulton  591246 Apr  1 10:00 objective2-after1.png
+55163679 -rw-r--r-- 1 ljfulton ljfulton  728416 Apr  1 10:00 objective10.png
+55163678 -rw-r--r-- 1 ljfulton ljfulton  862206 Apr  1 10:00 objective10-nodof.png
+55163677 -rw-r--r-- 1 ljfulton ljfulton  405074 Apr  1 10:00 objective10-2.png
+55163676 -rw-r--r-- 1 ljfulton ljfulton  318221 Apr  1 10:00 objective1-before.png
+55163675 -rw-r--r-- 1 ljfulton ljfulton  319832 Apr  1 10:00 objective1-after.png
+55163674 -rw-r--r-- 1 ljfulton ljfulton  453335 Apr  1 10:00 bonus4.png
+55163673 -rw-r--r-- 1 ljfulton ljfulton  751328 Apr  1 10:00 bonus3.png
+55163672 -rw-r--r-- 1 ljfulton ljfulton  739384 Apr  1 10:00 bonus2.png
+55163670 -rw-r--r-- 1 ljfulton ljfulton 1010364 Apr  1 10:00 bonus1.png
+55163669 -rw-r--r-- 1 ljfulton ljfulton    6148 Apr  1 10:00 .DS_Store
+
+A5/src:
+total 316
+55163664 drwxrwx--- 4 ljfulton cs488     4096 Apr  1 14:01 ../
+50463126 drwxrwx--- 2 ljfulton ljfulton  8192 Apr  1 13:54 ./
+ 3716022 -rw-r-x--- 1 ljfulton ljfulton  1081 Apr  1 13:35 Makefile*
+92663563 -rw-r-x--- 1 ljfulton ljfulton  2535 Apr  1 13:33 material.hpp*
+99082100 -rw-r--r-- 1 ljfulton ljfulton  1976 Apr  1 10:01 TODO.txt
+99082099 -rwxr-xr-x 1 ljfulton ljfulton  2829 Apr  1 10:01 tiny_obj_loader.h*
+99082098 -rwxr-xr-x 1 ljfulton ljfulton 21860 Apr  1 10:01 tiny_obj_loader.cpp*
+99082097 -rw-r-x--- 1 ljfulton ljfulton   136 Apr  1 10:01 scene_lua.hpp*
+99082096 -rw-r-x--- 1 ljfulton ljfulton 21928 Apr  1 10:01 scene_lua.cpp*
+99082095 -rw-r-x--- 1 ljfulton ljfulton  2547 Apr  1 10:01 scene.hpp*
+24557059 -rw-r-x--- 1 ljfulton ljfulton  4477 Apr  1 10:01 scene.cpp*
+24557058 -rwxr-x--- 1 ljfulton ljfulton    57 Apr  1 10:01 run*
+24557057 -rw-r----- 1 ljfulton ljfulton  1730 Apr  1 10:01 renderer.hpp
+24557048 -rw-r----- 1 ljfulton ljfulton 11538 Apr  1 10:01 renderer.cpp
+24557047 -rw-r----- 1 ljfulton ljfulton  1491 Apr  1 10:01 ray.hpp
+24557046 -rw-r----- 1 ljfulton ljfulton   227 Apr  1 10:01 ray.cpp
+24557045 -rw-r-x--- 1 ljfulton ljfulton  2486 Apr  1 10:01 primitive.hpp*
+88647733 -rw-r-x--- 1 ljfulton ljfulton 12908 Apr  1 10:01 primitive.cpp*
+88647728 -rw-r-x--- 1 ljfulton ljfulton   966 Apr  1 10:01 polyroots.hpp*
+88647726 -rw-r-x--- 1 ljfulton ljfulton 47780 Apr  1 10:01 polyroots.cpp*
+88647723 -rw-r----- 1 ljfulton ljfulton   139 Apr  1 10:01 options.hpp
+61207985 -rw-r-x--- 1 ljfulton ljfulton  2318 Apr  1 10:01 mesh.hpp*
+61207984 -rw-r-x--- 1 ljfulton ljfulton 19478 Apr  1 10:01 mesh.cpp*
+61207982 -rw-r-x--- 1 ljfulton ljfulton  9680 Apr  1 10:01 material.cpp*
+61207980 -rw-r-x--- 1 ljfulton ljfulton   276 Apr  1 10:01 main.cpp*
+
+
+
+
+
+
+
+2015-04-01 14:02       Checksum for A5 for ljfulton on gl02       Page 7
+
+
+61207979 -rw-r-x--- 1 ljfulton ljfulton   170 Apr  1 10:01 lua488.hpp*
+61207978 -rw-r-x--- 1 ljfulton ljfulton  1172 Apr  1 10:01 light.hpp*
+61207977 -rw-r-x--- 1 ljfulton ljfulton  2625 Apr  1 10:01 light.cpp*
+61207976 -rw-r-x--- 1 ljfulton ljfulton  2289 Apr  1 10:01 image.hpp*
+61207975 -rw-r-x--- 1 ljfulton ljfulton 10943 Apr  1 10:01 image.cpp*
+61207974 -rw-r----- 1 ljfulton ljfulton   602 Apr  1 10:01 camera.hpp
+61207973 -rw-r----- 1 ljfulton ljfulton  2569 Apr  1 10:01 camera.cpp
+61207972 -rw-r-x--- 1 ljfulton ljfulton 14055 Apr  1 10:01 algebra.hpp*
+61207971 -rw-r-x--- 1 ljfulton ljfulton  4034 Apr  1 10:01 algebra.cpp*
+61207970 -rw-r-x--- 1 ljfulton ljfulton   831 Apr  1 10:01 a4.hpp*
+50463128 -rw-r-x--- 1 ljfulton ljfulton  1585 Apr  1 10:01 a4.cpp*
+50463127 -rw-r--r-- 1 ljfulton ljfulton  6148 Apr  1 10:01 .DS_Store
+
+A5                                      
+A5/README                               37923     2
+A5/data                                 
+A5/data/images                          
+A5/data/images/.DS_Store                33880     7
+A5/data/images/bonus1.png               54743   987
+A5/data/images/bonus2.png               13473   723
+A5/data/images/bonus3.png               28509   734
+A5/data/images/bonus4.png               09493   443
+A5/data/images/objective1-after.png     18680   313
+A5/data/images/objective1-before.png    03323   311
+A5/data/images/objective10-2.png        20078   396
+A5/data/images/objective10-nodof.png    36511   842
+A5/data/images/objective10.png          40438   712
+A5/data/images/objective2-after1.png    38571   578
+A5/data/images/objective2-before.png    01931   541
+A5/data/images/objective3-after.png     63589   206
+A5/data/images/objective3-before.png    27424    77
+A5/data/images/objective4-after.png     37748   702
+A5/data/images/objective4-before.png    50294   775
+A5/data/images/objective5-after.png     17299    54
+A5/data/images/objective5-before1.png   01259    44
+A5/data/images/objective5-before2.png   61765    43
+A5/data/images/objective6-after.png     38286   800
+A5/data/images/objective6-before.png    36126   777
+A5/data/images/objective7-after.png     29043   172
+A5/data/images/objective7-before.png    00541   257
+A5/data/images/objective8-after.png     34689   881
+A5/data/images/objective8-before.png    51668   833
+A5/data/images/objective9-after.png     40966   335
+A5/data/images/objective9-before.png    47444   249
+A5/data/project_information             
+A5/data/project_information/.DS_Store   33880     7
+A5/data/project_information/CS488-Project-Proposal.aux34896     1
+A5/data/project_information/CS488-Project-Proposal.log10424     6
+A5/data/project_information/CS488-Project-Proposal.pdf28890   147
+A5/data/project_information/CS488-Project-Proposal.synctex.gz37047    25
+A5/data/project_information/CS488-Project-Proposal.tex47410    10
+A5/data/project_information/a5.pdf      35911   171
+A5/data/scenes                          
+A5/data/scenes/.DS_Store                62014     9
+A5/data/scenes/alias.lua                01053     4
+A5/data/scenes/buckyball.lua            10689     5
+
+
+
+
+
+
+
+2015-04-01 14:02       Checksum for A5 for ljfulton on gl02       Page 8
+
+
+A5/data/scenes/bump.lua                 50836     4
+A5/data/scenes/bump2.lua                41619     4
+A5/data/scenes/cup.lua                  51564     5
+A5/data/scenes/cylinder.lua             01173     1
+A5/data/scenes/dodeca.lua               50755     2
+A5/data/scenes/final-good.lua           40331     4
+A5/data/scenes/final.lua                33496     4
+A5/data/scenes/glossy.lua               47988     3
+A5/data/scenes/hier.lua                 44794     3
+A5/data/scenes/icosa.lua                58132     1
+A5/data/scenes/instance.lua             25944     2
+A5/data/scenes/kd.lua                   59254     2
+A5/data/scenes/macho-cows.lua           23029     3
+A5/data/scenes/mesh.lua                 14610     4
+A5/data/scenes/meshes                   
+A5/data/scenes/meshes/.DS_Store         34323     7
+A5/data/scenes/meshes/Apple             
+A5/data/scenes/meshes/Apple/Maps        
+A5/data/scenes/meshes/Apple/Maps/skin copy.jpg17756     7
+A5/data/scenes/meshes/Apple/Maps/skin.jpg17756     7
+A5/data/scenes/meshes/Apple/Maps/skin.tif44873   142
+A5/data/scenes/meshes/Apple/Maps/stem_bump.tif10131    37
+A5/data/scenes/meshes/Apple/Maps/stem_color.jpg07177     3
+A5/data/scenes/meshes/Apple/Maps/stem_color.tif64324    37
+A5/data/scenes/meshes/Apple/apple.3ds   41188   107
+A5/data/scenes/meshes/Apple/apple.mtl   28805     1
+A5/data/scenes/meshes/Apple/apple.obj   19167   420
+A5/data/scenes/meshes/Apple/apple_smooth.mtl54046     1
+A5/data/scenes/meshes/Apple/apple_smooth.obj49192   381
+A5/data/scenes/meshes/Apple/apple_smooth.obj~32829   381
+A5/data/scenes/meshes/Apple/skin.png    38177   111
+A5/data/scenes/meshes/Apple/stem.png    25248    20
+A5/data/scenes/meshes/Apple/stem_smooth.mtl61665     1
+A5/data/scenes/meshes/Apple/stem_smooth.obj32709    37
+A5/data/scenes/meshes/apple.blend       35169  1066
+A5/data/scenes/meshes/bottle            
+A5/data/scenes/meshes/bottle/Bottle.obj 59526  9746
+A5/data/scenes/meshes/bottle/bottle_body.mtl53818     1
+A5/data/scenes/meshes/bottle/bottle_body.obj53601  3939
+A5/data/scenes/meshes/bottle/bottle_cap.mtl08358     1
+A5/data/scenes/meshes/bottle/bottle_cap.obj43423   523
+A5/data/scenes/meshes/bottle/bottle_label.mtl14818     1
+A5/data/scenes/meshes/bottle/bottle_label.obj45348   140
+A5/data/scenes/meshes/bottle/bottle_water.mtl43737     1
+A5/data/scenes/meshes/bottle/bottle_water.obj59263  1526
+A5/data/scenes/meshes/bottle/etiket.jpg 63723   717
+A5/data/scenes/meshes/bottle/label.png  36486  1299
+A5/data/scenes/meshes/bottle/sphere.mtl 09205     1
+A5/data/scenes/meshes/bottle/sphere.obj 56731  6835
+A5/data/scenes/meshes/cow.obj           57991   176
+A5/data/scenes/meshes/cube_no_normals.mtl56550     1
+A5/data/scenes/meshes/cube_no_normals.obj25381     1
+A5/data/scenes/meshes/cube_smooth.mtl   11215     1
+A5/data/scenes/meshes/cube_smooth.obj   52745     1
+A5/data/scenes/meshes/cube_with_normals.mtl56550     1
+A5/data/scenes/meshes/cube_with_normals.obj22196     1
+
+
+
+
+
+
+
+2015-04-01 14:02       Checksum for A5 for ljfulton on gl02       Page 9
+
+
+A5/data/scenes/meshes/cyl_smooth.mtl    56550     1
+A5/data/scenes/meshes/cyl_smooth.obj    49360     7
+A5/data/scenes/meshes/dragon_smooth.obj 20208 67417
+A5/data/scenes/meshes/golf_tee.mtl      64762     1
+A5/data/scenes/meshes/golf_tee.obj      63982   501
+A5/data/scenes/meshes/grate.mtl         56550     1
+A5/data/scenes/meshes/grate.obj         03710     9
+A5/data/scenes/meshes/head              
+A5/data/scenes/meshes/head/Infinite-Scan_License.txt10744     2
+A5/data/scenes/meshes/head/bump copy.png44608 33066
+A5/data/scenes/meshes/head/bump-lowRes copy.png53903   369
+A5/data/scenes/meshes/head/bump-lowRes.png26237   429
+A5/data/scenes/meshes/head/bump.png     34589 28578
+A5/data/scenes/meshes/head/head.OBJ     48971  1403
+A5/data/scenes/meshes/head/head.mtl     37109     1
+A5/data/scenes/meshes/head/head_smooth.mtl55770     1
+A5/data/scenes/meshes/head/head_smooth.obj00248  1556
+A5/data/scenes/meshes/head/lambertian.jpg37841  8765
+A5/data/scenes/meshes/head/rendered.jpg 08911    90
+A5/data/scenes/meshes/head/skin copy.png45162 20348
+A5/data/scenes/meshes/head/skin.png     38952 24219
+A5/data/scenes/meshes/high_poly_sphere.mtl56550     1
+A5/data/scenes/meshes/high_poly_sphere.obj53345  1027
+A5/data/scenes/meshes/kd.png            13473   723
+A5/data/scenes/meshes/med_poly_sphere.mtl56550     1
+A5/data/scenes/meshes/med_poly_sphere.obj31838   244
+A5/data/scenes/meshes/monkey_sit.mtl    56550     1
+A5/data/scenes/meshes/monkey_sit.obj    05739   304
+A5/data/scenes/meshes/monkey_sit_smooth.mtl56550     1
+A5/data/scenes/meshes/monkey_sit_smooth.obj00041   242
+A5/data/scenes/meshes/pointer.blend     58583   865
+A5/data/scenes/meshes/pointer.blend1    08728   865
+A5/data/scenes/meshes/pointer.mtl       56550     1
+A5/data/scenes/meshes/pointer.obj       52812   412
+A5/data/scenes/meshes/run               29983   308
+A5/data/scenes/meshes/smoothed_uv_sphere.mtl56550     1
+A5/data/scenes/meshes/smoothed_uv_sphere.obj45845    56
+A5/data/scenes/meshes/stanford_bunny.obj55740   194
+A5/data/scenes/meshes/stanford_bunny_smooth.mtl56550     1
+A5/data/scenes/meshes/stanford_bunny_smooth.obj06150   308
+A5/data/scenes/meshes/suzy.mtl          56550     1
+A5/data/scenes/meshes/suzy.obj          56455    24
+A5/data/scenes/meshes/suzy_smooth.mtl   56550     1
+A5/data/scenes/meshes/suzy_smooth.obj   29948   201
+A5/data/scenes/meshes/suzy_smooth_no_normals.mtl56550     1
+A5/data/scenes/meshes/suzy_smooth_no_normals.obj18654   119
+A5/data/scenes/meshes/suzy_smooth_tris.mtl56550     1
+A5/data/scenes/meshes/suzy_smooth_tris.obj10533   243
+A5/data/scenes/meshes/teacup.mtl        56550     1
+A5/data/scenes/meshes/teacup.obj        03421  2216
+A5/data/scenes/meshes/teapot            
+A5/data/scenes/meshes/teapot/copyright.txt28159     1
+A5/data/scenes/meshes/teapot/default.mtl29301     1
+A5/data/scenes/meshes/teapot/default.png10732     3
+A5/data/scenes/meshes/teapot/teapot.max 30863  1384
+A5/data/scenes/meshes/teapot/teapot.obj 64289   849
+
+
+
+
+
+
+
+2015-04-01 14:02      Checksum for A5 for ljfulton on gl02       Page 10
+
+
+A5/data/scenes/meshes/towers.mtl        56550     1
+A5/data/scenes/meshes/towers.obj        36379    82
+A5/data/scenes/meshes/uv_mapped_sphere.mtl47944     1
+A5/data/scenes/meshes/uv_mapped_sphere.obj03689    74
+A5/data/scenes/meshes/uv_sphere.obj     24408    23
+A5/data/scenes/mickey.lua               01039    38
+A5/data/scenes/moon.lua                 33392     4
+A5/data/scenes/nonhier.lua              07311     2
+A5/data/scenes/nonhier2.lua             25636     2
+A5/data/scenes/objective1.lua           65126     4
+A5/data/scenes/phong.lua                56684     5
+A5/data/scenes/readobj.lua              57040     2
+A5/data/scenes/reflect.lua              17969     4
+A5/data/scenes/refract.lua              27104     5
+A5/data/scenes/sample.lua               29577    12
+A5/data/scenes/shadows.lua              39268     4
+A5/data/scenes/simple-cows.lua          09007     3
+A5/data/scenes/simple.lua               02633     1
+A5/data/scenes/smstdodeca.lua           02544     9
+A5/data/scenes/sponge.lua               43578     5
+A5/data/scenes/suzy.lua                 05383     1
+A5/data/scenes/texture.lua              48359     4
+A5/data/scenes/textures                 
+A5/data/scenes/textures/.DS_Store       59001     7
+A5/data/scenes/textures/apartment_env_map.png06654 30360
+A5/data/scenes/textures/apartment_env_map_sm.png60021 11781
+A5/data/scenes/textures/big_checker.png 63550    65
+A5/data/scenes/textures/brickbump.jpg   26261    96
+A5/data/scenes/textures/brickbump.png   30649   328
+A5/data/scenes/textures/brickbump2.jpg  32245   685
+A5/data/scenes/textures/brickbump2.png  45556  1242
+A5/data/scenes/textures/bumpdots.png    39730   699
+A5/data/scenes/textures/bumptest.png    08833   131
+A5/data/scenes/textures/bumpx.png       30584   552
+A5/data/scenes/textures/checker.png     19784    21
+A5/data/scenes/textures/checker_low_res.png61723    10
+A5/data/scenes/textures/earth.png       37424  2088
+A5/data/scenes/textures/golfball_bump.jpg35746   219
+A5/data/scenes/textures/golfball_bump.png31371   111
+A5/data/scenes/textures/golfcourse.png  12170 13945
+A5/data/scenes/textures/grass           
+A5/data/scenes/textures/grass/bump.jpg  42739   956
+A5/data/scenes/textures/grass/bump.png  03611  1819
+A5/data/scenes/textures/grass/texture-light.png64220  4025
+A5/data/scenes/textures/grass/texture.jpg08022   944
+A5/data/scenes/textures/grass/texture.png01010  3671
+A5/data/scenes/textures/leafbump.png    36304   390
+A5/data/scenes/textures/masonry-wall-bump-map.jpg42388   201
+A5/data/scenes/textures/masonry-wall-texture.jpg07285   476
+A5/data/scenes/textures/masonrybump.png 63101  1345
+A5/data/scenes/textures/masonrytexture.png29861  2157
+A5/data/scenes/textures/moonbump.jpg    52514    46
+A5/data/scenes/textures/moonbump.png    59171   391
+A5/data/scenes/textures/moonbump2.jpg   43180   240
+A5/data/scenes/textures/moonbump2.png   63098   558
+A5/data/scenes/textures/moonbumpinv.png 16855   624
+
+
+
+
+
+
+
+2015-04-01 14:02      Checksum for A5 for ljfulton on gl02       Page 11
+
+
+A5/data/scenes/textures/newbump.png     53390   168
+A5/data/scenes/textures/planks          
+A5/data/scenes/textures/planks/.DS_Store33880     7
+A5/data/scenes/textures/planks/wood-flooring-041_b.png10765  9888
+A5/data/scenes/textures/planks/wood-flooring-041_d.jpg33230  8743
+A5/data/scenes/textures/planks/wood-flooring-041_r.jpg26422  9319
+A5/data/scenes/textures/planks/wood_bump.png03693 12291
+A5/data/scenes/textures/planks/wood_bump_sm.png07864  4857
+A5/data/scenes/textures/planks/wood_diffuse.png31720 43361
+A5/data/scenes/textures/planks/wood_diffuse_sm.png21613  7848
+A5/data/scenes/textures/planks/wood_diffuse_sm_light.png17156  9475
+A5/data/scenes/textures/planks/wood_specular.png07415 28221
+A5/data/scenes/textures/planks/wood_specular_sm.png50450  7059
+A5/data/scenes/textures/planksbump.png  51681   909
+A5/data/scenes/textures/sky1.jpg        16119   128
+A5/data/scenes/textures/sky1.png        06294   710
+A5/data/scenes/textures/sky2.jpg        20445 22101
+A5/data/scenes/textures/sky2.png        40154 44689
+A5/data/scenes/textures/sky3.png        31869 20272
+A5/data/scenes/textures/sky4.png        03545 20821
+A5/data/scenes/textures/sky4light.png   39261 26520
+A5/data/scenes/textures/uv_test.png     14815   479
+A5/data/scenes/textures/weirdbump.jpg   63652   128
+A5/data/scenes/textures/weirdbump.png   14538   265
+A5/data/scenes/textures/wood_floor.png  07437  8515
+A5/data/scenes/tone.lua                 04828     5
+A5/rt                                   29844  4503
+A5/screenshot01.png                     40438   712
+A5/src                                  
+A5/src/.DS_Store                        33880     7
+A5/src/Makefile                         10473     2
+A5/src/TODO.txt                         30706     2
+A5/src/a4.cpp                           55338     2
+A5/src/a4.hpp                           27696     1
+A5/src/algebra.cpp                      53882     4
+A5/src/algebra.hpp                      29464    14
+A5/src/camera.cpp                       04933     3
+A5/src/camera.hpp                       17078     1
+A5/src/image.cpp                        26000    11
+A5/src/image.hpp                        12970     3
+A5/src/light.cpp                        40723     3
+A5/src/light.hpp                        00784     2
+A5/src/lua488.hpp                       04702     1
+A5/src/main.cpp                         38275     1
+A5/src/material.cpp                     41309    10
+A5/src/material.hpp                     41540     3
+A5/src/mesh.cpp                         08052    20
+A5/src/mesh.hpp                         34753     3
+A5/src/options.hpp                      41132     1
+A5/src/polyroots.cpp                    59889    47
+A5/src/polyroots.hpp                    52382     1
+A5/src/primitive.cpp                    55641    13
+A5/src/primitive.hpp                    38626     3
+A5/src/ray.cpp                          46222     1
+A5/src/ray.hpp                          45634     2
+A5/src/renderer.cpp                     53875    12
+
+
+
+
+
+
+
+2015-04-01 14:02      Checksum for A5 for ljfulton on gl02       Page 12
+
+
+A5/src/renderer.hpp                     38288     2
+A5/src/run                              23820     1
+A5/src/scene.cpp                        35352     5
+A5/src/scene.hpp                        22658     3
+A5/src/scene_lua.cpp                    34310    22
+A5/src/scene_lua.hpp                    33354     1
+A5/src/tiny_obj_loader.cpp              33663    22
+A5/src/tiny_obj_loader.h                19203     3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

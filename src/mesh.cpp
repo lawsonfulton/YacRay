@@ -360,6 +360,7 @@ bool TriMesh::rayIntersection(const Ray &ray, double &t, Vector3D &normal, Point
         double minT = DBL_INF;
         bool intersects = false;
 
+        // //Without Tree
         // for(int i = 0; i < mNumFaces; i++) {
         //     double newT = DBL_INF;
         //     int *face = &mIndices[i * 3];
@@ -395,6 +396,7 @@ bool TriMesh::rayIntersection(const Ray &ray, double &t, Vector3D &normal, Point
         //     }
         // }
 
+        //With Tree
         Tri face;
         intersects = mKdTree->rayIntersection(ray, t, face);
 

@@ -1,0 +1,30 @@
+\contentsline {section}{Summary}{iii}{section*.1}
+\contentsline {section}{\numberline {1.0 }Manual}{1}{section.1}
+\contentsline {subsection}{\numberline {1.1}Running Yacray}{1}{subsection.1.1}
+\contentsline {subsection}{\numberline {1.2}Creating Scenes}{2}{subsection.1.2}
+\contentsline {subsubsection}{\numberline {1.2.1}Modelling}{2}{subsubsection.1.2.1}
+\contentsline {subsubsection}{\numberline {1.2.2}Primitives}{3}{subsubsection.1.2.2}
+\contentsline {subsubsection}{\numberline {1.2.3}Materials}{4}{subsubsection.1.2.3}
+\contentsline {subsubsection}{\numberline {1.2.4}Lighting}{5}{subsubsection.1.2.4}
+\contentsline {subsubsection}{\numberline {1.2.5}Rendering}{5}{subsubsection.1.2.5}
+\contentsline {section}{\numberline {2.0 }Implementation}{6}{section.2}
+\contentsline {subsection}{\numberline {2.1}Source Code Considerations}{6}{subsection.2.1}
+\contentsline {subsection}{\numberline {2.2}Main Objectives}{7}{subsection.2.2}
+\contentsline {subsubsection}{\numberline {2.2.1}Reflection and Refraction}{7}{subsubsection.2.2.1}
+\contentsline {subsubsection}{\numberline {2.2.2}Soft Shadows and Area Lights}{8}{subsubsection.2.2.2}
+\contentsline {subsubsection}{\numberline {2.2.3}Glossy Reflections}{9}{subsubsection.2.2.3}
+\contentsline {subsubsection}{\numberline {2.2.4}Adaptive Anti-aliasing}{10}{subsubsection.2.2.4}
+\contentsline {subsubsection}{\numberline {2.2.5}Smooth Phong shading on triangle meshes}{11}{subsubsection.2.2.5}
+\contentsline {subsubsection}{\numberline {2.2.6}Texture and Bump Mapping}{12}{subsubsection.2.2.6}
+\contentsline {subsubsection}{\numberline {2.2.7}Tone Mapping}{15}{subsubsection.2.2.7}
+\contentsline {subsection}{\numberline {2.3}Additional Features}{17}{subsection.2.3}
+\contentsline {subsubsection}{\numberline {2.3.1}Kd-Trees}{17}{subsubsection.2.3.1}
+\contentsline {subsubsection}{\numberline {2.3.2}Depth of Field}{19}{subsubsection.2.3.2}
+\contentsline {subsubsection}{\numberline {2.3.3}Specular and Environment Mapping}{19}{subsubsection.2.3.3}
+\contentsline {subsubsection}{\numberline {2.3.4}Fractal Primitives - Menger Sponge}{20}{subsubsection.2.3.4}
+\contentsline {subsubsection}{\numberline {2.3.5}Multithreading}{20}{subsubsection.2.3.5}
+\contentsline {section}{\numberline {3.0 }Results}{21}{section.3}
+\contentsline {section}{\numberline {4.0 }Future Work and Potential Improvements}{22}{section.4}
+\contentsline {section}{Asset Credits}{24}{section.4}
+\contentsline {section}{References}{25}{section.4}
+\contentsline {section}{Checksum}{26}{section*.2}

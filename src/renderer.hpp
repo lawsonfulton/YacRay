@@ -20,7 +20,10 @@ using namespace std;
 
 class Renderer {
 public:
-    Renderer(Camera *camera, SceneNode *scene, list<Light*> lights, Colour ambient, int ssLevel,int dofSamples, double aperature, double focalLen, const char* skymap);
+    Renderer(Camera *camera, SceneNode *scene, 
+            list<Light*> lights, Colour ambient,
+            int ssLevel,int dofSamples, double aperature, double focalLen, 
+            const char* skymap, bool useTone, double Lwhite,  double a);
     ~Renderer();
 
     void renderImage(const string &filename);
@@ -43,7 +46,10 @@ private:
     int mDofSamples;
     double mAperature;
     double mFocalLen;
-    
+
+    bool mUseToneMap;
+    double mToneA;
+    double mToneLwhite;
 
     Camera *mCamera;
     SceneNode *mScene;

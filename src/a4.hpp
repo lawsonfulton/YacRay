@@ -21,7 +21,8 @@ void a4_render(// What to render
                // Lighting parameters
                const Colour& ambient,
                const std::list<Light*>& lights,
-               const char *skymap
+               const char *skymap,
+               bool useTone, double Lwhite,  double a
                );
 
 #endif

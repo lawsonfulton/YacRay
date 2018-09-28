@@ -79,7 +79,6 @@ deskMat = gr.fancy_material({1, 1, 1}, {1, 1, 1}, 1000.0, 0.8,1.0,0.0,8)
 deskMat:set_texture_map("textures/planks/wood_diffuse_sm.png")
 deskMat:set_specular_map("textures/planks/wood_specular_sm.png")
 deskMat:set_bump_map("textures/planks/wood_bump_sm.png", 0.01)
-deskMat:set_fresnel(0.5)
 --mirror = gr.fancy_material({0, 0, 0}, {1, 1, 1}, 100000000.0, 0.8,1.0,0.0,1)
 
 desk = gr.plane('desk', 10)
@@ -91,16 +90,14 @@ scene:add_child(desk)
 
 --TODO test without fresnel
 -- lights
-light_color = {1,1,1}
+light_color = {0.780131 * 1.8, 0.780409 * 1.8, 0.775833 * 1.8}
 sqlight = gr.rect_light({5, 7, 3}, 3, 3, light_color, {1,0,0}, 5)
 -- sqlight = gr.rect_light({0, 0.5, -2}, 1, 1, light_color, {1,0,0}, 5)
 -- sqlight = gr.light({-4, 10 , -4}, light_color, {1, 0, 0})
 
 zoom = 10
 gr.render(scene,
-	  'final.png', 400, 400, 2,
-	  1, 0.000005, 0.37, --dof: samples, aperature, focal len
-	  true, 1.0, 0.18, --tone mapping
+	  'final.png', 700, 700, 4, 2, 0.000005, 0.37,
 	  {1/zoom, 1.8/zoom, 3/zoom}, {0, -0.03, 0}, {0, 1, 0}, 50,
 	  {0.15,0.15,0.15}, {sqlight}, "textures/apartment_env_map_sm.png")
 

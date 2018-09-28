@@ -133,7 +133,7 @@ sqlight = gr.rect_light({ballx - 10,5, 10}, 3, 3, light_color, {1,0,0}, 40)
 -- 	  {-2, 4, -10}, {2, -2, 10}, {0, 1, 0}, 50,
 -- 	  {0.2, 0.2, 0.2}, {light1, light2})
 gr.render(scene,
-	  'refract.png', 700, 700, 4,
+	  'refract.png', 700, 700, 1, 1, 0.0, 0.0,
 	  {1, 0.5, -5}, {ballx, bally, ballz}, {0, 1, 0}, 50,
 	  {0.15,0.15,0.15}, {sqlight}, "textures/apartment_env_map_sm.png")
 

@@ -23,7 +23,8 @@ void a4_render(// What to render
                // Lighting parameters
                const Colour& ambient,
                const std::list<Light*>& lights,
-               const char *skymap
+               const char *skymap,
+               bool useTone, double Lwhite,  double a
                )
 {
   high_resolution_clock::time_point t1 = high_resolution_clock::now();
@@ -32,7 +33,7 @@ void a4_render(// What to render
   cout << "Camera Location: " << toString(eye) << " Look at: " << toString(view) << " Up: " << toString(up) << " FOV: " << fov << endl; 
 
   Camera camera(eye, view, up, fov, width, height);
-  Renderer renderer(&camera, root, lights, ambient, ss_level, dof_samples, aperature, focal_len, skymap); 
+  Renderer renderer(&camera, root, lights, ambient, ss_level, dof_samples, aperature, focal_len, skymap, useTone, Lwhite, a); 
 
   renderer.renderImage(filename);
 

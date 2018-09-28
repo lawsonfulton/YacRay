@@ -445,38 +445,43 @@ int gr_render_cmd(lua_State* L)
   double aperature = luaL_checknumber(L, 7);
   double focal_len = luaL_checknumber(L, 8);
 
+  bool useTone =lua_toboolean( L, 9);
+  double Lwhite = luaL_checknumber(L, 10);
+  double a = luaL_checknumber(L, 11);
+
   Point3D eye;
   Vector3D view, up;
 
-  get_tuple(L, 9, &eye[0], 3);
-  get_tuple(L, 10, &view[0], 3);
-  get_tuple(L, 11, &up[0], 3);
+  get_tuple(L, 12, &eye[0], 3);
+  get_tuple(L, 13, &view[0], 3);
+  get_tuple(L, 14, &up[0], 3);
 
-  double fov = luaL_checknumber(L, 12);
+  double fov = luaL_checknumber(L, 15);
 
   double ambient_data[3];
-  get_tuple(L, 13, ambient_data, 3);
+  get_tuple(L, 16, ambient_data, 3);
   Colour ambient(ambient_data[0], ambient_data[1], ambient_data[2]);
 
-  luaL_checktype(L, 13, LUA_TTABLE);
-  int light_count = luaL_getn(L, 14);
+  luaL_checktype(L, 16, LUA_TTABLE);
+  int light_count = luaL_getn(L, 17);
   
-  luaL_argcheck(L, light_count >= 1, 14, "Tuple of lights expected");
+  luaL_argcheck(L, light_count >= 1, 17, "Tuple of lights expected");
   std::list<Light*> lights;
   for (int i = 1; i <= light_count; i++) {
-    lua_rawgeti(L, 14, i);
+    lua_rawgeti(L, 17, i);
     gr_light_ud* ldata = (gr_light_ud*)luaL_checkudata(L, -1, "gr.light");
-    luaL_argcheck(L, ldata != 0, 14, "Light expected");
+    luaL_argcheck(L, ldata != 0, 17, "Light expected");
 
     lights.push_back(ldata->light);
     lua_pop(L, 1);
   }
 
-  const char* skymap = luaL_optlstring(L, 15, NULL, NULL);
+  const char* skymap = luaL_optlstring(L, 18, NULL, NULL);
+
 
   a4_render(root->node, filename, width, height, ss_level, dof_samples, aperature, focal_len,
             eye, view, up, fov,
-            ambient, lights, skymap);
+            ambient, lights, skymap, useTone, Lwhite, a);
   
   return 0;
 }
@@ -596,6 +601,24 @@ int gr_material_set_bump_map_cmd(lua_State* L)
 
   return 0;
 }
+
+extern "C"
+int gr_material_set_fresnel_cmd(lua_State* L)
+{
+  GRLUA_DEBUG_CALL;
+  
+  gr_material_ud* matdata = (gr_material_ud*)luaL_checkudata(L, 1, "gr.material");
+  luaL_argcheck(L, matdata != 0, 1, "Material expected");
+
+  Material* self = dynamic_cast<Material*>(matdata->material);
+
+  double r0 = luaL_checknumber(L, 2);
+
+  self->setFresnel(r0);
+
+  return 0;
+}
+
 
 
 // Add a child to a node
@@ -785,6 +808,7 @@ static const luaL_reg grlib_material_methods[] = {
   {"set_texture_map", gr_material_set_texture_map_cmd},
   {"set_specular_map", gr_material_set_specular_map_cmd},
   {"set_bump_map", gr_material_set_bump_map_cmd},
+  {"set_fresnel", gr_material_set_fresnel_cmd},
   {0, 0}
 };
 

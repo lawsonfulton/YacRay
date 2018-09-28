@@ -26,8 +26,14 @@ static inline void loadbar(unsigned int x, unsigned int n, unsigned int w = 50)
     cout << "]\r" << flush;
 }
 
-Renderer::Renderer(Camera *camera, SceneNode *scene, list<Light*> lights, Colour ambient, int ssLevel, int dofSamples, double aperature, double focalLen, const char* skymap)
-             :  mAmbientColour(ambient), mLights(lights), mSSLevel(ssLevel), mDofSamples(dofSamples), mAperature(aperature), mFocalLen(focalLen), mCamera(camera), mScene(scene), mSkymap(NULL) {
+Renderer::Renderer(Camera *camera, SceneNode *scene, 
+		            list<Light*> lights, Colour ambient,
+		            int ssLevel,int dofSamples, double aperature, double focalLen, 
+		            const char* skymap, bool useTone, double Lwhite,  double a)
+             :  mAmbientColour(ambient), mLights(lights), mSSLevel(ssLevel),
+             mDofSamples(dofSamples), mAperature(aperature), mFocalLen(focalLen),
+             mCamera(camera), mScene(scene), mSkymap(NULL),
+             mUseToneMap(useTone), mToneLwhite(Lwhite), mToneA(a) {
     if(skymap) {
     	mSkymap = new Image();
     	cout << "Loading environment map..." << flush;
@@ -84,10 +90,12 @@ void Renderer::renderImage(const string &filename) {
 
 	for (auto& th : threads) th.join();
 
-	// cout << endl;
-	// cout << "Tone mapping image..." << flush;
-	// img.ReinhardToneMap();
-	// cout << "Done." << endl;
+	if(mUseToneMap) {
+		cout << endl;
+		cout << "Tone mapping image..." << flush;
+		img.ReinhardToneMap(mToneLwhite, mToneA);
+		cout << "Done." << endl;
+	}
 
 	img.savePng(filename);
 	cout << endl;//formatting

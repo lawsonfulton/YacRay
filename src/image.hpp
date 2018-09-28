@@ -59,7 +59,7 @@ public:
   double maxLuminance();
   double L(int x, int y, double a, double LwBar);
 
-  void ReinhardToneMap();
+  void ReinhardToneMap(double LwhiteFactor, double a);
   void computeLuminances(Image &L);
   
 private:

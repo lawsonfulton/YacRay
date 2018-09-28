@@ -20,6 +20,8 @@ public:
   void setSpecularMap(const char* filename);
   void setBumpMap(const char* filename, double magnitude);
 
+  void setFresnel(double r0);
+
 protected:
   Material();
   Colour getTextureColour(Point2D uv) const;
@@ -32,6 +34,9 @@ protected:
 
   Image *mBumpmap;
   double mBumpMagnitude;
+
+  bool mUseFresnel;
+  double mR0;
 };
 
 class PhongMaterial : public Material {
